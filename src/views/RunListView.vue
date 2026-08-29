@@ -13,7 +13,7 @@ import AvatarStack from '../components/AvatarStack.vue';
 import EmptyState from '../components/EmptyState.vue';
 import ProgressBar from '../components/ProgressBar.vue';
 import {bootstrap} from '../api/client.js';
-import {shortDate} from '../utils/format.js';
+import {plural, shortDate} from '../utils/format.js';
 import {useRunStore} from '../stores/runs.js';
 import {useUiStore} from '../stores/ui.js';
 
@@ -116,7 +116,6 @@ onMounted(load);
           <thead>
             <tr>
               <th scope="col">Run</th>
-              <th scope="col">Environment</th>
               <th scope="col">Version</th>
               <th scope="col" style="min-width: 200px">Progress</th>
               <th scope="col">Assignees</th>
@@ -131,11 +130,13 @@ onMounted(load);
               :class="{'is-completed': run.status === 'completed'}"
             >
               <td>
-                <RouterLink :to="`/runs/${run.id}`">{{ run.name }}</RouterLink>
+                <div class="qa-run-cell">
+                  <RouterLink :to="`/runs/${run.id}`">{{ run.name }}</RouterLink>
+                  <span class="qa-badge qa-badge--env">{{ run.environment }}</span>
+                </div>
               </td>
-              <td>{{ run.environment }}</td>
               <td class="qa-muted">{{ run.version }}</td>
-              <td><ProgressBar :counts="run.counts" /></td>
+              <td><ProgressBar :counts="run.counts" :issues="run?.open_issue_count" /></td>
               <td><AvatarStack :people="run.assignees" /></td>
               <td class="qa-muted">{{ shortDate(run.created_at) }}</td>
               <td>

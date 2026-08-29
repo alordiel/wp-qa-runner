@@ -623,6 +623,15 @@
   background: #e4f6e8;
 }
 
+/* Run name over its environment badge, so the environment costs no column width. */
+.qa-run-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+}
+
 .qa-table-scroll {
   overflow-x: auto;
 }
@@ -714,6 +723,16 @@
   background: var(--qa-fail-soft);
   border-color: var(--qa-fail);
   color: #8a2424;
+}
+
+/*
+ * Environment reads as a label under the run name, not as a state, so it stays in the
+ * neutral badge palette — the run's status badge is the only one in that row entitled to
+ * carry colour.
+ */
+.qa-badge--env {
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
 }
 
 .qa-badge--lock {

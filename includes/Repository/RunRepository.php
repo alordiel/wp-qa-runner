@@ -52,15 +52,17 @@ final class RunRepository extends BaseRepository {
 		$rows = $rows ?? array();
 		$ids  = array_map( static fn( array $row ): int => (int) $row['id'], $rows );
 
-		$counts    = $this->counts_for_runs( $ids );
-		$assignees = $this->assignees_for_runs( $ids );
+		$counts      = $this->counts_for_runs( $ids );
+		$assignees   = $this->assignees_for_runs( $ids );
+		$open_issues = $this->open_issue_counts_for_runs( $ids );
 
 		return array_map(
-			function ( array $row ) use ( $counts, $assignees ): array {
-				$id               = (int) $row['id'];
-				$run              = $this->to_array( $row );
-				$run['counts']    = $counts[ $id ] ?? $this->empty_counts();
-				$run['assignees'] = $assignees[ $id ] ?? array();
+			function ( array $row ) use ( $counts, $assignees, $open_issues ): array {
+				$id                      = (int) $row['id'];
+				$run                     = $this->to_array( $row );
+				$run['counts']           = $counts[ $id ] ?? $this->empty_counts();
+				$run['assignees']        = $assignees[ $id ] ?? array();
+				$run['open_issue_count'] = $open_issues[ $id ] ?? 0;
 
 				return $run;
 			},
@@ -98,10 +100,13 @@ final class RunRepository extends BaseRepository {
 			return null;
 		}
 
-		$counts           = $this->counts_for_runs( array( $id ) );
-		$assignees        = $this->assignees_for_runs( array( $id ) );
-		$run['counts']    = $counts[ $id ] ?? $this->empty_counts();
-		$run['assignees'] = $assignees[ $id ] ?? array();
+		$counts      = $this->counts_for_runs( array( $id ) );
+		$assignees   = $this->assignees_for_runs( array( $id ) );
+		$open_issues = $this->open_issue_counts_for_runs( array( $id ) );
+
+		$run['counts']           = $counts[ $id ] ?? $this->empty_counts();
+		$run['assignees']        = $assignees[ $id ] ?? array();
+		$run['open_issue_count'] = $open_issues[ $id ] ?? 0;
 
 		return $run;
 	}
@@ -411,6 +416,47 @@ final class RunRepository extends BaseRepository {
 			}
 
 			$out[ $run_id ]['total'] += (int) $row['total'];
+		}
+
+		return $out;
+	}
+
+	/**
+	 * Open issues on the cases each run covers, grouped by run.
+	 *
+	 * Issues attach to a case, not a run, so this is a count of what is currently broken
+	 * among this run's cases — the same set the tester sees banners for while working
+	 * through it. COUNT(DISTINCT) because one issue can only be counted once even though
+	 * the join is by case.
+	 *
+	 * @param int[] $run_ids Run identifiers.
+	 * @return array<int, int> Keyed by run identifier.
+	 */
+	public function open_issue_counts_for_runs( array $run_ids ): array {
+		if ( empty( $run_ids ) ) {
+			return array();
+		}
+
+		$run_cases = Schema::table( 'run_cases' );
+		$issues    = Schema::table( 'issues' );
+		$holder    = $this->placeholders( $run_ids );
+
+		$rows = $this->db()->get_results(
+			$this->db()->prepare(
+				"SELECT rc.run_id, COUNT(DISTINCT i.id) AS total
+				 FROM {$run_cases} rc
+				 INNER JOIN {$issues} i ON i.case_id = rc.case_id AND i.status = 'open'
+				 WHERE rc.run_id IN ({$holder})
+				 GROUP BY rc.run_id", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				...$run_ids
+			),
+			ARRAY_A
+		); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+
+		$out = array();
+
+		foreach ( $rows ?? array() as $row ) {
+			$out[ (int) $row['run_id'] ] = (int) $row['total'];
 		}
 
 		return $out;
