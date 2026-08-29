@@ -17,16 +17,18 @@ const names = computed(() => props.people.map((person) => person.name).join(', '
 
 <template>
   <span v-if="people.length" class="qa-avatars" :title="names">
+    <span class="qa-person-badge" v-for="person in shown">
     <img
-      v-for="person in shown"
-      :key="person.id"
-      class="qa-avatars__item"
-      :src="person.avatar"
-      :alt="person.name"
-      width="24"
-      height="24"
-      loading="lazy"
+        :key="person.id"
+        class="qa-avatars__item"
+        :src="person.avatar"
+        :alt="person.name"
+        width="24"
+        height="24"
+        loading="lazy"
     />
+      <span>{{ person.name }}</span>
+    </span>
     <span v-if="overflow" class="qa-avatars__more">+{{ overflow }}</span>
   </span>
   <span v-else class="qa-muted">Nobody assigned</span>

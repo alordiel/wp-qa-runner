@@ -75,28 +75,47 @@ const canSubmit = computed(
 );
 
 /**
+ * Returns the array with the value added or removed.
+ *
+ * Kept as a plain array helper rather than one that takes a ref: top-level refs are
+ * auto-unwrapped in the template, so a template handler can never hand one over.
+ *
+ * @param {Array} list Current values.
+ * @param {*} value Value to toggle.
+ * @returns {Array} A new array.
+ */
+function toggled(list, value) {
+  return list.includes(value) ? list.filter((item) => item !== value) : [...list, value];
+}
+
+/**
  * Toggles a case in the selection.
  *
  * @param {number} id Case identifier.
  * @returns {void}
  */
 function toggleCase(id) {
-  selectedIds.value = selectedIds.value.includes(id)
-    ? selectedIds.value.filter((item) => item !== id)
-    : [...selectedIds.value, id];
+  selectedIds.value = toggled(selectedIds.value, id);
 }
 
 /**
- * Toggles a value inside one of the filter arrays.
+ * Toggles a suite in the filter.
  *
- * @param {import('vue').Ref<Array>} target Filter ref.
- * @param {*} value Value to toggle.
+ * @param {number} suiteId Suite identifier.
  * @returns {void}
  */
-function toggleFilter(target, value) {
-  target.value = target.value.includes(value)
-    ? target.value.filter((item) => item !== value)
-    : [...target.value, value];
+function toggleSuite(suiteId) {
+  suiteFilter.value = toggled(suiteFilter.value, suiteId);
+}
+
+/**
+ * Toggles a priority in the filter.
+ *
+ * @param {string} priority Priority value.
+ * @returns {void}
+ */
+function togglePriority(priority) {
+  priorityFilter.value = toggled(priorityFilter.value, priority);
 }
 
 /**
@@ -270,7 +289,7 @@ onMounted(async () => {
     <div class="qa-picker">
       <div class="qa-picker__filters">
         <div class="qa-filter-group">
-          <span class="qa-filter-group__label">Search</span>
+          <span class="qa-filter-group__label">Search case</span>
           <input v-model="search" class="qa-input" type="search" placeholder="Case title" />
         </div>
 
@@ -280,7 +299,7 @@ onMounted(async () => {
             <input
               type="checkbox"
               :checked="suiteFilter.includes(suite.id)"
-              @change="toggleFilter(suiteFilter, suite.id)"
+              @change="toggleSuite(suite.id)"
             />
             <span
               >{{ suite.name }} <span class="qa-muted">({{ suite.case_count }})</span></span
@@ -294,7 +313,7 @@ onMounted(async () => {
             <input
               type="checkbox"
               :checked="priorityFilter.includes(priority.value)"
-              @change="toggleFilter(priorityFilter, priority.value)"
+              @change="togglePriority(priority.value)"
             />
             <span>{{ priority.label }}</span>
           </label>

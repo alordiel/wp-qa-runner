@@ -52,7 +52,6 @@ onMounted(async () => {
     <div class="qa-page-head">
       <div class="qa-page-head__meta">
         <h2>Settings</h2>
-        <p class="qa-subtitle">Notification timing and what happens when the plugin is removed.</p>
       </div>
       <button type="submit" class="qa-button qa-button--primary" :disabled="saving || loading">
         {{ saving ? 'Saving…' : 'Save settings' }}

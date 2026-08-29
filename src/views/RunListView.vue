@@ -125,7 +125,11 @@ onMounted(load);
             </tr>
           </thead>
           <tbody>
-            <tr v-for="run in runStore.runs" :key="run.id">
+            <tr
+              v-for="run in runStore.runs"
+              :key="run.id"
+              :class="{'is-completed': run.status === 'completed'}"
+            >
               <td>
                 <RouterLink :to="`/runs/${run.id}`">{{ run.name }}</RouterLink>
               </td>
