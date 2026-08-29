@@ -1086,6 +1086,17 @@
   text-decoration: underline;
 }
 
+#qa-runner-app a.qa-button.qa-button--primary {
+  color: var( --qa-surface);
+  text-decoration: none;
+}
+
+#qa-runner-app a.qa-button.qa-button--primary:hover {
+  color: var( --qa-surface);
+  text-decoration: none;
+}
+
+
 #qa-runner-app :focus-visible {
   outline: 2px solid var(--qa-primary);
   outline-offset: 1px;
