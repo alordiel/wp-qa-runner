@@ -35094,8 +35094,8 @@ Use slot props instead:
 			"min-width": "140px"
 		}
 	};
-	var _hoisted_13$6 = ["value"];
-	var _hoisted_14$5 = { class: "qa-field" };
+	var _hoisted_13$7 = ["value"];
+	var _hoisted_14$6 = { class: "qa-field" };
 	var _hoisted_15$5 = { class: "qa-field" };
 	var _hoisted_16$5 = {
 		key: 0,
@@ -35156,10 +35156,10 @@ Use slot props instead:
 					return openBlock(), createElementBlock("option", {
 						key: option.value,
 						value: option.value
-					}, toDisplayString(option.label), 9, _hoisted_13$6);
+					}, toDisplayString(option.label), 9, _hoisted_13$7);
 				}), 128))], 512), [[vModelSelect, $setup.form.priority]])])
 			]),
-			createBaseVNode("div", _hoisted_14$5, [_cache[12] || (_cache[12] = createBaseVNode("span", { class: "qa-field__label" }, "Steps", -1)), createVNode($setup["RichTextEditor"], {
+			createBaseVNode("div", _hoisted_14$6, [_cache[12] || (_cache[12] = createBaseVNode("span", { class: "qa-field__label" }, "Steps", -1)), createVNode($setup["RichTextEditor"], {
 				modelValue: $setup.form.steps,
 				"onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => $setup.form.steps = $event),
 				placeholder: "What the tester should do, in order."
@@ -35477,8 +35477,8 @@ Use slot props instead:
 	var _hoisted_10$6 = { class: "qa-card__head" };
 	var _hoisted_11$6 = { class: "qa-row" };
 	var _hoisted_12$6 = { class: "qa-muted qa-count" };
-	var _hoisted_13$5 = { class: "qa-case-row" };
-	var _hoisted_14$4 = { class: "qa-case-row__main" };
+	var _hoisted_13$6 = { class: "qa-case-row" };
+	var _hoisted_14$5 = { class: "qa-case-row__main" };
 	var _hoisted_15$4 = { class: "qa-case-row__title" };
 	var _hoisted_16$4 = {
 		key: 0,
@@ -35576,7 +35576,7 @@ Use slot props instead:
 				default: withCtx(() => [..._cache[11] || (_cache[11] = [createTextVNode(" New case here ", -1)])]),
 				_: 1
 			}, 8, ["to"])])]), (openBlock(true), createElementBlock(Fragment, null, renderList(group.cases, (item) => {
-				return openBlock(), createElementBlock("div", { key: item.id }, [createBaseVNode("div", _hoisted_13$5, [createBaseVNode("div", _hoisted_14$4, [createBaseVNode("div", _hoisted_15$4, [
+				return openBlock(), createElementBlock("div", { key: item.id }, [createBaseVNode("div", _hoisted_13$6, [createBaseVNode("div", _hoisted_14$5, [createBaseVNode("div", _hoisted_15$4, [
 					createVNode($setup["PriorityDot"], { priority: item.priority }, null, 8, ["priority"]),
 					createVNode($setup["RouterLink"], { to: `/cases/${item.id}/edit` }, {
 						default: withCtx(() => [createTextVNode(toDisplayString(item.title), 1)]),
@@ -36298,8 +36298,8 @@ Use slot props instead:
 		class: "qa-notice qa-notice--warning"
 	};
 	var _hoisted_12$5 = { class: "qa-card" };
-	var _hoisted_13$4 = { class: "qa-card__head" };
-	var _hoisted_14$3 = {
+	var _hoisted_13$5 = { class: "qa-card__head" };
+	var _hoisted_14$4 = {
 		key: 0,
 		class: "qa-muted"
 	};
@@ -36381,7 +36381,7 @@ Use slot props instead:
 			}, " Next → ", 8, _hoisted_9$5)])]),
 			$setup.lockedByOther ? (openBlock(), createElementBlock("div", _hoisted_10$5, toDisplayString($setup.result.in_progress_by.name) + " is testing this. You can still record your own result. ", 1)) : createCommentVNode("", true),
 			!$setup.isOpen ? (openBlock(), createElementBlock("div", _hoisted_11$5, " This run is " + toDisplayString($setup.runStore.run?.status) + ". Results and comments are read-only. ", 1)) : createCommentVNode("", true),
-			createBaseVNode("div", _hoisted_12$5, [createBaseVNode("div", _hoisted_13$4, [_cache[10] || (_cache[10] = createBaseVNode("h3", null, "Result", -1)), $setup.result?.tested_by ? (openBlock(), createElementBlock("span", _hoisted_14$3, [createTextVNode(" Set by " + toDisplayString($setup.result.tested_by.name) + " ", 1), createBaseVNode("span", { title: $setup.absoluteTime($setup.result.tested_at) }, toDisplayString($setup.relativeTime($setup.result.tested_at)), 9, _hoisted_15$3)])) : createCommentVNode("", true)]), createBaseVNode("div", _hoisted_16$3, [$setup.canTest && $setup.result ? (openBlock(), createBlock($setup["StatusControl"], {
+			createBaseVNode("div", _hoisted_12$5, [createBaseVNode("div", _hoisted_13$5, [_cache[10] || (_cache[10] = createBaseVNode("h3", null, "Result", -1)), $setup.result?.tested_by ? (openBlock(), createElementBlock("span", _hoisted_14$4, [createTextVNode(" Set by " + toDisplayString($setup.result.tested_by.name) + " ", 1), createBaseVNode("span", { title: $setup.absoluteTime($setup.result.tested_at) }, toDisplayString($setup.relativeTime($setup.result.tested_at)), 9, _hoisted_15$3)])) : createCommentVNode("", true)]), createBaseVNode("div", _hoisted_16$3, [$setup.canTest && $setup.result ? (openBlock(), createBlock($setup["StatusControl"], {
 				key: 0,
 				"model-value": $setup.result.status,
 				"case-title": $setup.testCase.title,
@@ -36796,8 +36796,8 @@ Use slot props instead:
 	};
 	var _hoisted_11$4 = { class: "qa-field" };
 	var _hoisted_12$4 = { class: "qa-field" };
-	var _hoisted_13$3 = { class: "qa-row" };
-	var _hoisted_14$2 = ["value"];
+	var _hoisted_13$4 = { class: "qa-row" };
+	var _hoisted_14$3 = ["value"];
 	var _hoisted_15$2 = {
 		key: 0,
 		class: "qa-muted"
@@ -36900,7 +36900,7 @@ Use slot props instead:
 				createBaseVNode("div", _hoisted_12$4, [
 					_cache[13] || (_cache[13] = createBaseVNode("span", { class: "qa-field__label" }, "Assignees", -1)),
 					_cache[14] || (_cache[14] = createBaseVNode("p", { class: "qa-field__hint" }, " Assignment is informational and sends one email. Anyone on the QA team can test any case in an open run. ", -1)),
-					createBaseVNode("div", _hoisted_13$3, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.caseStore.users, (user) => {
+					createBaseVNode("div", _hoisted_13$4, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.caseStore.users, (user) => {
 						return openBlock(), createElementBlock("label", {
 							key: user.id,
 							class: "qa-checkbox"
@@ -36908,7 +36908,7 @@ Use slot props instead:
 							"onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => $setup.assigneeIds = $event),
 							type: "checkbox",
 							value: user.id
-						}, null, 8, _hoisted_14$2), [[vModelCheckbox, $setup.assigneeIds]]), createBaseVNode("span", null, toDisplayString(user.name), 1)]);
+						}, null, 8, _hoisted_14$3), [[vModelCheckbox, $setup.assigneeIds]]), createBaseVNode("span", null, toDisplayString(user.name), 1)]);
 					}), 128)), !$setup.caseStore.users.length ? (openBlock(), createElementBlock("span", _hoisted_15$2, "No one else can run tests yet.")) : createCommentVNode("", true)])
 				])
 			])]),
@@ -37099,18 +37099,26 @@ Use slot props instead:
 		key: 0,
 		class: "qa-progress__legend"
 	};
-	var _hoisted_4$4 = { class: "qa-count" };
+	var _hoisted_4$4 = { class: "qa-badge qa-badge--success" };
 	var _hoisted_5$4 = { class: "qa-count" };
-	var _hoisted_6$4 = { key: 0 };
-	var _hoisted_7$4 = { class: "qa-count" };
-	var _hoisted_8$4 = { key: 1 };
-	var _hoisted_9$3 = { class: "qa-count" };
+	var _hoisted_6$4 = { class: "qa-count" };
+	var _hoisted_7$4 = {
+		key: 0,
+		class: "qa-badge qa-badge--issue"
+	};
+	var _hoisted_8$4 = { class: "qa-count" };
+	var _hoisted_9$3 = {
+		key: 1,
+		class: "qa-badge qa-badge--env"
+	};
 	var _hoisted_10$3 = { class: "qa-count" };
-	var _hoisted_11$3 = {
+	var _hoisted_11$3 = { class: "qa-badge qa-badge--lock" };
+	var _hoisted_12$3 = { class: "qa-count" };
+	var _hoisted_13$3 = {
 		key: 2,
 		class: "qa-badge qa-badge--issue"
 	};
-	var _hoisted_12$3 = { class: "qa-count" };
+	var _hoisted_14$2 = { class: "qa-count" };
 	function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
 		return openBlock(), createElementBlock("div", _hoisted_1$4, [createBaseVNode("div", {
 			class: "qa-progress__track",
@@ -37123,12 +37131,15 @@ Use slot props instead:
 				style: normalizeStyle({ width: `${segment.width}%` })
 			}, null, 6);
 		}), 128))], 8, _hoisted_2$4), !$props.compact ? (openBlock(), createElementBlock("div", _hoisted_3$4, [
-			createBaseVNode("span", null, [createBaseVNode("b", _hoisted_4$4, toDisplayString($props.counts.pass ?? 0), 1), _cache[0] || (_cache[0] = createTextVNode(" passed", -1))]),
-			createBaseVNode("span", { class: normalizeClass({ "is-fail": $setup.failCount > 0 }) }, [createBaseVNode("b", _hoisted_5$4, toDisplayString($setup.failCount), 1), _cache[1] || (_cache[1] = createTextVNode(" failed", -1))], 2),
-			$props.counts.blocked ? (openBlock(), createElementBlock("span", _hoisted_6$4, [createBaseVNode("b", _hoisted_7$4, toDisplayString($props.counts.blocked), 1), _cache[2] || (_cache[2] = createTextVNode(" blocked", -1))])) : createCommentVNode("", true),
-			$props.counts.skipped ? (openBlock(), createElementBlock("span", _hoisted_8$4, [createBaseVNode("b", _hoisted_9$3, toDisplayString($props.counts.skipped), 1), _cache[3] || (_cache[3] = createTextVNode(" skipped", -1))])) : createCommentVNode("", true),
-			createBaseVNode("span", null, [createBaseVNode("b", _hoisted_10$3, toDisplayString($setup.remaining), 1), _cache[4] || (_cache[4] = createTextVNode(" remaining", -1))]),
-			$props.issues > 0 ? (openBlock(), createElementBlock("span", _hoisted_11$3, [createBaseVNode("span", _hoisted_12$3, toDisplayString($props.issues + " " + $setup.plural($props.issues, "open issue", "open issues")), 1)])) : createCommentVNode("", true)
+			createBaseVNode("span", _hoisted_4$4, [createBaseVNode("b", _hoisted_5$4, toDisplayString($props.counts.pass ?? 0), 1), _cache[0] || (_cache[0] = createTextVNode(" passed", -1))]),
+			createBaseVNode("span", { class: normalizeClass([{
+				"qa-badge--issue": $setup.failCount > 0,
+				"qa-badge--env": $setup.failCount === 0
+			}, "qa-badge"]) }, [createBaseVNode("b", _hoisted_6$4, toDisplayString($setup.failCount), 1), _cache[1] || (_cache[1] = createTextVNode(" failed", -1))], 2),
+			$props.counts.blocked ? (openBlock(), createElementBlock("span", _hoisted_7$4, [createBaseVNode("b", _hoisted_8$4, toDisplayString($props.counts.blocked), 1), _cache[2] || (_cache[2] = createTextVNode(" blocked", -1))])) : createCommentVNode("", true),
+			$props.counts.skipped ? (openBlock(), createElementBlock("span", _hoisted_9$3, [createBaseVNode("b", _hoisted_10$3, toDisplayString($props.counts.skipped), 1), _cache[3] || (_cache[3] = createTextVNode(" skipped", -1))])) : createCommentVNode("", true),
+			createBaseVNode("span", _hoisted_11$3, [createBaseVNode("b", _hoisted_12$3, toDisplayString($setup.remaining), 1), _cache[4] || (_cache[4] = createTextVNode(" remaining", -1))]),
+			$props.issues > 0 ? (openBlock(), createElementBlock("span", _hoisted_13$3, [createBaseVNode("span", _hoisted_14$2, toDisplayString($props.issues + " " + $setup.plural($props.issues, "open issue", "open issues")), 1)])) : createCommentVNode("", true)
 		])) : createCommentVNode("", true)]);
 	}
 	var ProgressBar_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$4, [["render", _sfc_render$4], ["__file", "ProgressBar.vue"]]);

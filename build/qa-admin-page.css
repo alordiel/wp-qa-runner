@@ -1023,6 +1023,8 @@
   --qa-border-strong: #c3c4c7;
 
   --qa-pass: #00a32a;
+  --qa-success: #9bdfac;
+  --qa-success-border: #6cba80  ;
   --qa-fail: #d63638;
   --qa-blocked: #dba617;
   --qa-skipped: #787c82;
@@ -1743,6 +1745,12 @@
   background: var(--qa-blocked-soft);
   border-color: var(--qa-blocked);
   color: #7a5c00;
+}
+
+.qa-badge--success {
+  background: var(--qa-success);
+  border-color: var(--qa-success-border);
+  color: var(--qa-text);
 }
 /* ---------------------------------------------------------------- person badge */
 

@@ -47,11 +47,11 @@ const failCount = computed(() => props.counts.fail ?? 0);
       />
     </div>
     <div v-if="!compact" class="qa-progress__legend">
-      <span><b class="qa-count">{{ counts.pass ?? 0 }}</b> passed</span>
-      <span :class="{'is-fail': failCount > 0}"><b class="qa-count">{{ failCount }}</b> failed</span>
-      <span v-if="counts.blocked"><b class="qa-count">{{ counts.blocked }}</b> blocked</span>
-      <span v-if="counts.skipped"><b class="qa-count">{{ counts.skipped }}</b> skipped</span>
-      <span ><b class="qa-count">{{ remaining }}</b> remaining</span>
+      <span class="qa-badge qa-badge--success"><b class="qa-count">{{ counts.pass ?? 0 }}</b> passed</span>
+      <span :class="{'qa-badge--issue': failCount > 0, 'qa-badge--env': failCount === 0}"  class="qa-badge"><b class="qa-count">{{ failCount }}</b> failed</span>
+      <span class="qa-badge qa-badge--issue" v-if="counts.blocked"><b class="qa-count">{{ counts.blocked }}</b> blocked</span>
+      <span class="qa-badge qa-badge--env" v-if="counts.skipped"><b class="qa-count">{{ counts.skipped }}</b> skipped</span>
+      <span class="qa-badge qa-badge--lock"><b class="qa-count">{{ remaining }}</b> remaining</span>
       <span v-if="issues > 0" class="qa-badge qa-badge--issue">
         <span class="qa-count">{{ issues + ' ' + plural(issues, 'open issue', 'open issues') }}</span>
       </span>
