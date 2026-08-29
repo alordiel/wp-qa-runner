@@ -1,0 +1,7 @@
+node_modules/
+vendor/
+.DS_Store
+*.log
+qa-runner-plugin-spec.md
+
+# build/ is intentionally committed: deployment is rsync-based with no server build step.

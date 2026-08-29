@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<ruleset name="QA Runner">
+	<description>WordPress Coding Standards for the QA Runner plugin.</description>
+
+	<file>qa-runner.php</file>
+	<file>uninstall.php</file>
+	<file>includes</file>
+	<file>templates</file>
+
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg value="ps"/>
+
+	<config name="testVersion" value="8.2-"/>
+	<config name="minimum_wp_version" value="6.4"/>
+
+	<rule ref="WordPress">
+		<!--
+			The plugin autoloads PSR-4 from includes/, so class files are named after their
+			classes. WPCS's class-foo.php convention is incompatible with that by definition.
+		-->
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+
+		<!--
+			The plugin owns its own tables, so direct $wpdb queries are the point, and caching
+			a live result list would defeat the fifteen-second poller behind it.
+		-->
+		<exclude name="WordPress.DB.DirectDatabaseQuery.DirectQuery"/>
+		<exclude name="WordPress.DB.DirectDatabaseQuery.NoCaching"/>
+		<exclude name="WordPress.DB.DirectDatabaseQuery.SchemaChange"/>
+	</rule>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="qa-runner"/>
+			</property>
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="qa_runner"/>
+				<element value="QARunner"/>
+				<element value="QA_RUNNER"/>
+			</property>
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.WP.Capabilities">
+		<properties>
+			<property name="custom_capabilities" type="array">
+				<element value="qa_view_qa"/>
+				<element value="qa_run_tests"/>
+				<element value="qa_manage_cases"/>
+			</property>
+		</properties>
+	</rule>
+</ruleset>
