@@ -35056,7 +35056,7 @@ Use slot props instead:
 	var _hoisted_2$12 = { class: "qa-page-head__meta" };
 	var _hoisted_3$11 = { class: "qa-row" };
 	var _hoisted_4$9 = ["disabled"];
-	var _hoisted_5$9 = {
+	var _hoisted_5$8 = {
 		key: 0,
 		class: "qa-skeleton"
 	};
@@ -35115,7 +35115,7 @@ Use slot props instead:
 			type: "submit",
 			class: "qa-button qa-button--primary",
 			disabled: !$setup.canSubmit
-		}, toDisplayString($setup.saving ? "Saving…" : "Save case"), 9, _hoisted_4$9)])]), $setup.loading ? (openBlock(), createElementBlock("p", _hoisted_5$9, "Loading…")) : (openBlock(), createElementBlock("div", _hoisted_6$8, [createBaseVNode("div", _hoisted_7$8, [
+		}, toDisplayString($setup.saving ? "Saving…" : "Save case"), 9, _hoisted_4$9)])]), $setup.loading ? (openBlock(), createElementBlock("p", _hoisted_5$8, "Loading…")) : (openBlock(), createElementBlock("div", _hoisted_6$8, [createBaseVNode("div", _hoisted_7$8, [
 			createBaseVNode("div", _hoisted_8$8, [
 				createBaseVNode("div", _hoisted_9$7, [_cache[8] || (_cache[8] = createBaseVNode("label", {
 					class: "qa-field__label",
@@ -35463,7 +35463,7 @@ Use slot props instead:
 	var _hoisted_2$9 = { class: "qa-page-head" };
 	var _hoisted_3$9 = { class: "qa-row" };
 	var _hoisted_4$8 = { class: "qa-card" };
-	var _hoisted_5$8 = {
+	var _hoisted_5$7 = {
 		class: "qa-card__head",
 		style: { "flex-wrap": "wrap" }
 	};
@@ -35520,7 +35520,7 @@ Use slot props instead:
 		}, {
 			default: withCtx(() => [..._cache[4] || (_cache[4] = [createTextVNode("New case", -1)])]),
 			_: 1
-		})])]), createBaseVNode("div", _hoisted_4$8, [createBaseVNode("div", _hoisted_5$8, [createBaseVNode("div", _hoisted_6$7, [
+		})])]), createBaseVNode("div", _hoisted_4$8, [createBaseVNode("div", _hoisted_5$7, [createBaseVNode("div", _hoisted_6$7, [
 			_cache[8] || (_cache[8] = createBaseVNode("label", {
 				class: "qa-sr-only",
 				for: "case-search"
@@ -36284,7 +36284,7 @@ Use slot props instead:
 	};
 	var _hoisted_3$7 = { class: "qa-page-head" };
 	var _hoisted_4$7 = { class: "qa-page-head__meta" };
-	var _hoisted_5$7 = { class: "qa-row" };
+	var _hoisted_5$6 = { class: "qa-row" };
 	var _hoisted_6$6 = { class: "qa-subtitle" };
 	var _hoisted_7$6 = { class: "qa-row" };
 	var _hoisted_8$6 = ["disabled"];
@@ -36366,7 +36366,7 @@ Use slot props instead:
 					default: withCtx(() => [createTextVNode(" ← " + toDisplayString($setup.runStore.run?.name ?? "Back to run"), 1)]),
 					_: 1
 				}, 8, ["to"]),
-				createBaseVNode("h2", _hoisted_5$7, [createVNode($setup["PriorityDot"], { priority: $setup.testCase.priority }, null, 8, ["priority"]), createBaseVNode("span", null, toDisplayString($setup.testCase.title), 1)]),
+				createBaseVNode("h2", _hoisted_5$6, [createVNode($setup["PriorityDot"], { priority: $setup.testCase.priority }, null, 8, ["priority"]), createBaseVNode("span", null, toDisplayString($setup.testCase.title), 1)]),
 				createBaseVNode("p", _hoisted_6$6, [createTextVNode(toDisplayString($setup.testCase.suite_name) + " ", 1), $setup.previousRun ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [createTextVNode(" · last run (" + toDisplayString($setup.previousRun.run_name) + "): " + toDisplayString($setup.statusLabel($setup.previousRun.status)), 1)], 64)) : createCommentVNode("", true)])
 			]), createBaseVNode("div", _hoisted_7$6, [createBaseVNode("button", {
 				type: "button",
@@ -36770,7 +36770,7 @@ Use slot props instead:
 	var _hoisted_2$6 = { class: "qa-row" };
 	var _hoisted_3$6 = ["disabled"];
 	var _hoisted_4$6 = { class: "qa-card" };
-	var _hoisted_5$6 = { class: "qa-card__body qa-stack" };
+	var _hoisted_5$5 = { class: "qa-card__body qa-stack" };
 	var _hoisted_6$5 = { class: "qa-field" };
 	var _hoisted_7$5 = {
 		class: "qa-row",
@@ -36853,7 +36853,7 @@ Use slot props instead:
 				class: "qa-button qa-button--primary",
 				disabled: !$setup.canSubmit
 			}, toDisplayString($setup.saving ? "Creating…" : "Create run"), 9, _hoisted_3$6)])]),
-			createBaseVNode("div", _hoisted_4$6, [createBaseVNode("div", _hoisted_5$6, [
+			createBaseVNode("div", _hoisted_4$6, [createBaseVNode("div", _hoisted_5$5, [
 				createBaseVNode("div", _hoisted_6$5, [_cache[9] || (_cache[9] = createBaseVNode("label", {
 					class: "qa-field__label",
 					for: "run-name"
@@ -36987,16 +36987,10 @@ Use slot props instead:
 	//#region src/components/AvatarStack.vue
 	var _sfc_main$5 = {
 		__name: "AvatarStack",
-		props: {
-			people: {
-				type: Array,
-				default: () => []
-			},
-			max: {
-				type: Number,
-				default: 4
-			}
-		},
+		props: { people: {
+			type: Array,
+			default: () => []
+		} },
 		setup(__props, { expose: __expose }) {
 			__expose();
 			/**
@@ -37005,8 +36999,6 @@ Use slot props instead:
 			const props = __props;
 			const __returned__ = {
 				props,
-				shown: computed(() => props.people.slice(0, props.max)),
-				overflow: computed(() => Math.max(0, props.people.length - props.max)),
 				names: computed(() => props.people.map((person) => person.name).join(", ")),
 				computed
 			};
@@ -37021,10 +37013,6 @@ Use slot props instead:
 	var _hoisted_2$5 = { class: "qa-person-badge" };
 	var _hoisted_3$5 = ["src", "alt"];
 	var _hoisted_4$5 = {
-		key: 0,
-		class: "qa-avatars__more"
-	};
-	var _hoisted_5$5 = {
 		key: 1,
 		class: "qa-muted"
 	};
@@ -37033,7 +37021,7 @@ Use slot props instead:
 			key: 0,
 			class: "qa-avatars",
 			title: $setup.names
-		}, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.shown, (person) => {
+		}, [(openBlock(true), createElementBlock(Fragment, null, renderList($props.people, (person) => {
 			return openBlock(), createElementBlock("span", _hoisted_2$5, [(openBlock(), createElementBlock("img", {
 				key: person.id,
 				class: "qa-avatars__item",
@@ -37043,7 +37031,7 @@ Use slot props instead:
 				height: "24",
 				loading: "lazy"
 			}, null, 8, _hoisted_3$5)), createBaseVNode("span", null, toDisplayString(person.name), 1)]);
-		}), 256)), $setup.overflow ? (openBlock(), createElementBlock("span", _hoisted_4$5, "+" + toDisplayString($setup.overflow), 1)) : createCommentVNode("", true)], 8, _hoisted_1$5)) : (openBlock(), createElementBlock("span", _hoisted_5$5, "Nobody assigned"));
+		}), 256))], 8, _hoisted_1$5)) : (openBlock(), createElementBlock("span", _hoisted_4$5, "Nobody assigned"));
 	}
 	var AvatarStack_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$5, [["render", _sfc_render$5], ["__file", "AvatarStack.vue"]]);
 	//#endregion

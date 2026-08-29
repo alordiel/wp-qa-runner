@@ -6,18 +6,15 @@
 import {computed} from 'vue';
 
 const props = defineProps({
-  people: {type: Array, default: () => []},
-  max: {type: Number, default: 4}
+  people: {type: Array, default: () => []}
 });
 
-const shown = computed(() => props.people.slice(0, props.max));
-const overflow = computed(() => Math.max(0, props.people.length - props.max));
 const names = computed(() => props.people.map((person) => person.name).join(', '));
 </script>
 
 <template>
   <span v-if="people.length" class="qa-avatars" :title="names">
-    <span class="qa-person-badge" v-for="person in shown">
+    <span class="qa-person-badge" v-for="person in people">
     <img
         :key="person.id"
         class="qa-avatars__item"
@@ -29,7 +26,6 @@ const names = computed(() => props.people.map((person) => person.name).join(', '
     />
       <span>{{ person.name }}</span>
     </span>
-    <span v-if="overflow" class="qa-avatars__more">+{{ overflow }}</span>
   </span>
   <span v-else class="qa-muted">Nobody assigned</span>
 </template>
