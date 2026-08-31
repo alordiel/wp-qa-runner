@@ -21,6 +21,16 @@ final class Roles {
 
 	public const ROLE = 'qa_tester';
 
+	/**
+	 * Option holding the role version last written to the database.
+	 */
+	public const VERSION_OPTION = 'qa_runner_roles_version';
+
+	/**
+	 * Bumped whenever the capability sets below change, to force a re-install.
+	 */
+	public const VERSION = 1;
+
 	public const CAP_VIEW   = 'qa_view_qa';
 	public const CAP_TEST   = 'qa_run_tests';
 	public const CAP_MANAGE = 'qa_manage_cases';
@@ -39,6 +49,26 @@ final class Roles {
 	 * Roles that receive the full capability set.
 	 */
 	private const ELEVATED_ROLES = array( 'administrator', 'editor' );
+
+	/**
+	 * Installs the role when the stored version lags the constant above.
+	 *
+	 * Activation hooks are not guaranteed to fire: a database restored from an environment
+	 * where the plugin was already in active_plugins, a symlinked plugin directory, or a
+	 * per-site activation on a network all leave register_activation_hook() silent. Without
+	 * the role nobody holds CAP_VIEW, so the admin menu disappears for everyone including
+	 * administrators, which reads as "the plugin does nothing". Schema::maybe_upgrade()
+	 * guards the tables the same way; this is the matching guard for capabilities.
+	 *
+	 * @return void
+	 */
+	public static function maybe_install(): void {
+		if ( (int) get_option( self::VERSION_OPTION, 0 ) >= self::VERSION ) {
+			return;
+		}
+
+		self::install();
+	}
 
 	/**
 	 * Registers the role and capabilities. Called on activation.
@@ -68,6 +98,8 @@ final class Roles {
 				$role->add_cap( $cap );
 			}
 		}
+
+		update_option( self::VERSION_OPTION, self::VERSION, true );
 	}
 
 	/**
@@ -83,5 +115,7 @@ final class Roles {
 				$role->remove_cap( $cap );
 			}
 		}
+
+		delete_option( self::VERSION_OPTION );
 	}
 }

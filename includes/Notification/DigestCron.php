@@ -51,6 +51,23 @@ final class DigestCron {
 	}
 
 	/**
+	 * Schedules the event only when nothing is scheduled yet.
+	 *
+	 * The unguarded schedule() clears before it books, so calling it on every request would
+	 * push the next occurrence forward forever and the digest would never send. This is the
+	 * variant safe to run on init, so a missed activation still ends up with a schedule.
+	 *
+	 * @return void
+	 */
+	public static function maybe_schedule(): void {
+		if ( false !== wp_next_scheduled( self::HOOK ) ) {
+			return;
+		}
+
+		self::schedule();
+	}
+
+	/**
 	 * Schedules the event at the configured send time, replacing any existing schedule.
 	 *
 	 * @return void

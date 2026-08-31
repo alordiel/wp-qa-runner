@@ -94,7 +94,12 @@ final class Plugin {
 	 */
 	private function boot(): void {
 		add_action( 'init', array( $this, 'load_textdomain' ) );
+
+		// The activation hook is best-effort, so every install step that a missing role or
+		// schedule would break is replayed here behind its own version or existence guard.
 		add_action( 'init', array( Schema::class, 'maybe_upgrade' ) );
+		add_action( 'init', array( Roles::class, 'maybe_install' ) );
+		add_action( 'init', array( DigestCron::class, 'maybe_schedule' ) );
 
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
 
