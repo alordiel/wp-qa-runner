@@ -33,11 +33,15 @@ final class SuiteRepository extends BaseRepository {
 	 * @return array<int, array<string, mixed>>
 	 */
 	public function all(): array {
-		$suites = Schema::table( 'suites' );
-		$cases  = Schema::table( 'cases' );
+		$suites   = Schema::table( 'suites' );
+		$cases    = Schema::table( 'cases' );
+		$retained = $this->retained_predicate();
 
 		$rows = $this->db()->get_results(
-			"SELECT s.*, ( SELECT COUNT(*) FROM {$cases} c WHERE c.suite_id = s.id AND c.is_active = 1 ) AS case_count
+			"SELECT s.*,
+					( SELECT COUNT(*) FROM {$cases} c WHERE c.suite_id = s.id AND c.is_active = 1 ) AS case_count,
+					( SELECT COUNT(*) FROM {$cases} c WHERE c.suite_id = s.id AND c.is_active = 0 ) AS archived_case_count,
+					( SELECT COUNT(*) FROM {$cases} c WHERE c.suite_id = s.id AND c.is_active = 0 AND {$retained} ) AS retained_case_count
 			 FROM {$suites} s
 			 ORDER BY s.sort_order ASC, s.name ASC", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			ARRAY_A
@@ -121,17 +125,91 @@ final class SuiteRepository extends BaseRepository {
 	}
 
 	/**
-	 * Number of cases in a suite, including inactive ones.
+	 * Number of live cases in a suite.
 	 *
 	 * @param int $suite_id Suite identifier.
 	 * @return int
 	 */
-	public function case_count( int $suite_id ): int {
+	public function active_case_count( int $suite_id ): int {
 		$cases = Schema::table( 'cases' );
 
 		return (int) $this->db()->get_var(
-			$this->db()->prepare( "SELECT COUNT(*) FROM {$cases} WHERE suite_id = %d", $suite_id ) // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$this->db()->prepare( "SELECT COUNT(*) FROM {$cases} WHERE suite_id = %d AND is_active = 1", $suite_id ) // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+	}
+
+	/**
+	 * Number of archived cases in a suite that history still points at.
+	 *
+	 * These rows cannot be dropped along with the suite: run cases, results and issues
+	 * reference them, and every read of a case joins its suite.
+	 *
+	 * @param int $suite_id Suite identifier.
+	 * @return int
+	 */
+	public function retained_case_count( int $suite_id ): int {
+		$cases    = Schema::table( 'cases' );
+		$retained = $this->retained_predicate();
+
+		return (int) $this->db()->get_var(
+			$this->db()->prepare(
+				"SELECT COUNT(*) FROM {$cases} c WHERE c.suite_id = %d AND c.is_active = 0 AND {$retained}", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				$suite_id
+			)
+		); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+	}
+
+	/**
+	 * Hard-deletes the archived cases of a suite that no history refers to.
+	 *
+	 * A case that never reached a run is not the subject of any history, so nothing is
+	 * lost by removing it with the suite it belonged to.
+	 *
+	 * @param int $suite_id Suite identifier.
+	 * @return int Rows removed.
+	 */
+	public function purge_unused_cases( int $suite_id ): int {
+		$cases    = Schema::table( 'cases' );
+		$retained = $this->retained_predicate();
+
+		return (int) $this->db()->query(
+			$this->db()->prepare(
+				"DELETE c FROM {$cases} c WHERE c.suite_id = %d AND c.is_active = 0 AND NOT {$retained}", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				$suite_id
+			)
+		); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+	}
+
+	/**
+	 * Moves every case of a suite into another suite.
+	 *
+	 * @param int $suite_id  Source suite.
+	 * @param int $target_id Destination suite.
+	 * @return bool
+	 */
+	public function move_cases( int $suite_id, int $target_id ): bool {
+		return false !== $this->db()->update(
+			Schema::table( 'cases' ),
+			array( 'suite_id' => $target_id ),
+			array( 'suite_id' => $suite_id ),
+			array( '%d' ),
+			array( '%d' )
+		);
+	}
+
+	/**
+	 * SQL predicate, against a cases alias of "c", for a case history still points at.
+	 *
+	 * @return string
+	 */
+	private function retained_predicate(): string {
+		$run_cases = Schema::table( 'run_cases' );
+		$results   = Schema::table( 'results' );
+		$issues    = Schema::table( 'issues' );
+
+		return "( EXISTS ( SELECT 1 FROM {$run_cases} rc WHERE rc.case_id = c.id )
+			OR EXISTS ( SELECT 1 FROM {$results} r WHERE r.case_id = c.id )
+			OR EXISTS ( SELECT 1 FROM {$issues} i WHERE i.case_id = c.id ) )";
 	}
 
 	/**
@@ -163,13 +241,15 @@ final class SuiteRepository extends BaseRepository {
 	 */
 	public function to_array( array $row ): array {
 		return array(
-			'id'          => (int) $row['id'],
-			'name'        => (string) $row['name'],
-			'slug'        => (string) $row['slug'],
-			'description' => (string) ( $row['description'] ?? '' ),
-			'sort_order'  => (int) $row['sort_order'],
-			'created_at'  => Dates::to_iso( $row['created_at'] ?? null ),
-			'case_count'  => isset( $row['case_count'] ) ? (int) $row['case_count'] : null,
+			'id'                  => (int) $row['id'],
+			'name'                => (string) $row['name'],
+			'slug'                => (string) $row['slug'],
+			'description'         => (string) ( $row['description'] ?? '' ),
+			'sort_order'          => (int) $row['sort_order'],
+			'created_at'          => Dates::to_iso( $row['created_at'] ?? null ),
+			'case_count'          => isset( $row['case_count'] ) ? (int) $row['case_count'] : null,
+			'archived_case_count' => isset( $row['archived_case_count'] ) ? (int) $row['archived_case_count'] : null,
+			'retained_case_count' => isset( $row['retained_case_count'] ) ? (int) $row['retained_case_count'] : null,
 		);
 	}
 }

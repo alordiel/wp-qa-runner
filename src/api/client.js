@@ -168,7 +168,8 @@ export const api = {
     list: () => request('suites'),
     create: (data) => request('suites', {method: 'POST', body: data}),
     update: (id, data) => request(`suites/${id}`, {method: 'PUT', body: data}),
-    remove: (id) => request(`suites/${id}`, {method: 'DELETE'})
+    remove: (id, reassignTo) =>
+      request(`suites/${id}`, {method: 'DELETE', params: {reassign_to: reassignTo}})
   },
 
   cases: {

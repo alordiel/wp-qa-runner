@@ -95,15 +95,21 @@ export const useCaseStore = defineStore('cases', () => {
   }
 
   /**
-   * Deletes an empty suite.
+   * Deletes a suite that has no live cases.
    *
    * @param {number} id Suite identifier.
+   * @param {number} [reassignTo] Suite to move any archived cases into first.
    * @returns {Promise<void>}
    */
-  async function deleteSuite(id) {
-    await api.suites.remove(id);
+  async function deleteSuite(id, reassignTo = 0) {
+    await api.suites.remove(id, reassignTo || undefined);
 
     suites.value = suites.value.filter((item) => item.id !== id);
+
+    if (reassignTo) {
+      // The destination suite's counts just changed.
+      await loadSuites(true);
+    }
   }
 
   /**
