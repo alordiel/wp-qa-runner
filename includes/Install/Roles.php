@@ -29,14 +29,14 @@ final class Roles {
 	/**
 	 * Bumped whenever the capability sets below change, to force a re-install.
 	 */
-	public const VERSION = 1;
+	public const VERSION = 2;
 
 	public const CAP_VIEW   = 'qa_view_qa';
 	public const CAP_TEST   = 'qa_run_tests';
 	public const CAP_MANAGE = 'qa_manage_cases';
 
 	/**
-	 * Capabilities granted to administrators and editors.
+	 * Capabilities granted to the roles in self::ELEVATED_ROLES.
 	 */
 	private const ELEVATED_CAPS = array( self::CAP_VIEW, self::CAP_TEST, self::CAP_MANAGE );
 
@@ -48,7 +48,7 @@ final class Roles {
 	/**
 	 * Roles that receive the full capability set.
 	 */
-	private const ELEVATED_ROLES = array( 'administrator', 'editor' );
+	private const ELEVATED_ROLES = array( 'administrator' );
 
 	/**
 	 * Installs the role when the stored version lags the constant above.
@@ -87,15 +87,23 @@ final class Roles {
 		remove_role( self::ROLE );
 		add_role( self::ROLE, __( 'QA Tester', 'qa-runner' ), $caps );
 
-		foreach ( self::ELEVATED_ROLES as $role_name ) {
-			$role = get_role( $role_name );
-
-			if ( ! $role instanceof \WP_Role ) {
+		// add_cap() writes to the stored role definition, so a role dropped from
+		// ELEVATED_ROLES would keep its capabilities forever unless they are taken back
+		// here. Every role is visited on each version bump, which makes this constant the
+		// single source of truth rather than a log of what was granted historically.
+		foreach ( wp_roles()->role_objects as $role_name => $role ) {
+			if ( self::ROLE === $role_name || ! $role instanceof \WP_Role ) {
 				continue;
 			}
 
+			$elevated = in_array( $role_name, self::ELEVATED_ROLES, true );
+
 			foreach ( self::ELEVATED_CAPS as $cap ) {
-				$role->add_cap( $cap );
+				if ( $elevated ) {
+					$role->add_cap( $cap );
+				} else {
+					$role->remove_cap( $cap );
+				}
 			}
 		}
 

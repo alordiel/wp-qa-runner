@@ -66,12 +66,17 @@ Always checked as capabilities, never role names.
 | `qa_run_tests` | Set results, comment, raise and resolve issues, create runs |
 | `qa_manage_cases` | Edit the case library and suites, delete any comment, abandon runs, change settings |
 
-`qa_tester` (cloned from subscriber) gets the first two. Administrators and editors get all
-three. Testers can create runs — that is deliberate. Only `qa_manage_cases` holders can edit
-the case library.
+`qa_tester` (cloned from subscriber) gets the first two. Administrators get all three.
+Testers can create runs — that is deliberate. Only `qa_manage_cases` holders can edit the
+case library.
 
-Assignment is informational: it sends an email and shows an avatar. It does not restrict who
-may set a result.
+`Roles::ELEVATED_ROLES` is the source of truth for who holds all three: bump
+`Roles::VERSION` after changing it and the next admin request grants the caps to the roles
+listed and takes them back from every role that is not, `qa_tester` aside.
+
+Run assignment is informational: it sends an email and shows an avatar. It does not restrict
+who may set a result. Case assignment within a run is a claim testers make on themselves —
+it needs no capability beyond `qa_run_tests` plus a place on the run.
 
 ## Build
 
