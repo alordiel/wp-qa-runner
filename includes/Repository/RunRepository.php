@@ -273,6 +273,24 @@ final class RunRepository extends BaseRepository {
 	}
 
 	/**
+	 * Whether a user is assigned to a run.
+	 *
+	 * This is the gate on self-assignment: a tester claims cases from a run they were put
+	 * on, not from any run they happen to be able to see.
+	 *
+	 * @param int $run_id  Run identifier.
+	 * @param int $user_id User identifier.
+	 * @return bool
+	 */
+	public function is_assignee( int $run_id, int $user_id ): bool {
+		$table = Schema::table( 'run_assignees' );
+
+		return (bool) $this->db()->get_var(
+			$this->db()->prepare( "SELECT id FROM {$table} WHERE run_id = %d AND user_id = %d", $run_id, $user_id ) // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+	}
+
+	/**
 	 * Adds assignees to a run.
 	 *
 	 * @param int   $run_id   Run identifier.
@@ -319,7 +337,21 @@ final class RunRepository extends BaseRepository {
 	 * @return bool
 	 */
 	public function remove_assignee( int $run_id, int $user_id ): bool {
-		$table = Schema::table( 'run_assignees' );
+		$table            = Schema::table( 'run_assignees' );
+		$results          = Schema::table( 'results' );
+		$result_assignees = Schema::table( 'result_assignees' );
+
+		// Taking someone off the run takes them off its cases too: a case claim only means
+		// anything while its holder is still on the run.
+		$this->db()->query(
+			$this->db()->prepare(
+				"DELETE ra FROM {$result_assignees} ra
+				 INNER JOIN {$results} r ON r.id = ra.result_id
+				 WHERE r.run_id = %d AND ra.user_id = %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				$run_id,
+				$user_id
+			)
+		); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		return (bool) $this->db()->delete(
 			$table,

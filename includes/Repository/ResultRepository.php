@@ -110,7 +110,7 @@ final class ResultRepository extends BaseRepository {
 			ARRAY_A
 		); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
-		return array_map( array( $this, 'to_array' ), $rows ?? array() );
+		return $this->hydrate( $rows ?? array() );
 	}
 
 	/**
@@ -128,7 +128,30 @@ final class ResultRepository extends BaseRepository {
 			ARRAY_A
 		); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
-		return $row ? $this->to_array( $row ) : null;
+		if ( null === $row ) {
+			return null;
+		}
+
+		return $this->hydrate( array( $row ) )[0];
+	}
+
+	/**
+	 * Casts raw joined rows to the API shape, attaching assignees in one extra query.
+	 *
+	 * The assignee lists are fetched for the whole page rather than per row: a forty-case
+	 * run would otherwise cost forty queries to render its list.
+	 *
+	 * @param array<int, array<string, mixed>> $rows Raw rows.
+	 * @return array<int, array<string, mixed>>
+	 */
+	private function hydrate( array $rows ): array {
+		$ids       = array_map( static fn( array $row ): int => (int) $row['id'], $rows );
+		$assignees = $this->assignees_for_results( $ids );
+
+		return array_map(
+			fn( array $row ): array => $this->to_array( $row, $assignees[ (int) $row['id'] ] ?? array() ),
+			$rows
+		);
 	}
 
 	/**
@@ -244,6 +267,111 @@ final class ResultRepository extends BaseRepository {
 	}
 
 	/**
+	 * Case assignees, grouped by result.
+	 *
+	 * @param int[] $result_ids Result identifiers.
+	 * @return array<int, array<int, array<string, mixed>>>
+	 */
+	public function assignees_for_results( array $result_ids ): array {
+		if ( empty( $result_ids ) ) {
+			return array();
+		}
+
+		$table  = Schema::table( 'result_assignees' );
+		$holder = $this->placeholders( $result_ids );
+
+		$rows = $this->db()->get_results(
+			$this->db()->prepare(
+				"SELECT result_id, user_id, assigned_at
+				 FROM {$table}
+				 WHERE result_id IN ({$holder})
+				 ORDER BY assigned_at ASC, id ASC", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				...$result_ids
+			),
+			ARRAY_A
+		); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+
+		$out = array();
+
+		foreach ( $rows ?? array() as $row ) {
+			$user_id = (int) $row['user_id'];
+			$user    = get_userdata( $user_id );
+
+			$out[ (int) $row['result_id'] ][] = array(
+				'id'          => $user_id,
+				'name'        => $user ? $user->display_name : __( 'Unknown user', 'qa-runner' ),
+				'avatar'      => get_avatar_url( $user_id, array( 'size' => 48 ) ),
+				'assigned_at' => Dates::to_iso( $row['assigned_at'] ),
+			);
+		}
+
+		return $out;
+	}
+
+	/**
+	 * Adds a tester to a case in a run.
+	 *
+	 * Claiming a case twice is a no-op rather than an error: the unique key absorbs the
+	 * second write, and the caller only cares that the tester ends up assigned.
+	 *
+	 * @param int $id      Result identifier.
+	 * @param int $user_id Tester identifier.
+	 * @return bool
+	 */
+	public function assign( int $id, int $user_id ): bool {
+		$table = Schema::table( 'result_assignees' );
+
+		if ( $this->is_assigned( $id, $user_id ) ) {
+			return true;
+		}
+
+		return false !== $this->db()->insert(
+			$table,
+			array(
+				'result_id'   => $id,
+				'user_id'     => $user_id,
+				'assigned_at' => Dates::now(),
+			),
+			array( '%d', '%d', '%s' )
+		);
+	}
+
+	/**
+	 * Removes a tester from a case in a run.
+	 *
+	 * @param int $id      Result identifier.
+	 * @param int $user_id Tester identifier.
+	 * @return bool
+	 */
+	public function unassign( int $id, int $user_id ): bool {
+		$table = Schema::table( 'result_assignees' );
+
+		return false !== $this->db()->delete(
+			$table,
+			array(
+				'result_id' => $id,
+				'user_id'   => $user_id,
+			),
+			array( '%d', '%d' )
+		);
+	}
+
+	/**
+	 * Whether a tester already holds this case.
+	 *
+	 * @param int $id      Result identifier.
+	 * @param int $user_id Tester identifier.
+	 * @return bool
+	 */
+	public function is_assigned( int $id, int $user_id ): bool {
+		$table = Schema::table( 'result_assignees' );
+
+		return (bool) $this->db()->get_var(
+			$this->db()->prepare( "SELECT id FROM {$table} WHERE result_id = %d AND user_id = %d", $id, $user_id ) // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+	}
+
+	/**
 	 * Deletes every result for a run/case pair.
 	 *
 	 * @param int $run_id  Run identifier.
@@ -251,6 +379,18 @@ final class ResultRepository extends BaseRepository {
 	 * @return bool
 	 */
 	public function delete_by_run_case( int $run_id, int $case_id ): bool {
+		$result = $this->find_by_run_case( $run_id, $case_id );
+
+		if ( null !== $result ) {
+			// The assignee rows have no foreign key, so they are cleared explicitly; a
+			// recycled result id would otherwise inherit the old case's testers.
+			$this->db()->delete(
+				Schema::table( 'result_assignees' ),
+				array( 'result_id' => (int) $result['id'] ),
+				array( '%d' )
+			);
+		}
+
 		return (bool) $this->db()->delete(
 			$this->table(),
 			array(
@@ -301,10 +441,11 @@ final class ResultRepository extends BaseRepository {
 	/**
 	 * Casts a raw joined row to the API shape.
 	 *
-	 * @param array<string, mixed> $row Raw row.
+	 * @param array<string, mixed>             $row       Raw row.
+	 * @param array<int, array<string, mixed>> $assignees Testers holding this case.
 	 * @return array<string, mixed>
 	 */
-	public function to_array( array $row ): array {
+	public function to_array( array $row, array $assignees = array() ): array {
 		$tested_by = null;
 
 		if ( ! empty( $row['tested_by'] ) ) {
@@ -338,6 +479,7 @@ final class ResultRepository extends BaseRepository {
 				'suite_name' => (string) ( $row['suite_name'] ?? '' ),
 			),
 			'status'           => (string) $row['status'],
+			'assignees'        => $assignees,
 			'tested_by'        => $tested_by,
 			'tested_at'        => Dates::to_iso( $row['tested_at'] ?? null ),
 			'in_progress_by'   => $in_progress_by,

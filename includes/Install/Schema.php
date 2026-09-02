@@ -32,6 +32,7 @@ final class Schema {
 		'run_cases',
 		'run_assignees',
 		'results',
+		'result_assignees',
 		'comments',
 		'issues',
 	);
@@ -113,14 +114,15 @@ final class Schema {
 
 		$collate = $wpdb->get_charset_collate();
 
-		$suites        = self::table( 'suites' );
-		$cases         = self::table( 'cases' );
-		$runs          = self::table( 'runs' );
-		$run_cases     = self::table( 'run_cases' );
-		$run_assignees = self::table( 'run_assignees' );
-		$results       = self::table( 'results' );
-		$comments      = self::table( 'comments' );
-		$issues        = self::table( 'issues' );
+		$suites           = self::table( 'suites' );
+		$cases            = self::table( 'cases' );
+		$runs             = self::table( 'runs' );
+		$run_cases        = self::table( 'run_cases' );
+		$run_assignees    = self::table( 'run_assignees' );
+		$results          = self::table( 'results' );
+		$result_assignees = self::table( 'result_assignees' );
+		$comments         = self::table( 'comments' );
+		$issues           = self::table( 'issues' );
 
 		return array(
 			"CREATE TABLE {$suites} (
@@ -200,6 +202,16 @@ final class Schema {
 				UNIQUE KEY run_case (run_id,case_id),
 				KEY run_status (run_id,status),
 				KEY case_status (case_id,status)
+			) {$collate};",
+
+			"CREATE TABLE {$result_assignees} (
+				id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+				result_id bigint(20) unsigned NOT NULL,
+				user_id bigint(20) unsigned NOT NULL,
+				assigned_at datetime NOT NULL,
+				PRIMARY KEY  (id),
+				UNIQUE KEY result_user (result_id,user_id),
+				KEY user_id (user_id)
 			) {$collate};",
 
 			"CREATE TABLE {$comments} (

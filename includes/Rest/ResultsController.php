@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace QARunner\Rest;
 
+use QARunner\Install\Roles;
 use QARunner\Repository\ResultRepository;
 use QARunner\Repository\RunRepository;
 use QARunner\Support\Enum;
@@ -69,6 +70,38 @@ final class ResultsController extends Controller {
 						'sanitize_callback' => 'sanitize_key',
 						'validate_callback' => Enum::validator( Enum::RESULT_STATUSES ),
 					),
+				),
+			)
+		);
+
+		register_rest_route(
+			self::REST_NAMESPACE,
+			'/results/(?P<id>\d+)/assignees',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'assign' ),
+				'permission_callback' => array( $this, 'can_test' ),
+				'args'                => array(
+					'id'      => $this->id_arg(),
+					'user_id' => array(
+						'required'          => false,
+						'type'              => 'integer',
+						'sanitize_callback' => 'absint',
+					),
+				),
+			)
+		);
+
+		register_rest_route(
+			self::REST_NAMESPACE,
+			'/results/(?P<id>\d+)/assignees/(?P<user_id>\d+)',
+			array(
+				'methods'             => 'DELETE',
+				'callback'            => array( $this, 'unassign' ),
+				'permission_callback' => array( $this, 'can_test' ),
+				'args'                => array(
+					'id'      => $this->id_arg(),
+					'user_id' => $this->id_arg(),
 				),
 			)
 		);
@@ -156,6 +189,93 @@ final class ResultsController extends Controller {
 		$this->results->unlock( $id, get_current_user_id() );
 
 		return $this->reload( $id );
+	}
+
+	/**
+	 * POST /results/{id}/assignees
+	 *
+	 * Self-assignment is the normal path: a tester on the run claims a case so the rest of
+	 * the team can see it is spoken for. Assigning somebody else is a manager action.
+	 *
+	 * @param WP_REST_Request $request Request.
+	 * @return array<string, mixed>|\WP_Error
+	 */
+	public function assign( WP_REST_Request $request ) {
+		$id     = (int) $request->get_param( 'id' );
+		$result = $this->guard( $id );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$user_id = (int) ( $request->get_param( 'user_id' ) ?? 0 );
+		$user_id = $user_id > 0 ? $user_id : get_current_user_id();
+
+		$denied = $this->guard_assignment( (int) $result['run_id'], $user_id );
+
+		if ( is_wp_error( $denied ) ) {
+			return $denied;
+		}
+
+		if ( ! $this->results->assign( $id, $user_id ) ) {
+			return $this->write_failed( __( 'That assignment could not be saved.', 'qa-runner' ) );
+		}
+
+		return $this->reload( $id );
+	}
+
+	/**
+	 * DELETE /results/{id}/assignees/{user_id}
+	 *
+	 * @param WP_REST_Request $request Request.
+	 * @return array<string, mixed>|\WP_Error
+	 */
+	public function unassign( WP_REST_Request $request ) {
+		$id     = (int) $request->get_param( 'id' );
+		$result = $this->guard( $id );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$user_id = (int) $request->get_param( 'user_id' );
+
+		// Dropping a case you no longer intend to test is always allowed, even if you have
+		// since been taken off the run; only clearing somebody else needs the manage cap.
+		if ( get_current_user_id() !== $user_id && ! $this->can_manage() ) {
+			return $this->forbidden( __( 'You can only unassign yourself from a case.', 'qa-runner' ) );
+		}
+
+		if ( ! $this->results->unassign( $id, $user_id ) ) {
+			return $this->write_failed( __( 'That assignment could not be removed.', 'qa-runner' ) );
+		}
+
+		return $this->reload( $id );
+	}
+
+	/**
+	 * Confirms the caller may put this user on this run's case.
+	 *
+	 * @param int $run_id  Run identifier.
+	 * @param int $user_id Proposed assignee.
+	 * @return true|\WP_Error
+	 */
+	private function guard_assignment( int $run_id, int $user_id ) {
+		if ( get_current_user_id() !== $user_id && ! $this->can_manage() ) {
+			return $this->forbidden( __( 'You can only assign yourself to a case.', 'qa-runner' ) );
+		}
+
+		if ( ! user_can( $user_id, Roles::CAP_TEST ) ) {
+			return $this->bad_request( __( 'That person cannot run tests.', 'qa-runner' ) );
+		}
+
+		// Managers are exempt: they pick up cases on runs they oversee without being listed
+		// as an assignee on every one of them.
+		if ( ! $this->runs->is_assignee( $run_id, $user_id ) && ! $this->can_manage() ) {
+			return $this->forbidden( __( 'You are not assigned to this run.', 'qa-runner' ) );
+		}
+
+		return true;
 	}
 
 	/**

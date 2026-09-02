@@ -39,11 +39,23 @@ const filters = ref({
   suite: '',
   priority: '',
   onlyMine: false,
+  onlyUnassigned: false,
   onlyFailedLastRun: false
 });
 
 const isOpen = computed(() => runStore.run?.status === 'open');
 const canTest = computed(() => Boolean(bootstrap.caps?.runTests) && isOpen.value);
+
+/**
+ * Whether this tester was put on the run, and may therefore claim its cases. Managers are
+ * included so they can tidy up a board they oversee without joining the run.
+ */
+const canAssignSelf = computed(
+  () =>
+    canTest.value &&
+    (Boolean(bootstrap.caps?.manageCases) ||
+      (runStore.run?.assignees ?? []).some((person) => person.id === bootstrap.currentUser?.id))
+);
 
 const filtered = computed(() =>
   runStore.results.filter((result) => {
@@ -60,6 +72,10 @@ const filtered = computed(() =>
     }
 
     if (filters.value.onlyMine && result.tested_by?.id !== bootstrap.currentUser?.id) {
+      return false;
+    }
+
+    if (filters.value.onlyUnassigned && (result.assignees?.length ?? 0) > 0) {
       return false;
     }
 
@@ -106,6 +122,7 @@ const hasFilters = computed(
     filters.value.suite !== '' ||
     filters.value.priority !== '' ||
     filters.value.onlyMine ||
+    filters.value.onlyUnassigned ||
     filters.value.onlyFailedLastRun
 );
 
@@ -141,6 +158,30 @@ async function setStatus(result, status) {
   } catch (error) {
     ui.toastError(error, 'That result could not be saved.');
   }
+}
+
+/**
+ * Claims or releases one case for the current tester.
+ *
+ * @param {Object} result Result row.
+ * @returns {Promise<void>}
+ */
+async function toggleAssignment(result) {
+  try {
+    await runStore.setAssignment(result.id, bootstrap.currentUser, !isMine(result));
+  } catch (error) {
+    ui.toastError(error, 'That assignment could not be saved.');
+  }
+}
+
+/**
+ * Whether the current tester holds this case.
+ *
+ * @param {Object} result Result row.
+ * @returns {boolean}
+ */
+function isMine(result) {
+  return (result.assignees ?? []).some((person) => person.id === bootstrap.currentUser?.id);
 }
 
 /**
@@ -200,7 +241,14 @@ async function cloneRun() {
  * @returns {void}
  */
 function clearFilters() {
-  filters.value = {status: '', suite: '', priority: '', onlyMine: false, onlyFailedLastRun: false};
+  filters.value = {
+    status: '',
+    suite: '',
+    priority: '',
+    onlyMine: false,
+    onlyUnassigned: false,
+    onlyFailedLastRun: false
+  };
 }
 
 watch(runId, load);
@@ -321,6 +369,11 @@ onBeforeUnmount(() => runStore.reset());
             </label>
 
             <label class="qa-checkbox">
+              <input v-model="filters.onlyUnassigned" type="checkbox" />
+              <span>Unassigned only</span>
+            </label>
+
+            <label class="qa-checkbox">
               <input v-model="filters.onlyFailedLastRun" type="checkbox" />
               <span>Only failed last run</span>
             </label>
@@ -359,6 +412,8 @@ onBeforeUnmount(() => runStore.reset());
                 </RouterLink>
               </div>
               <div class="qa-case-row__meta">
+                <AvatarStack v-if="result.assignees?.length" :people="result.assignees" />
+
                 <span v-if="result.tested_by">
                   {{ result.tested_by.name }}
                   <span :title="absoluteTime(result.tested_at)">{{
@@ -395,6 +450,16 @@ onBeforeUnmount(() => runStore.reset());
             </div>
 
             <div class="qa-case-row__controls">
+              <button
+                v-if="canAssignSelf"
+                type="button"
+                class="qa-button qa-button--small qa-button--quiet"
+                :title="isMine(result) ? 'Take yourself off this case' : 'Claim this case'"
+                @click="toggleAssignment(result)"
+              >
+                {{ isMine(result) ? 'Unassign me' : 'Assign me' }}
+              </button>
+
               <StatusControl
                 v-if="canTest"
                 :model-value="result.status"

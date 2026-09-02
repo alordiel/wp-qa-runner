@@ -98,12 +98,13 @@ export const useRunStore = defineStore('runs', () => {
       }
 
       if (pending.value.has(fresh.id)) {
-        // Keep the optimistic status and attribution; take everything else.
+        // Keep the optimistic status, attribution and assignee list; take everything else.
         return {
           ...fresh,
           status: current.status,
           tested_by: current.tested_by,
-          tested_at: current.tested_at
+          tested_at: current.tested_at,
+          assignees: current.assignees
         };
       }
 
@@ -147,6 +148,53 @@ export const useRunStore = defineStore('runs', () => {
     } catch (error) {
       results.value[index] = snapshot;
       applyCountDelta(status, snapshot.status);
+
+      throw error;
+    } finally {
+      pending.value.delete(resultId);
+    }
+  }
+
+  /**
+   * Adds or removes a tester on one case, optimistically.
+   *
+   * Claiming a case is a one-click action a tester repeats down a list, so it reads as
+   * instant and rolls back if the server refuses.
+   *
+   * @param {number} resultId Result identifier.
+   * @param {Object} user Tester, as {id, name, avatar}.
+   * @param {boolean} assigned Whether the tester should end up on the case.
+   * @returns {Promise<Object>} The server's version of the result.
+   */
+  async function setAssignment(resultId, user, assigned) {
+    const index = results.value.findIndex((result) => result.id === resultId);
+    const call = () =>
+      assigned ? api.results.assign(resultId, user.id) : api.results.unassign(resultId, user.id);
+
+    if (index === -1) {
+      return call();
+    }
+
+    const snapshot = {...results.value[index]};
+    const current = snapshot.assignees ?? [];
+
+    results.value[index] = {
+      ...snapshot,
+      assignees: assigned
+        ? [...current.filter((person) => person.id !== user.id), user]
+        : current.filter((person) => person.id !== user.id)
+    };
+
+    pending.value.add(resultId);
+
+    try {
+      const fresh = await call();
+
+      results.value[index] = fresh;
+
+      return fresh;
+    } catch (error) {
+      results.value[index] = snapshot;
 
       throw error;
     } finally {
@@ -283,6 +331,7 @@ export const useRunStore = defineStore('runs', () => {
     loadRun,
     loadPreviousStatus,
     setStatus,
+    setAssignment,
     replaceResult,
     updateRun,
     startPolling,

@@ -200,6 +200,9 @@ export const api = {
 
   results: {
     setStatus: (id, status) => request(`results/${id}`, {method: 'PUT', body: {status}}),
+    assign: (id, userId) =>
+      request(`results/${id}/assignees`, {method: 'POST', body: {user_id: userId}}),
+    unassign: (id, userId) => request(`results/${id}/assignees/${userId}`, {method: 'DELETE'}),
     lock: (id) => request(`results/${id}/lock`, {method: 'PUT'}),
     unlock: (id) => request(`results/${id}/lock`, {method: 'DELETE'}),
     comments: (id) => request(`results/${id}/comments`),

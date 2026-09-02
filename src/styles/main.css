@@ -20,7 +20,7 @@
 
   --qa-pass: #00a32a;
   --qa-success: #9bdfac;
-  --qa-success-border: #6cba80  ;
+  --qa-success-border: #6cba80;
   --qa-fail: #d63638;
   --qa-blocked: #dba617;
   --qa-skipped: #787c82;
@@ -757,6 +757,26 @@
   border: 1px solid var(--qa-border);
   border-radius: 24px;
   padding: 2px 8px 2px 1px;
+}
+
+/*
+ * The remove control sits inside the chip rather than beside it: a case can carry several
+ * testers, and a separate column of buttons would read as a list of actions rather than as
+ * a list of people.
+ */
+.qa-person-badge__remove {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  padding: 0 2px;
+  margin-left: 1px;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--qa-text-muted);
+}
+
+.qa-person-badge__remove:hover {
+  color: var(--qa-fail);
 }
 
 /* ---------------------------------------------------------------- issues */

@@ -48,6 +48,8 @@ const savingIssue = ref(false);
 const resolvingId = ref(0);
 const resolutionNote = ref('');
 
+const savingAssignment = ref(false);
+
 const result = computed(() => runStore.resultsByCaseId[caseId.value] ?? null);
 const isOpen = computed(() => runStore.run?.status === 'open');
 const canTest = computed(() => Boolean(bootstrap.caps?.runTests) && isOpen.value);
@@ -67,6 +69,68 @@ const previousRun = computed(() => runStore.previousStatus[caseId.value] ?? null
 const lockedByOther = computed(
   () => result.value?.in_progress_by && result.value.in_progress_by.id !== bootstrap.currentUser?.id
 );
+
+const assignees = computed(() => result.value?.assignees ?? []);
+
+const assignedToMe = computed(() =>
+  assignees.value.some((person) => person.id === bootstrap.currentUser?.id)
+);
+
+/**
+ * Whether this tester was put on the run, and may therefore claim its cases. Managers are
+ * included so they can tidy up a board they oversee without adding themselves to the run.
+ */
+const canAssignSelf = computed(
+  () =>
+    canTest.value &&
+    (Boolean(bootstrap.caps?.manageCases) ||
+      (runStore.run?.assignees ?? []).some((person) => person.id === bootstrap.currentUser?.id))
+);
+
+/**
+ * Whether this tester may take a given person off the case.
+ *
+ * @param {Object} person Assignee.
+ * @returns {boolean}
+ */
+function canUnassign(person) {
+  return (
+    canTest.value &&
+    (person.id === bootstrap.currentUser?.id || Boolean(bootstrap.caps?.manageCases))
+  );
+}
+
+/**
+ * Claims or releases this case for the current tester.
+ *
+ * @returns {Promise<void>}
+ */
+async function toggleSelf() {
+  savingAssignment.value = true;
+
+  try {
+    await runStore.setAssignment(result.value.id, bootstrap.currentUser, !assignedToMe.value);
+    ui.toast(assignedToMe.value ? 'Assigned to you.' : 'You are off this case.');
+  } catch (error) {
+    ui.toastError(error, 'That assignment could not be saved.');
+  } finally {
+    savingAssignment.value = false;
+  }
+}
+
+/**
+ * Takes one tester off this case.
+ *
+ * @param {Object} person Assignee.
+ * @returns {Promise<void>}
+ */
+async function removeAssignee(person) {
+  try {
+    await runStore.setAssignment(result.value.id, person, false);
+  } catch (error) {
+    ui.toastError(error, 'That assignment could not be removed.');
+  }
+}
 
 /**
  * Loads the case, its open issues and this run's comments.
@@ -338,6 +402,50 @@ onBeforeUnmount(releaseLock);
           />
           <StatusBadge v-else-if="result" :status="result.status" />
           <p v-else class="qa-muted">This case is not part of this run.</p>
+        </div>
+      </div>
+
+      <div v-if="result" class="qa-card">
+        <div class="qa-card__head">
+          <h3>Assigned testers</h3>
+          <button
+            v-if="canAssignSelf"
+            type="button"
+            class="qa-button qa-button--small"
+            :class="{'qa-button--primary': !assignedToMe}"
+            :disabled="savingAssignment"
+            @click="toggleSelf"
+          >
+            {{ assignedToMe ? 'Unassign me' : 'Assign me' }}
+          </button>
+        </div>
+        <div class="qa-card__body">
+          <div v-if="assignees.length" class="qa-chips">
+            <span v-for="person in assignees" :key="person.id" class="qa-person-badge">
+              <img
+                class="qa-avatars__item"
+                :src="person.avatar"
+                :alt="person.name"
+                width="24"
+                height="24"
+                loading="lazy"
+              />
+              <span>{{ person.name }}</span>
+              <button
+                v-if="canUnassign(person)"
+                type="button"
+                class="qa-person-badge__remove"
+                :aria-label="`Unassign ${person.name}`"
+                @click="removeAssignee(person)"
+              >
+                ×
+              </button>
+            </span>
+          </div>
+          <p v-else class="qa-muted">
+            Nobody is assigned to this case yet.
+            <template v-if="canAssignSelf">Claim it so the rest of the team knows.</template>
+          </p>
         </div>
       </div>
 
