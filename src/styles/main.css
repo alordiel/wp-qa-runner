@@ -196,7 +196,7 @@
 
 .qa-grid-2 {
   display: grid;
-  grid-template-columns: minmax(260px, 320px) 1fr;
+  grid-template-columns: minmax(260px, 620px) 1fr;
   gap: var(--qa-gap);
   align-items: start;
 }
