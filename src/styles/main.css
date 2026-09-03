@@ -851,9 +851,22 @@
   padding: 5px 0;
 }
 
+/* Only rendered when a save would actually remove somebody, so it never becomes wallpaper. */
+.qa-dialog__warning {
+  margin: 12px 0 0;
+  padding: 8px 10px;
+  border: 1px solid var(--qa-blocked);
+  border-left-width: 3px;
+  border-radius: var(--qa-radius);
+  background: var(--qa-blocked-soft);
+  color: #7a5c00;
+  font-size: 12px;
+}
+
 .qa-dialog__foot {
   display: flex;
   justify-content: flex-end;
+  gap: 8px;
   padding: 12px 16px;
   border-top: 1px solid var(--qa-border);
   background: var(--qa-surface-alt);

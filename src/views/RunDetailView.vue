@@ -35,6 +35,7 @@ const runId = computed(() => Number(props.id));
 const loading = ref(true);
 const cloning = ref(false);
 const runAssigneeDialogOpen = ref(false);
+const savingRunAssignees = ref(false);
 
 const filters = ref({
   status: '',
@@ -167,19 +168,23 @@ async function setStatus(result, status) {
 }
 
 /**
- * Adds or removes one person on the run, resolving the dialog once the write settles.
+ * Applies the dialog's draft to the run.
  *
- * @param {Object} payload Emitted as {person, assigned, done}.
+ * @param {Object} changes People to add and remove, as {add: [], remove: []}.
  * @returns {Promise<void>}
  */
-async function toggleRunAssignee({person, assigned, done}) {
+async function saveRunAssignees(changes) {
+  savingRunAssignees.value = true;
+
   try {
-    await runStore.setRunAssignment(runId.value, person, assigned);
-    ui.toast(assigned ? `${person.name} added to this run.` : `${person.name} removed.`);
+    await runStore.setRunAssignees(runId.value, changes);
+    runAssigneeDialogOpen.value = false;
+    ui.toast('Run assignees updated.');
   } catch (error) {
+    // The dialog stays open on failure, so the draft is still there to retry or cancel.
     ui.toastError(error, 'The run assignees could not be saved.');
   } finally {
-    done();
+    savingRunAssignees.value = false;
   }
 }
 
@@ -351,10 +356,12 @@ onBeforeUnmount(() => runStore.reset());
           :open="runAssigneeDialogOpen"
           title="Who is on this run"
           empty-text="No testers exist yet. Give somebody the QA Tester role first."
+          removal-warning="Removing %s also drops the cases they claimed on this run. Adding them back will not restore those claims."
           :candidates="caseStore.users"
           :assigned="runStore.run.assignees"
+          :saving="savingRunAssignees"
           @close="runAssigneeDialogOpen = false"
-          @toggle="toggleRunAssignee"
+          @save="saveRunAssignees"
         />
       </div>
 

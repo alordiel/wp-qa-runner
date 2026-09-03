@@ -51,6 +51,7 @@ const resolutionNote = ref('');
 
 const savingAssignment = ref(false);
 const assignDialogOpen = ref(false);
+const savingAssignees = ref(false);
 
 const result = computed(() => runStore.resultsByCaseId[caseId.value] ?? null);
 const isOpen = computed(() => runStore.run?.status === 'open');
@@ -99,18 +100,33 @@ const canAssign = computed(
 const candidates = computed(() => runStore.run?.assignees ?? []);
 
 /**
- * Adds or removes one person from the dialog, resolving it once the write settles.
+ * Applies the dialog's draft to this case.
  *
- * @param {Object} payload Emitted as {person, assigned, done}.
+ * Sequential rather than parallel: each write returns the whole result row, so overlapping
+ * them would let an earlier response land last and drop a later change.
+ *
+ * @param {Object} changes People to add and remove, as {add: [], remove: []}.
  * @returns {Promise<void>}
  */
-async function toggleAssignee({person, assigned, done}) {
+async function saveAssignees({add, remove}) {
+  savingAssignees.value = true;
+
   try {
-    await runStore.setAssignment(result.value.id, person, assigned);
+    for (const person of add) {
+      await runStore.setAssignment(result.value.id, person, true);
+    }
+
+    for (const person of remove) {
+      await runStore.setAssignment(result.value.id, person, false);
+    }
+
+    assignDialogOpen.value = false;
+    ui.toast('Assignees updated.');
   } catch (error) {
-    ui.toastError(error, 'That assignment could not be saved.');
+    // The dialog stays open on failure, so the draft is still there to retry or cancel.
+    ui.toastError(error, 'Those assignments could not be saved.');
   } finally {
-    done();
+    savingAssignees.value = false;
   }
 }
 
@@ -489,8 +505,9 @@ onBeforeUnmount(releaseLock);
           empty-text="Nobody is assigned to this run yet, so there is no one to hand this case to."
           :candidates="candidates"
           :assigned="assignees"
+          :saving="savingAssignees"
           @close="assignDialogOpen = false"
-          @toggle="toggleAssignee"
+          @save="saveAssignees"
         />
       </div>
 

@@ -5,73 +5,85 @@
  * Used both for handing a case to the testers on a run and for setting who is on the run in
  * the first place; the caller supplies the candidates and decides what a tick means.
  *
+ * Ticks are a draft until Save. Writing on each tick reads as more direct, but removing
+ * somebody from a run also drops the cases they had claimed on it, and re-ticking cannot
+ * bring those back — so a mis-click was unrecoverable. Holding the changes lets Cancel mean
+ * something, and lets the warning below say what Save is about to do.
+ *
  * Built on the native <dialog> element, which brings focus trapping, Esc-to-close and a
- * backdrop with no script of our own. Each checkbox writes immediately rather than
- * collecting a batch behind a Save button: there is one endpoint per person either way, and
- * a tester who ticks a name and closes the tab should not lose the assignment.
+ * backdrop with no script of our own.
  */
 
-import {ref, watch} from 'vue';
+import {computed, ref, watch} from 'vue';
 
 const props = defineProps({
   open: {type: Boolean, default: false},
   title: {type: String, default: 'Assign'},
   /** Shown in place of the list when there are no candidates at all. */
   emptyText: {type: String, default: 'There is nobody to choose from.'},
+  /** Warning shown when a save would remove people. '%s' becomes their names. */
+  removalWarning: {type: String, default: ''},
   /** People who can be picked, as {id, name, avatar}. */
   candidates: {type: Array, default: () => []},
   /** People already picked, as {id, name, avatar}. */
-  assigned: {type: Array, default: () => []}
+  assigned: {type: Array, default: () => []},
+  saving: {type: Boolean, default: false}
 });
 
-const emit = defineEmits(['close', 'toggle']);
+const emit = defineEmits(['close', 'save']);
 
 const dialog = ref(null);
 
 /**
- * Identifiers with a write in flight, so a row cannot be double-submitted.
+ * The draft selection, as identifiers. Reseeded from `assigned` each time the dialog opens.
  *
  * @type {import('vue').Ref<number[]>}
  */
-const saving = ref([]);
+const selected = ref([]);
+
+const added = computed(() =>
+  props.candidates.filter(
+    (person) =>
+      selected.value.includes(person.id) && !props.assigned.some((item) => item.id === person.id)
+  )
+);
+
+const removed = computed(() =>
+  props.assigned.filter((person) => !selected.value.includes(person.id))
+);
+
+const dirty = computed(() => added.value.length > 0 || removed.value.length > 0);
 
 /**
- * Whether a person already holds this case.
+ * Discards the draft and closes.
  *
- * @param {Object} person Candidate.
- * @returns {boolean}
+ * @returns {void}
  */
-function isAssigned(person) {
-  return props.assigned.some((item) => item.id === person.id);
+function cancel() {
+  emit('close');
 }
 
 /**
- * Asks the parent to add or remove one person, holding the row until it settles.
+ * Hands the parent the people to add and the people to remove.
  *
- * @param {Object} person Candidate.
- * @returns {Promise<void>}
+ * @returns {void}
  */
-async function toggle(person) {
-  if (saving.value.includes(person.id)) {
-    return;
-  }
-
-  saving.value = [...saving.value, person.id];
-
-  try {
-    await new Promise((resolve) => {
-      emit('toggle', {person, assigned: !isAssigned(person), done: resolve});
-    });
-  } finally {
-    saving.value = saving.value.filter((id) => id !== person.id);
+function save() {
+  if (dirty.value && !props.saving) {
+    emit('save', {add: added.value, remove: removed.value});
   }
 }
 
-// showModal() cannot be set declaratively, so the open prop drives it imperatively.
+// showModal() cannot be set declaratively, so the open prop drives it imperatively. The
+// draft is reseeded on open so a cancelled edit never leaks into the next one.
 watch(
   () => props.open,
   (open) => {
     const element = dialog.value;
+
+    if (open) {
+      selected.value = props.assigned.map((person) => person.id);
+    }
 
     if (!element) {
       return;
@@ -87,12 +99,10 @@ watch(
 </script>
 
 <template>
-  <dialog ref="dialog" class="qa-dialog" @close="emit('close')" @cancel="emit('close')">
+  <dialog ref="dialog" class="qa-dialog" @close="cancel" @cancel="cancel">
     <div class="qa-dialog__head">
       <h3 class="qa-dialog__title">{{ title }}</h3>
-      <button type="button" class="qa-dialog__close" aria-label="Close" @click="emit('close')">
-        ×
-      </button>
+      <button type="button" class="qa-dialog__close" aria-label="Close" @click="cancel">×</button>
     </div>
 
     <div class="qa-dialog__body">
@@ -101,12 +111,7 @@ watch(
       <ul v-else class="qa-dialog__list">
         <li v-for="person in candidates" :key="person.id">
           <label class="qa-checkbox">
-            <input
-              type="checkbox"
-              :checked="isAssigned(person)"
-              :disabled="saving.includes(person.id)"
-              @change="toggle(person)"
-            />
+            <input v-model="selected" type="checkbox" :value="person.id" :disabled="saving" />
             <img
               class="qa-avatars__item"
               :src="person.avatar"
@@ -119,11 +124,23 @@ watch(
           </label>
         </li>
       </ul>
+
+      <p v-if="removalWarning && removed.length" class="qa-dialog__warning">
+        {{ removalWarning.replace('%s', removed.map((person) => person.name).join(', ')) }}
+      </p>
     </div>
 
     <div class="qa-dialog__foot">
-      <button type="button" class="qa-button qa-button--primary" @click="emit('close')">
-        Done
+      <button type="button" class="qa-button qa-button--quiet" :disabled="saving" @click="cancel">
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="qa-button qa-button--primary"
+        :disabled="!dirty || saving"
+        @click="save"
+      >
+        {{ saving ? 'Saving…' : 'Save' }}
       </button>
     </div>
   </dialog>

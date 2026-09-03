@@ -246,25 +246,38 @@ export const useRunStore = defineStore('runs', () => {
   }
 
   /**
-   * Adds or removes one person on the run itself.
+   * Applies a batch of changes to who is on the run.
    *
    * Not optimistic, unlike the per-case version: taking somebody off a run also clears the
    * cases they had claimed on it, so the result list has to come back from the server
-   * rather than be patched locally.
+   * rather than be patched locally. That reload happens once, after every write lands.
+   *
+   * Additions go first. If a later removal fails the run is left over-assigned rather than
+   * under-assigned, which is the harmless direction — nobody's claimed cases are lost to a
+   * half-applied batch.
    *
    * @param {number} runId Run identifier.
-   * @param {Object} user Tester, as {id, name, avatar}.
-   * @param {boolean} assigned Whether the tester should end up on the run.
+   * @param {Object} changes People to add and remove, as {add: [], remove: []}.
    * @returns {Promise<void>}
    */
-  async function setRunAssignment(runId, user, assigned) {
-    const updated = assigned
-      ? await api.runs.addAssignees(runId, [user.id])
-      : await api.runs.removeAssignee(runId, user.id);
+  async function setRunAssignees(runId, {add = [], remove = []}) {
+    try {
+      if (add.length) {
+        await api.runs.addAssignees(
+          runId,
+          add.map((person) => person.id)
+        );
+      }
 
-    runs.value = runs.value.map((item) => (item.id === runId ? updated : item));
+      for (const person of remove) {
+        await api.runs.removeAssignee(runId, person.id);
+      }
+    } finally {
+      // Whatever did land has to be reflected, so this runs even on a partial failure.
+      await refreshResults(runId);
+    }
 
-    await refreshResults(runId);
+    runs.value = runs.value.map((item) => (item.id === runId ? run.value : item));
   }
 
   /**
@@ -364,7 +377,7 @@ export const useRunStore = defineStore('runs', () => {
     loadPreviousStatus,
     setStatus,
     setAssignment,
-    setRunAssignment,
+    setRunAssignees,
     refreshResults,
     replaceResult,
     updateRun,
