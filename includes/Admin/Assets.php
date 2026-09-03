@@ -57,7 +57,7 @@ final class Assets {
 		}
 
 		$script = QA_RUNNER_PATH . self::SCRIPT;
-
+        error_log($this->asset_version( $script ));
 		if ( ! is_readable( $script ) ) {
 			add_action( 'admin_notices', array( $this, 'render_missing_build_notice' ) );
 
@@ -68,19 +68,21 @@ final class Assets {
 			self::HANDLE,
 			QA_RUNNER_URL . self::SCRIPT,
 			array(),
-			QA_RUNNER_VERSION,
+			$this->asset_version( $script ),
 			array(
 				'in_footer' => true,
 				'strategy'  => 'defer',
 			)
 		);
 
-		if ( is_readable( QA_RUNNER_PATH . self::STYLE ) ) {
+		$style = QA_RUNNER_PATH . self::STYLE;
+
+		if ( is_readable( $style ) ) {
 			wp_enqueue_style(
 				self::HANDLE,
 				QA_RUNNER_URL . self::STYLE,
 				array(),
-				QA_RUNNER_VERSION
+				$this->asset_version( $style )
 			);
 		}
 
@@ -93,6 +95,25 @@ final class Assets {
 		);
 
 		wp_set_script_translations( self::HANDLE, 'qa-runner', QA_RUNNER_PATH . 'languages' );
+	}
+
+	/**
+	 * Cache-busting version string for one built asset.
+	 *
+	 * The bundle lives at a fixed, unhashed path, so this query string is the only thing
+	 * that tells a browser the file changed. QA_RUNNER_VERSION on its own is not enough:
+	 * shipping a rebuilt bundle without remembering to bump the constant leaves every
+	 * browser, proxy and page cache serving the copy it already has, and reinstalling the
+	 * plugin does not help because the URL never changes. The file's own mtime cannot be
+	 * forgotten, and an rsync or archive deploy moves it forward on its own.
+	 *
+	 * @param string $path Absolute path to the asset.
+	 * @return string
+	 */
+	private function asset_version( string $path ): string {
+		$mtime = is_readable( $path ) ? filemtime( $path ) : false;
+
+		return false !== $mtime ? (string) $mtime : QA_RUNNER_VERSION;
 	}
 
 	/**

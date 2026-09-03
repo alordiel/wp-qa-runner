@@ -3,7 +3,7 @@
  * Plugin Name:       QA Runner
  * Plugin URI:        https://example.com/qa-runner
  * Description:       Manual QA test runs for a small internal team: suites, cases, runs, results, comments and issues.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Requires at least: 6.4
  * Requires PHP:      8.2
  * Author:            Internal
@@ -21,7 +21,7 @@ namespace QARunner;
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'QA_RUNNER_VERSION', '1.0.0' );
+define( 'QA_RUNNER_VERSION', '1.1.0' );
 define( 'QA_RUNNER_DB_VERSION', 2 );
 define( 'QA_RUNNER_FILE', __FILE__ );
 define( 'QA_RUNNER_PATH', plugin_dir_path( __FILE__ ) );
