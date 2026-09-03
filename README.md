@@ -66,13 +66,24 @@ Always checked as capabilities, never role names.
 | `qa_run_tests` | Set results, comment, raise and resolve issues, create runs |
 | `qa_manage_cases` | Edit the case library and suites, delete any comment, abandon runs, change settings |
 
-`qa_tester` (cloned from subscriber) gets the first two. Administrators get all three.
-Testers can create runs — that is deliberate. Only `qa_manage_cases` holders can edit the
-case library.
+Two roles ship with the plugin, both cloned from subscriber so their users can reach
+wp-admin at all:
 
-`Roles::ELEVATED_ROLES` is the source of truth for who holds all three: bump
-`Roles::VERSION` after changing it and the next admin request grants the caps to the roles
-listed and takes them back from every role that is not, `qa_tester` aside.
+| Role | Capabilities | Owns |
+|---|---|---|
+| `qa_admin` (QA Admin) | all three | The library: creates, edits and archives suites and cases, abandons runs, changes settings |
+| `qa_tester` (QA Tester) | `qa_view_qa`, `qa_run_tests` | The work in flight: creates and runs runs, adds and removes their cases, claims cases, comments, raises and resolves issues |
+
+The line between them is `qa_manage_cases`. A tester sees the whole library but cannot
+create or archive anything in it; the case library, suites and settings screens are hidden
+from them in the router as well as refused by the REST layer. Testers can create runs — that
+is deliberate.
+
+`Roles::ELEVATED_ROLES` names the *WordPress* roles that also receive the full set
+(administrator). It is the source of truth: on install the caps are granted to the roles
+listed and taken back from every role that is not, the two QA roles aside. Bump
+`Roles::VERSION` after changing it so `maybe_install()` reconciles on the next admin
+request, or deactivate and reactivate the plugin.
 
 Run assignment is informational: it sends an email and shows an avatar. It does not restrict
 who may set a result. Case assignment within a run is a claim testers make on themselves —
