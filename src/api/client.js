@@ -177,6 +177,7 @@ export const api = {
     get: (id) => request(`cases/${id}`),
     create: (data) => request('cases', {method: 'POST', body: data}),
     update: (id, data) => request(`cases/${id}`, {method: 'PUT', body: data}),
+    clone: (id, data) => request(`cases/${id}/clone`, {method: 'POST', body: data ?? {}}),
     archive: (id) => request(`cases/${id}`, {method: 'DELETE'}),
     issues: (id, status) => request(`cases/${id}/issues`, {params: {status}}),
     raiseIssue: (id, data) => request(`cases/${id}/issues`, {method: 'POST', body: data})

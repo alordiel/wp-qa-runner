@@ -113,6 +113,20 @@ export const useCaseStore = defineStore('cases', () => {
   }
 
   /**
+   * Clones a case and adds the copy to the local library.
+   *
+   * @param {number} id Case identifier to copy.
+   * @returns {Promise<Object>} The new case.
+   */
+  async function cloneCase(id) {
+    const copy = await api.cases.clone(id);
+
+    cases.value = [...cases.value, copy];
+
+    return copy;
+  }
+
+  /**
    * Archives a case, keeping its history intact.
    *
    * @param {number} id Case identifier.
@@ -136,6 +150,7 @@ export const useCaseStore = defineStore('cases', () => {
     createSuite,
     updateSuite,
     deleteSuite,
+    cloneCase,
     archiveCase
   };
 });

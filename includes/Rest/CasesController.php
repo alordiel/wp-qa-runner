@@ -96,6 +96,20 @@ final class CasesController extends Controller {
 
 		register_rest_route(
 			self::REST_NAMESPACE,
+			'/cases/(?P<id>\d+)/clone',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'clone_case' ),
+				'permission_callback' => array( $this, 'can_manage' ),
+				'args'                => array(
+					'id'    => $this->id_arg(),
+					'title' => $this->text_arg(),
+				),
+			)
+		);
+
+		register_rest_route(
+			self::REST_NAMESPACE,
 			'/cases/(?P<id>\d+)',
 			array(
 				array(
@@ -212,6 +226,49 @@ final class CasesController extends Controller {
 	}
 
 	/**
+	 * POST /cases/{id}/clone
+	 *
+	 * A copy of the instructions under a new title, ready to be edited into a variant. The
+	 * source case is untouched, and the clone starts active whatever the source's state is:
+	 * cloning an archived case is how a retired case gets revived as something new.
+	 *
+	 * @param WP_REST_Request $request Request.
+	 * @return array<string, mixed>|\WP_Error
+	 */
+	public function clone_case( WP_REST_Request $request ) {
+		$id     = (int) $request->get_param( 'id' );
+		$source = $this->cases->find( $id );
+
+		if ( null === $source ) {
+			return $this->not_found( __( 'That case no longer exists.', 'qa-runner' ) );
+		}
+
+		$title = (string) $request->get_param( 'title' );
+
+		if ( '' === trim( $title ) ) {
+			$title = $this->cloned_title( (string) $source['title'] );
+		}
+
+		$new_id = $this->cases->create(
+			array(
+				'suite_id'   => (int) $source['suite_id'],
+				'title'      => $title,
+				'steps'      => (string) ( $source['steps'] ?? '' ),
+				'expected'   => (string) ( $source['expected'] ?? '' ),
+				'priority'   => (string) $source['priority'],
+				'is_active'  => true,
+				'created_by' => get_current_user_id(),
+			)
+		);
+
+		if ( 0 === $new_id ) {
+			return $this->write_failed( __( 'The case could not be cloned.', 'qa-runner' ) );
+		}
+
+		return $this->cases->find( $new_id );
+	}
+
+	/**
 	 * DELETE /cases/{id}
 	 *
 	 * Soft delete only. A case with results is the subject of that history, so its row has
@@ -266,5 +323,25 @@ final class CasesController extends Controller {
 				'sanitize_callback' => 'rest_sanitize_boolean',
 			),
 		);
+	}
+
+	/**
+	 * Builds the title of a clone.
+	 *
+	 * The column holds 255 characters, so the source title is trimmed rather than the
+	 * suffix: a clone the user cannot tell apart from its source is worse than a short one.
+	 *
+	 * @param string $title Source case title.
+	 * @return string
+	 */
+	private function cloned_title( string $title ): string {
+		$suffix = __( ' (cloned)', 'qa-runner' );
+		$room   = 255 - mb_strlen( $suffix );
+
+		if ( mb_strlen( $title ) > $room ) {
+			$title = rtrim( mb_substr( $title, 0, $room ) );
+		}
+
+		return $title . $suffix;
 	}
 }

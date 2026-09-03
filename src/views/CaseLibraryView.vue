@@ -7,7 +7,7 @@
  */
 
 import {computed, onMounted, ref} from 'vue';
-import {RouterLink} from 'vue-router';
+import {RouterLink, useRouter} from 'vue-router';
 
 import EmptyState from '../components/EmptyState.vue';
 import PriorityDot from '../components/PriorityDot.vue';
@@ -17,6 +17,7 @@ import {plural, shortDate} from '../utils/format.js';
 import {useCaseStore} from '../stores/cases.js';
 import {useUiStore} from '../stores/ui.js';
 
+const router = useRouter();
 const caseStore = useCaseStore();
 const ui = useUiStore();
 
@@ -26,6 +27,7 @@ const search = ref('');
 const loading = ref(true);
 const historyFor = ref(0);
 const history = ref([]);
+const cloning = ref(0);
 
 const groups = computed(() => {
   const term = search.value.trim().toLowerCase();
@@ -73,6 +75,31 @@ async function load() {
     ui.toastError(error, 'The case library could not be loaded.');
   } finally {
     loading.value = false;
+  }
+}
+
+/**
+ * Copies a case and opens the copy for editing, which is the only reason to clone one.
+ *
+ * @param {Object} item Case row.
+ * @returns {Promise<void>}
+ */
+async function clone(item) {
+  if (cloning.value) {
+    return;
+  }
+
+  cloning.value = item.id;
+
+  try {
+    const copy = await caseStore.cloneCase(item.id);
+
+    ui.toast('Case cloned.');
+    router.push(`/cases/${copy.id}/edit`);
+  } catch (error) {
+    ui.toastError(error, 'The case could not be cloned.');
+  } finally {
+    cloning.value = 0;
   }
 }
 
@@ -207,6 +234,14 @@ onMounted(load);
                 @click="toggleHistory(item.id)"
               >
                 {{ historyFor === item.id ? 'Hide issues' : 'Issue history' }}
+              </button>
+              <button
+                type="button"
+                class="qa-button qa-button--small qa-button--quiet"
+                :disabled="cloning === item.id"
+                @click="clone(item)"
+              >
+                {{ cloning === item.id ? 'Cloning…' : 'Clone' }}
               </button>
               <RouterLink class="qa-button qa-button--small" :to="`/cases/${item.id}/edit`"
                 >Edit</RouterLink
