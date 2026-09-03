@@ -10,6 +10,7 @@
 import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue';
 import {RouterLink, useRouter} from 'vue-router';
 
+import AssigneeDialog from '../components/AssigneeDialog.vue';
 import EmptyState from '../components/EmptyState.vue';
 import PriorityDot from '../components/PriorityDot.vue';
 import RichTextEditor from '../components/RichTextEditor.vue';
@@ -49,6 +50,7 @@ const resolvingId = ref(0);
 const resolutionNote = ref('');
 
 const savingAssignment = ref(false);
+const assignDialogOpen = ref(false);
 
 const result = computed(() => runStore.resultsByCaseId[caseId.value] ?? null);
 const isOpen = computed(() => runStore.run?.status === 'open');
@@ -77,15 +79,40 @@ const assignedToMe = computed(() =>
 );
 
 /**
- * Whether this tester was put on the run, and may therefore claim its cases. Managers are
- * included so they can tidy up a board they oversee without adding themselves to the run.
+ * Whether this tester was put on the run, and may therefore hand out its cases — to
+ * themselves or to anyone else on it. Managers are included so they can tidy up a board
+ * they oversee without adding themselves to the run.
  */
-const canAssignSelf = computed(
+const canAssign = computed(
   () =>
     canTest.value &&
     (Boolean(bootstrap.caps?.manageCases) ||
       (runStore.run?.assignees ?? []).some((person) => person.id === bootstrap.currentUser?.id))
 );
+
+/**
+ * The people this case can be handed to: whoever is on the run.
+ *
+ * Assignment is scoped to the run rather than to every tester on the site, so the picker
+ * never offers somebody who would have no business seeing the case.
+ */
+const candidates = computed(() => runStore.run?.assignees ?? []);
+
+/**
+ * Adds or removes one person from the dialog, resolving it once the write settles.
+ *
+ * @param {Object} payload Emitted as {person, assigned, done}.
+ * @returns {Promise<void>}
+ */
+async function toggleAssignee({person, assigned, done}) {
+  try {
+    await runStore.setAssignment(result.value.id, person, assigned);
+  } catch (error) {
+    ui.toastError(error, 'That assignment could not be saved.');
+  } finally {
+    done();
+  }
+}
 
 /**
  * Whether this tester may take a given person off the case.
@@ -94,10 +121,7 @@ const canAssignSelf = computed(
  * @returns {boolean}
  */
 function canUnassign(person) {
-  return (
-    canTest.value &&
-    (person.id === bootstrap.currentUser?.id || Boolean(bootstrap.caps?.manageCases))
-  );
+  return canTest.value && (person.id === bootstrap.currentUser?.id || canAssign.value);
 }
 
 /**
@@ -139,6 +163,9 @@ async function removeAssignee(person) {
  */
 async function loadCase() {
   loading.value = true;
+  // Browser history can change the case under an open dialog, which would leave it showing
+  // the previous case's assignees.
+  assignDialogOpen.value = false;
 
   try {
     if (!runStore.run || runStore.run.id !== runId.value) {
@@ -408,16 +435,24 @@ onBeforeUnmount(releaseLock);
       <div v-if="result" class="qa-card">
         <div class="qa-card__head">
           <h3>Assigned testers</h3>
-          <button
-            v-if="canAssignSelf"
-            type="button"
-            class="qa-button qa-button--small"
-            :class="{'qa-button--primary': !assignedToMe}"
-            :disabled="savingAssignment"
-            @click="toggleSelf"
-          >
-            {{ assignedToMe ? 'Unassign me' : 'Assign me' }}
-          </button>
+          <div v-if="canAssign" class="qa-row">
+            <button
+              type="button"
+              class="qa-button qa-button--small"
+              :class="{'qa-button--primary': !assignedToMe}"
+              :disabled="savingAssignment"
+              @click="toggleSelf"
+            >
+              {{ assignedToMe ? 'Unassign me' : 'Assign me' }}
+            </button>
+            <button
+              type="button"
+              class="qa-button qa-button--small"
+              @click="assignDialogOpen = true"
+            >
+              Assign others…
+            </button>
+          </div>
         </div>
         <div class="qa-card__body">
           <div v-if="assignees.length" class="qa-chips">
@@ -444,9 +479,17 @@ onBeforeUnmount(releaseLock);
           </div>
           <p v-else class="qa-muted">
             Nobody is assigned to this case yet.
-            <template v-if="canAssignSelf">Claim it so the rest of the team knows.</template>
+            <template v-if="canAssign">Claim it so the rest of the team knows.</template>
           </p>
         </div>
+
+        <AssigneeDialog
+          :open="assignDialogOpen"
+          :candidates="candidates"
+          :assigned="assignees"
+          @close="assignDialogOpen = false"
+          @toggle="toggleAssignee"
+        />
       </div>
 
       <div class="qa-grid-2">

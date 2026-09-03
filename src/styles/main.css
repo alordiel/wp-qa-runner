@@ -779,6 +779,86 @@
   color: var(--qa-fail);
 }
 
+/* ---------------------------------------------------------------- dialog */
+
+/*
+ * The native <dialog> is centred by the browser and sits in the top layer, which puts it
+ * above wp-admin's own sticky chrome without a z-index arms race. It also escapes the
+ * #qa-runner-app subtree for stacking purposes only — the element itself stays inside it,
+ * so the custom properties above still resolve.
+ */
+.qa-dialog {
+  width: min(360px, calc(100vw - 32px));
+  padding: 0;
+  border: 1px solid var(--qa-border-strong);
+  border-radius: var(--qa-radius);
+  background: var(--qa-surface);
+  color: var(--qa-text);
+  font-size: 13px;
+  box-shadow: 0 6px 24px rgb(0 0 0 / 18%);
+}
+
+.qa-dialog::backdrop {
+  background: rgb(0 0 0 / 35%);
+}
+
+.qa-dialog__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--qa-border);
+}
+
+.qa-dialog__title {
+  margin: 0;
+  font-size: 14px;
+}
+
+.qa-dialog__close {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  padding: 0 4px;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--qa-text-muted);
+}
+
+.qa-dialog__close:hover {
+  color: var(--qa-text);
+}
+
+/* Long teams scroll inside the dialog rather than pushing it past the viewport. */
+.qa-dialog__body {
+  padding: 12px 16px;
+  max-height: min(320px, 50vh);
+  overflow-y: auto;
+}
+
+.qa-dialog__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.qa-dialog__list .qa-checkbox {
+  align-items: center;
+  padding: 5px 0;
+}
+
+.qa-dialog__foot {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 16px;
+  border-top: 1px solid var(--qa-border);
+  background: var(--qa-surface-alt);
+}
+
 /* ---------------------------------------------------------------- issues */
 
 .qa-issue {

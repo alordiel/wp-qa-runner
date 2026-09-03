@@ -241,9 +241,14 @@ final class ResultsController extends Controller {
 		$user_id = (int) $request->get_param( 'user_id' );
 
 		// Dropping a case you no longer intend to test is always allowed, even if you have
-		// since been taken off the run; only clearing somebody else needs the manage cap.
-		if ( get_current_user_id() !== $user_id && ! $this->can_manage() ) {
-			return $this->forbidden( __( 'You can only unassign yourself from a case.', 'qa-runner' ) );
+		// since been taken off the run. Clearing somebody else is a call for the run's own
+		// testers to make between themselves.
+		if ( get_current_user_id() !== $user_id ) {
+			$denied = $this->guard_caller( (int) $result['run_id'] );
+
+			if ( is_wp_error( $denied ) ) {
+				return $denied;
+			}
 		}
 
 		if ( ! $this->results->unassign( $id, $user_id ) ) {
@@ -256,13 +261,19 @@ final class ResultsController extends Controller {
 	/**
 	 * Confirms the caller may put this user on this run's case.
 	 *
+	 * Dividing the run's cases is the team's own business: anyone on the run may hand a case
+	 * to anyone else on it. The boundary is the run, not the individual — what a tester
+	 * cannot do is pull in somebody who was never put on the run in the first place.
+	 *
 	 * @param int $run_id  Run identifier.
 	 * @param int $user_id Proposed assignee.
 	 * @return true|\WP_Error
 	 */
 	private function guard_assignment( int $run_id, int $user_id ) {
-		if ( get_current_user_id() !== $user_id && ! $this->can_manage() ) {
-			return $this->forbidden( __( 'You can only assign yourself to a case.', 'qa-runner' ) );
+		$denied = $this->guard_caller( $run_id );
+
+		if ( is_wp_error( $denied ) ) {
+			return $denied;
 		}
 
 		if ( ! user_can( $user_id, Roles::CAP_TEST ) ) {
@@ -272,6 +283,20 @@ final class ResultsController extends Controller {
 		// Managers are exempt: they pick up cases on runs they oversee without being listed
 		// as an assignee on every one of them.
 		if ( ! $this->runs->is_assignee( $run_id, $user_id ) && ! $this->can_manage() ) {
+			return $this->bad_request( __( 'That person is not assigned to this run.', 'qa-runner' ) );
+		}
+
+		return true;
+	}
+
+	/**
+	 * Confirms the caller has a stake in this run at all.
+	 *
+	 * @param int $run_id Run identifier.
+	 * @return true|\WP_Error
+	 */
+	private function guard_caller( int $run_id ) {
+		if ( ! $this->runs->is_assignee( $run_id, get_current_user_id() ) && ! $this->can_manage() ) {
 			return $this->forbidden( __( 'You are not assigned to this run.', 'qa-runner' ) );
 		}
 
