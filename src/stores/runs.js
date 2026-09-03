@@ -233,6 +233,41 @@ export const useRunStore = defineStore('runs', () => {
   }
 
   /**
+   * Re-reads the run and merges its result list, leaving in-flight writes alone.
+   *
+   * @param {number} id Run identifier.
+   * @returns {Promise<void>}
+   */
+  async function refreshResults(id) {
+    const payload = await api.runs.results(id);
+
+    run.value = payload.run;
+    mergeResults(payload.results);
+  }
+
+  /**
+   * Adds or removes one person on the run itself.
+   *
+   * Not optimistic, unlike the per-case version: taking somebody off a run also clears the
+   * cases they had claimed on it, so the result list has to come back from the server
+   * rather than be patched locally.
+   *
+   * @param {number} runId Run identifier.
+   * @param {Object} user Tester, as {id, name, avatar}.
+   * @param {boolean} assigned Whether the tester should end up on the run.
+   * @returns {Promise<void>}
+   */
+  async function setRunAssignment(runId, user, assigned) {
+    const updated = assigned
+      ? await api.runs.addAssignees(runId, [user.id])
+      : await api.runs.removeAssignee(runId, user.id);
+
+    runs.value = runs.value.map((item) => (item.id === runId ? updated : item));
+
+    await refreshResults(runId);
+  }
+
+  /**
    * Starts polling the run's result list.
    *
    * Polling pauses while the tab is hidden: a background tab does not need fresh locks,
@@ -250,10 +285,7 @@ export const useRunStore = defineStore('runs', () => {
       }
 
       try {
-        const payload = await api.runs.results(id);
-
-        run.value = payload.run;
-        mergeResults(payload.results);
+        await refreshResults(id);
       } catch {
         // A failed poll is not worth a toast; the next tick will retry.
       }
@@ -332,6 +364,8 @@ export const useRunStore = defineStore('runs', () => {
     loadPreviousStatus,
     setStatus,
     setAssignment,
+    setRunAssignment,
+    refreshResults,
     replaceResult,
     updateRun,
     startPolling,

@@ -485,6 +485,8 @@ onBeforeUnmount(releaseLock);
 
         <AssigneeDialog
           :open="assignDialogOpen"
+          title="Assign this case"
+          empty-text="Nobody is assigned to this run yet, so there is no one to hand this case to."
           :candidates="candidates"
           :assigned="assignees"
           @close="assignDialogOpen = false"

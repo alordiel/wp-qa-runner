@@ -9,6 +9,7 @@
 import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue';
 import {RouterLink} from 'vue-router';
 
+import AssigneeDialog from '../components/AssigneeDialog.vue';
 import AvatarStack from '../components/AvatarStack.vue';
 import EmptyState from '../components/EmptyState.vue';
 import PriorityDot from '../components/PriorityDot.vue';
@@ -33,6 +34,7 @@ const ui = useUiStore();
 const runId = computed(() => Number(props.id));
 const loading = ref(true);
 const cloning = ref(false);
+const runAssigneeDialogOpen = ref(false);
 
 const filters = ref({
   status: '',
@@ -136,7 +138,11 @@ async function load() {
 
   try {
     await runStore.loadRun(runId.value);
-    await Promise.all([runStore.loadPreviousStatus(runId.value), caseStore.loadSuites()]);
+    await Promise.all([
+      runStore.loadPreviousStatus(runId.value),
+      caseStore.loadSuites(),
+      caseStore.loadUsers()
+    ]);
     runStore.startPolling(runId.value);
   } catch (error) {
     ui.toastError(error, 'This run could not be loaded.');
@@ -157,6 +163,23 @@ async function setStatus(result, status) {
     await runStore.setStatus(result.id, status);
   } catch (error) {
     ui.toastError(error, 'That result could not be saved.');
+  }
+}
+
+/**
+ * Adds or removes one person on the run, resolving the dialog once the write settles.
+ *
+ * @param {Object} payload Emitted as {person, assigned, done}.
+ * @returns {Promise<void>}
+ */
+async function toggleRunAssignee({person, assigned, done}) {
+  try {
+    await runStore.setRunAssignment(runId.value, person, assigned);
+    ui.toast(assigned ? `${person.name} added to this run.` : `${person.name} removed.`);
+  } catch (error) {
+    ui.toastError(error, 'The run assignees could not be saved.');
+  } finally {
+    done();
   }
 }
 
@@ -310,9 +333,29 @@ onBeforeUnmount(() => runStore.reset());
           <ProgressBar :counts="runStore.run.counts" />
           <div class="qa-row" style="gap: 16px">
             <span class="qa-badge">{{ runStore.run.status }}</span>
+
             <AvatarStack :people="runStore.run.assignees" />
+
+            <button
+              v-if="bootstrap.caps?.runTests"
+              type="button"
+              class="qa-button qa-button--small"
+              @click="runAssigneeDialogOpen = true"
+            >
+              Edit assignees
+            </button>
           </div>
         </div>
+
+        <AssigneeDialog
+          :open="runAssigneeDialogOpen"
+          title="Who is on this run"
+          empty-text="No testers exist yet. Give somebody the QA Tester role first."
+          :candidates="caseStore.users"
+          :assigned="runStore.run.assignees"
+          @close="runAssigneeDialogOpen = false"
+          @toggle="toggleRunAssignee"
+        />
       </div>
 
       <div v-if="!isOpen" class="qa-notice qa-notice--warning">

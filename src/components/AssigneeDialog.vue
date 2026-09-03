@@ -1,6 +1,9 @@
 <script setup>
 /**
- * Hands a case to the people already on the run.
+ * Picks people from a list, one checkbox each.
+ *
+ * Used both for handing a case to the testers on a run and for setting who is on the run in
+ * the first place; the caller supplies the candidates and decides what a tick means.
  *
  * Built on the native <dialog> element, which brings focus trapping, Esc-to-close and a
  * backdrop with no script of our own. Each checkbox writes immediately rather than
@@ -12,9 +15,12 @@ import {ref, watch} from 'vue';
 
 const props = defineProps({
   open: {type: Boolean, default: false},
-  /** Testers on the run, as {id, name, avatar}. */
+  title: {type: String, default: 'Assign'},
+  /** Shown in place of the list when there are no candidates at all. */
+  emptyText: {type: String, default: 'There is nobody to choose from.'},
+  /** People who can be picked, as {id, name, avatar}. */
   candidates: {type: Array, default: () => []},
-  /** Testers already holding this case, as {id, name, avatar}. */
+  /** People already picked, as {id, name, avatar}. */
   assigned: {type: Array, default: () => []}
 });
 
@@ -83,16 +89,14 @@ watch(
 <template>
   <dialog ref="dialog" class="qa-dialog" @close="emit('close')" @cancel="emit('close')">
     <div class="qa-dialog__head">
-      <h3 class="qa-dialog__title">Assign this case</h3>
+      <h3 class="qa-dialog__title">{{ title }}</h3>
       <button type="button" class="qa-dialog__close" aria-label="Close" @click="emit('close')">
         ×
       </button>
     </div>
 
     <div class="qa-dialog__body">
-      <p v-if="!candidates.length" class="qa-muted">
-        Nobody is assigned to this run yet, so there is no one to hand this case to.
-      </p>
+      <p v-if="!candidates.length" class="qa-muted">{{ emptyText }}</p>
 
       <ul v-else class="qa-dialog__list">
         <li v-for="person in candidates" :key="person.id">
