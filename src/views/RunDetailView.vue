@@ -293,7 +293,7 @@ onBeforeUnmount(() => runStore.reset());
     <template v-else-if="runStore.run">
       <div class="qa-page-head">
         <div class="qa-page-head__meta">
-          <h2>{{ runStore.run.name }}</h2>
+          <h2 class="qa-run-title">{{ runStore.run.name }}</h2>
           <p class="qa-subtitle">
             {{ runStore.run.environment }} · {{ runStore.run.version }} · created by
             {{ runStore.run.created_by.name }}
@@ -301,7 +301,7 @@ onBeforeUnmount(() => runStore.reset());
               relativeTime(runStore.run.created_at)
             }}</span>
           </p>
-          <p v-if="runStore.run.notes" class="qa-subtitle">{{ runStore.run.notes }}</p>
+          <p v-if="runStore.run.notes" class="qa-run-description">{{ runStore.run.notes }}</p>
         </div>
 
         <div class="qa-row">

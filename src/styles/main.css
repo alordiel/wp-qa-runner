@@ -206,7 +206,27 @@
     grid-template-columns: 1fr;
   }
 }
-
+/* ---------------------------------------------------------------- Run Description and subtitle */
+.qa-run-title {
+  font-size: 2rem;
+}
+.qa-subtitle,
+.qa-run-description {
+  color: #7a5c00;
+  padding: 5px 10px;
+  border-style: solid;
+  border-width: 1px;
+  max-width: 400px;
+}
+.qa-subtitle {
+  background: #fff;
+  border: 1px solid var(--qa-border);
+  border-radius: var(--qa-radius);
+}
+.qa-run-description {
+  border-color: var(--qa-blocked);
+  background: var(--qa-blocked-soft);
+}
 /* ---------------------------------------------------------------- controls */
 
 .qa-button {
