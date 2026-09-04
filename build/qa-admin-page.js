@@ -35562,7 +35562,7 @@ Use slot props instead:
 		class: "qa-muted"
 	};
 	function _sfc_render$13(_ctx, _cache, $props, $setup, $data, $options) {
-		return openBlock(), createElementBlock("div", _hoisted_1$13, [createBaseVNode("div", _hoisted_2$12, [_cache[5] || (_cache[5] = createBaseVNode("div", { class: "qa-page-head__meta" }, [createBaseVNode("h2", null, "Case library"), createBaseVNode("p", { class: "qa-subtitle" }, " Permanent instructions. A case has no status of its own — only results do. ")], -1)), createBaseVNode("div", _hoisted_3$12, [createVNode($setup["RouterLink"], {
+		return openBlock(), createElementBlock("div", _hoisted_1$13, [createBaseVNode("div", _hoisted_2$12, [_cache[5] || (_cache[5] = createBaseVNode("div", { class: "qa-page-head__meta" }, [createBaseVNode("h2", null, "Case library")], -1)), createBaseVNode("div", _hoisted_3$12, [createVNode($setup["RouterLink"], {
 			class: "qa-button qa-button--quiet",
 			to: "/suites"
 		}, {

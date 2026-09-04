@@ -151,9 +151,6 @@ onMounted(load);
     <div class="qa-page-head">
       <div class="qa-page-head__meta">
         <h2>Case library</h2>
-        <p class="qa-subtitle">
-          Permanent instructions. A case has no status of its own — only results do.
-        </p>
       </div>
       <div class="qa-row">
         <RouterLink class="qa-button qa-button--quiet" to="/suites">Manage suites</RouterLink>
