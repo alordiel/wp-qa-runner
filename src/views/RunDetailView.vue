@@ -14,6 +14,7 @@ import AvatarStack from '../components/AvatarStack.vue';
 import EmptyState from '../components/EmptyState.vue';
 import PriorityDot from '../components/PriorityDot.vue';
 import ProgressBar from '../components/ProgressBar.vue';
+import RunDetailsDialog from '../components/RunDetailsDialog.vue';
 import StatusBadge from '../components/StatusBadge.vue';
 import StatusControl from '../components/StatusControl.vue';
 import {api, bootstrap} from '../api/client.js';
@@ -36,6 +37,8 @@ const loading = ref(true);
 const cloning = ref(false);
 const runAssigneeDialogOpen = ref(false);
 const savingRunAssignees = ref(false);
+const runDetailsDialogOpen = ref(false);
+const savingRunDetails = ref(false);
 
 const filters = ref({
   status: '',
@@ -164,6 +167,27 @@ async function setStatus(result, status) {
     await runStore.setStatus(result.id, status);
   } catch (error) {
     ui.toastError(error, 'That result could not be saved.');
+  }
+}
+
+/**
+ * Saves the edited run metadata.
+ *
+ * @param {Object} changes Changed fields only, as {name, environment, version, notes}.
+ * @returns {Promise<void>}
+ */
+async function saveRunDetails(changes) {
+  savingRunDetails.value = true;
+
+  try {
+    await runStore.updateRun(runId.value, changes);
+    runDetailsDialogOpen.value = false;
+    ui.toast('Run details updated.');
+  } catch (error) {
+    // The dialog stays open on failure, so the draft is still there to retry or cancel.
+    ui.toastError(error, 'The run details could not be saved.');
+  } finally {
+    savingRunDetails.value = false;
   }
 }
 
@@ -309,6 +333,14 @@ onBeforeUnmount(() => runStore.reset());
             v-if="bootstrap.caps?.runTests"
             type="button"
             class="qa-button qa-button--quiet"
+            @click="runDetailsDialogOpen = true"
+          >
+            Edit details
+          </button>
+          <button
+            v-if="bootstrap.caps?.runTests"
+            type="button"
+            class="qa-button qa-button--quiet"
             :disabled="cloning"
             @click="cloneRun"
           >
@@ -331,6 +363,14 @@ onBeforeUnmount(() => runStore.reset());
             Reopen run
           </button>
         </div>
+
+        <RunDetailsDialog
+          :open="runDetailsDialogOpen"
+          :run="runStore.run"
+          :saving="savingRunDetails"
+          @close="runDetailsDialogOpen = false"
+          @save="saveRunDetails"
+        />
       </div>
 
       <div class="qa-card">

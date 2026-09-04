@@ -892,6 +892,15 @@
   background: var(--qa-surface-alt);
 }
 
+/* Form dialogs carry side-by-side fields and a notes box; the people pickers do not. */
+.qa-dialog--wide {
+  width: min(520px, calc(100vw - 32px));
+}
+
+.qa-dialog--wide .qa-dialog__body {
+  max-height: min(520px, 60vh);
+}
+
 /* ---------------------------------------------------------------- issues */
 
 .qa-issue {

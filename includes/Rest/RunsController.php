@@ -130,14 +130,21 @@ final class RunsController extends Controller {
 					'callback'            => array( $this, 'update' ),
 					'permission_callback' => array( $this, 'can_test' ),
 					'args'                => array(
-						'id'     => $this->id_arg(),
-						'name'   => $this->text_arg(),
-						'notes'  => array(
+						'id'          => $this->id_arg(),
+						'name'        => $this->text_arg(),
+						'environment' => array(
+							'required'          => false,
+							'type'              => 'string',
+							'sanitize_callback' => 'sanitize_key',
+							'validate_callback' => Enum::validator( Enum::ENVIRONMENTS, true ),
+						),
+						'version'     => $this->text_arg(),
+						'notes'       => array(
 							'required'          => false,
 							'type'              => 'string',
 							'sanitize_callback' => 'sanitize_textarea_field',
 						),
-						'status' => array(
+						'status'      => array(
 							'required'          => false,
 							'type'              => 'string',
 							'sanitize_callback' => 'sanitize_key',
@@ -338,7 +345,7 @@ final class RunsController extends Controller {
 
 		$data = array();
 
-		foreach ( array( 'name', 'notes', 'status' ) as $field ) {
+		foreach ( array( 'name', 'environment', 'version', 'notes', 'status' ) as $field ) {
 			if ( $request->has_param( $field ) ) {
 				$data[ $field ] = $request->get_param( $field );
 			}
