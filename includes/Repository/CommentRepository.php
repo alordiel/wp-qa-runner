@@ -107,6 +107,18 @@ final class CommentRepository extends BaseRepository {
 	}
 
 	/**
+	 * Deletes every comment on a result. Used when a case leaves a run and its result goes
+	 * with it — the rows have no foreign key, so an orphan would otherwise be inherited by
+	 * whatever result id the table recycles next.
+	 *
+	 * @param int $result_id Result identifier.
+	 * @return void
+	 */
+	public function delete_for_result( int $result_id ): void {
+		$this->db()->delete( $this->table(), array( 'result_id' => $result_id ), array( '%d' ) );
+	}
+
+	/**
 	 * Casts a raw database row to the API shape.
 	 *
 	 * @param array<string, mixed> $row Raw row.

@@ -111,8 +111,8 @@ onMounted(async () => {
     <div class="qa-page-head">
       <div class="qa-page-head__meta">
         <h2>{{ isEdit ? 'Edit case' : 'New case' }}</h2>
-        <p class="qa-subtitle">
-          Written once, edited rarely, reused by every run that includes it.
+        <p>
+          Cases are written once, edited rarely. They can be reused by many runs. If you would like to edit a case, make sure it is minor changes, for major one just create new test.
         </p>
       </div>
       <div class="qa-row">

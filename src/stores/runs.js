@@ -281,6 +281,38 @@ export const useRunStore = defineStore('runs', () => {
   }
 
   /**
+   * Applies a batch of changes to the run's case selection.
+   *
+   * Not optimistic: adding a case seeds a result row and removing one destroys that row
+   * along with its comments and issues, so the list has to come back from the server
+   * rather than be patched locally. That reload happens once, after every write lands.
+   *
+   * Additions go first, so a batch that fails half way leaves the run over-selected rather
+   * than short of cases nobody meant to drop.
+   *
+   * @param {number} runId Run identifier.
+   * @param {Object} changes Cases to add and remove, as {add: [ids], remove: [ids]}.
+   * @returns {Promise<void>}
+   */
+  async function setRunCases(runId, {add = [], remove = []}) {
+    try {
+      if (add.length) {
+        await api.runs.addCases(runId, add);
+      }
+
+      for (const caseId of remove) {
+        await api.runs.removeCase(runId, caseId);
+      }
+    } finally {
+      // Whatever did land has to be reflected, so this runs even on a partial failure.
+      await refreshResults(runId);
+      await loadPreviousStatus(runId);
+    }
+
+    runs.value = runs.value.map((item) => (item.id === runId ? run.value : item));
+  }
+
+  /**
    * Starts polling the run's result list.
    *
    * Polling pauses while the tab is hidden: a background tab does not need fresh locks,
@@ -378,6 +410,7 @@ export const useRunStore = defineStore('runs', () => {
     setStatus,
     setAssignment,
     setRunAssignees,
+    setRunCases,
     refreshResults,
     replaceResult,
     updateRun,

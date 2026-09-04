@@ -901,6 +901,14 @@
   max-height: min(520px, 60vh);
 }
 
+/* A case in a picker: title on top, suite and what the run recorded underneath. */
+.qa-dialog__case {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
 /* ---------------------------------------------------------------- issues */
 
 .qa-issue {

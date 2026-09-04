@@ -239,4 +239,25 @@ final class IssueRepository extends BaseRepository {
 	public function delete_for_case( int $case_id ): void {
 		$this->db()->delete( $this->table(), array( 'case_id' => $case_id ), array( '%d' ) );
 	}
+
+	/**
+	 * Deletes the issues raised on a case during one run.
+	 *
+	 * Scoped by origin so that pulling a case out of a run takes only what that run
+	 * produced; an issue raised on the same case elsewhere is somebody else's record.
+	 *
+	 * @param int $run_id  Run the issues were raised in.
+	 * @param int $case_id Case identifier.
+	 * @return void
+	 */
+	public function delete_for_run_case( int $run_id, int $case_id ): void {
+		$this->db()->delete(
+			$this->table(),
+			array(
+				'case_id'       => $case_id,
+				'origin_run_id' => $run_id,
+			),
+			array( '%d', '%d' )
+		);
+	}
 }

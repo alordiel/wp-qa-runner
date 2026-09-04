@@ -14,6 +14,7 @@ import AvatarStack from '../components/AvatarStack.vue';
 import EmptyState from '../components/EmptyState.vue';
 import PriorityDot from '../components/PriorityDot.vue';
 import ProgressBar from '../components/ProgressBar.vue';
+import RunCasesDialog from '../components/RunCasesDialog.vue';
 import RunDetailsDialog from '../components/RunDetailsDialog.vue';
 import StatusBadge from '../components/StatusBadge.vue';
 import StatusControl from '../components/StatusControl.vue';
@@ -39,6 +40,9 @@ const runAssigneeDialogOpen = ref(false);
 const savingRunAssignees = ref(false);
 const runDetailsDialogOpen = ref(false);
 const savingRunDetails = ref(false);
+const runCasesDialogOpen = ref(false);
+const savingRunCases = ref(false);
+const loadingLibrary = ref(false);
 
 const filters = ref({
   status: '',
@@ -167,6 +171,53 @@ async function setStatus(result, status) {
     await runStore.setStatus(result.id, status);
   } catch (error) {
     ui.toastError(error, 'That result could not be saved.');
+  }
+}
+
+/**
+ * Opens the case picker, fetching the library the first time it is needed.
+ *
+ * The library is not part of the run's own payload and most visits to this screen never
+ * ask for it, so it is fetched on demand rather than on load.
+ *
+ * @returns {Promise<void>}
+ */
+async function openRunCasesDialog() {
+  runCasesDialogOpen.value = true;
+
+  if (caseStore.cases.length) {
+    return;
+  }
+
+  loadingLibrary.value = true;
+
+  try {
+    await caseStore.loadCases({active: true});
+  } catch (error) {
+    ui.toastError(error, 'The case library could not be loaded.');
+  } finally {
+    loadingLibrary.value = false;
+  }
+}
+
+/**
+ * Applies the case picker's draft to the run.
+ *
+ * @param {Object} changes Cases to add and remove, as {add: [ids], remove: [ids]}.
+ * @returns {Promise<void>}
+ */
+async function saveRunCases(changes) {
+  savingRunCases.value = true;
+
+  try {
+    await runStore.setRunCases(runId.value, changes);
+    runCasesDialogOpen.value = false;
+    ui.toast('Run cases updated.');
+  } catch (error) {
+    // The dialog stays open on failure, so the draft is still there to retry or cancel.
+    ui.toastError(error, 'The run cases could not be saved.');
+  } finally {
+    savingRunCases.value = false;
   }
 }
 
@@ -319,11 +370,14 @@ onBeforeUnmount(() => runStore.reset());
         <div class="qa-page-head__meta">
           <h2 class="qa-run-title">{{ runStore.run.name }}</h2>
           <p class="qa-subtitle">
-            environment: <strong>{{ runStore.run.environment }}</strong> · version: <strong>{{ runStore.run.version }}</strong> <br> created by
-            <strong>{{ runStore.run.created_by.name }}</strong> &nbsp;
-            <strong> <span :title="absoluteTime(runStore.run.created_at)">{{
-              relativeTime(runStore.run.created_at)
-            }}</span> </strong>
+            environment: <strong>{{ runStore.run.environment }}</strong> · version:
+            <strong>{{ runStore.run.version }}</strong> <br />
+            created by <strong>{{ runStore.run.created_by.name }}</strong> &nbsp;
+            <strong>
+              <span :title="absoluteTime(runStore.run.created_at)">{{
+                relativeTime(runStore.run.created_at)
+              }}</span>
+            </strong>
           </p>
           <p v-if="runStore.run.notes" class="qa-run-description">{{ runStore.run.notes }}</p>
         </div>
@@ -469,15 +523,37 @@ onBeforeUnmount(() => runStore.reset());
             </label>
           </div>
 
-          <button
-            v-if="hasFilters"
-            type="button"
-            class="qa-button qa-button--small qa-button--quiet"
-            @click="clearFilters"
-          >
-            Clear filters
-          </button>
+          <div class="qa-row">
+            <button
+              v-if="hasFilters"
+              type="button"
+              class="qa-button qa-button--small qa-button--quiet"
+              @click="clearFilters"
+            >
+              Clear filters
+            </button>
+
+            <button
+              v-if="canTest"
+              type="button"
+              class="qa-button qa-button--small"
+              @click="openRunCasesDialog"
+            >
+              Edit cases
+            </button>
+          </div>
         </div>
+
+        <RunCasesDialog
+          :open="runCasesDialogOpen"
+          :results="runStore.results"
+          :library="caseStore.activeCases"
+          :suites="caseStore.suites"
+          :loading="loadingLibrary"
+          :saving="savingRunCases"
+          @close="runCasesDialogOpen = false"
+          @save="saveRunCases"
+        />
 
         <EmptyState
           v-if="!filtered.length"

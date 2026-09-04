@@ -11,6 +11,8 @@ namespace QARunner\Rest;
 
 use QARunner\Notification\Mailer;
 use QARunner\Repository\CaseRepository;
+use QARunner\Repository\CommentRepository;
+use QARunner\Repository\IssueRepository;
 use QARunner\Repository\ResultRepository;
 use QARunner\Repository\RunRepository;
 use QARunner\Support\Enum;
@@ -48,6 +50,20 @@ final class RunsController extends Controller {
 	private CaseRepository $cases;
 
 	/**
+	 * Comment repository.
+	 *
+	 * @var CommentRepository
+	 */
+	private CommentRepository $comments;
+
+	/**
+	 * Issue repository.
+	 *
+	 * @var IssueRepository
+	 */
+	private IssueRepository $issues;
+
+	/**
 	 * Mailer.
 	 *
 	 * @var Mailer
@@ -57,16 +73,20 @@ final class RunsController extends Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @param RunRepository    $runs    Run repository.
-	 * @param ResultRepository $results Result repository.
-	 * @param CaseRepository   $cases   Case repository.
-	 * @param Mailer           $mailer  Mailer.
+	 * @param RunRepository     $runs     Run repository.
+	 * @param ResultRepository  $results  Result repository.
+	 * @param CaseRepository    $cases    Case repository.
+	 * @param CommentRepository $comments Comment repository.
+	 * @param IssueRepository   $issues   Issue repository.
+	 * @param Mailer            $mailer   Mailer.
 	 */
-	public function __construct( RunRepository $runs, ResultRepository $results, CaseRepository $cases, Mailer $mailer ) {
-		$this->runs    = $runs;
-		$this->results = $results;
-		$this->cases   = $cases;
-		$this->mailer  = $mailer;
+	public function __construct( RunRepository $runs, ResultRepository $results, CaseRepository $cases, CommentRepository $comments, IssueRepository $issues, Mailer $mailer ) {
+		$this->runs     = $runs;
+		$this->results  = $results;
+		$this->cases    = $cases;
+		$this->comments = $comments;
+		$this->issues   = $issues;
+		$this->mailer   = $mailer;
 	}
 
 	/**
@@ -393,8 +413,10 @@ final class RunsController extends Controller {
 	/**
 	 * DELETE /runs/{id}/cases/{case_id}
 	 *
-	 * A case can only leave a run while its result is still untested; once someone has
-	 * recorded an outcome, removing the case would destroy that record.
+	 * Everything the run recorded about the case goes with it: the status and who set it,
+	 * the comments, and any issue raised here. That is destructive and unrecoverable, so
+	 * the client confirms first — an already-tested case is not refused here, because a
+	 * case added to the wrong run has to be able to leave it again.
 	 *
 	 * @param WP_REST_Request $request Request.
 	 * @return array<string, mixed>|\WP_Error
@@ -417,10 +439,10 @@ final class RunsController extends Controller {
 			return $this->not_found( __( 'That case is not part of this run.', 'qa-runner' ) );
 		}
 
-		if ( 'untested' !== $result['status'] ) {
-			return $this->bad_request( __( 'This case already has a result, so it cannot be removed from the run.', 'qa-runner' ) );
-		}
-
+		// Comments hang off the result and issues off the case, so neither is cleared by
+		// deleting the result row; both are taken here, innermost first.
+		$this->comments->delete_for_result( (int) $result['id'] );
+		$this->issues->delete_for_run_case( $id, $case_id );
 		$this->results->delete_by_run_case( $id, $case_id );
 		$this->runs->remove_case( $id, $case_id );
 

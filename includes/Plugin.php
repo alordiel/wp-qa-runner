@@ -136,7 +136,7 @@ final class Plugin {
 			new PingController(),
 			new SuitesController( $suites ),
 			new CasesController( $cases, $issues ),
-			new RunsController( $runs, $results, $cases, $mailer ),
+			new RunsController( $runs, $results, $cases, $comments, $issues, $mailer ),
 			new ResultsController( $results, $runs ),
 			new CommentsController( $comments, $results, $runs ),
 			new IssuesController( $issues, $cases ),
