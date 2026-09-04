@@ -295,11 +295,11 @@ onBeforeUnmount(() => runStore.reset());
         <div class="qa-page-head__meta">
           <h2 class="qa-run-title">{{ runStore.run.name }}</h2>
           <p class="qa-subtitle">
-            {{ runStore.run.environment }} · {{ runStore.run.version }} · created by
-            {{ runStore.run.created_by.name }}
-            <span :title="absoluteTime(runStore.run.created_at)">{{
+            environment: <strong>{{ runStore.run.environment }}</strong> · version: <strong>{{ runStore.run.version }}</strong> <br> created by
+            <strong>{{ runStore.run.created_by.name }}</strong> &nbsp;
+            <strong> <span :title="absoluteTime(runStore.run.created_at)">{{
               relativeTime(runStore.run.created_at)
-            }}</span>
+            }}</span> </strong>
           </p>
           <p v-if="runStore.run.notes" class="qa-run-description">{{ runStore.run.notes }}</p>
         </div>

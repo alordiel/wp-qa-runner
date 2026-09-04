@@ -37981,7 +37981,18 @@ Use slot props instead:
 		return openBlock(), createElementBlock("div", _hoisted_1$3, [$setup.loading ? (openBlock(), createElementBlock("p", _hoisted_2$3, "Loading run…")) : $setup.runStore.run ? (openBlock(), createElementBlock(Fragment, { key: 1 }, [
 			createBaseVNode("div", _hoisted_3$3, [createBaseVNode("div", _hoisted_4$3, [
 				createBaseVNode("h2", _hoisted_5$3, toDisplayString($setup.runStore.run.name), 1),
-				createBaseVNode("p", _hoisted_6$3, [createTextVNode(toDisplayString($setup.runStore.run.environment) + " · " + toDisplayString($setup.runStore.run.version) + " · created by " + toDisplayString($setup.runStore.run.created_by.name) + " ", 1), createBaseVNode("span", { title: $setup.absoluteTime($setup.runStore.run.created_at) }, toDisplayString($setup.relativeTime($setup.runStore.run.created_at)), 9, _hoisted_7$3)]),
+				createBaseVNode("p", _hoisted_6$3, [
+					_cache[8] || (_cache[8] = createTextVNode(" environment: ", -1)),
+					createBaseVNode("strong", null, toDisplayString($setup.runStore.run.environment), 1),
+					_cache[9] || (_cache[9] = createTextVNode(" · version: ", -1)),
+					createBaseVNode("strong", null, toDisplayString($setup.runStore.run.version), 1),
+					_cache[10] || (_cache[10] = createTextVNode()),
+					_cache[11] || (_cache[11] = createBaseVNode("br", null, null, -1)),
+					_cache[12] || (_cache[12] = createTextVNode(" created by ", -1)),
+					createBaseVNode("strong", null, toDisplayString($setup.runStore.run.created_by.name), 1),
+					_cache[13] || (_cache[13] = createTextVNode(" \xA0 ", -1)),
+					createBaseVNode("strong", null, [createBaseVNode("span", { title: $setup.absoluteTime($setup.runStore.run.created_at) }, toDisplayString($setup.relativeTime($setup.runStore.run.created_at)), 9, _hoisted_7$3)])
+				]),
 				$setup.runStore.run.notes ? (openBlock(), createElementBlock("p", _hoisted_8$3, toDisplayString($setup.runStore.run.notes), 1)) : createCommentVNode("", true)
 			]), createBaseVNode("div", _hoisted_9$2, [$setup.bootstrap.caps?.runTests ? (openBlock(), createElementBlock("button", {
 				key: 0,
@@ -38029,7 +38040,7 @@ Use slot props instead:
 			$setup.regressions.length ? (openBlock(), createElementBlock("div", _hoisted_16$1, [createBaseVNode("strong", null, toDisplayString($setup.regressions.length) + " " + toDisplayString($setup.plural($setup.regressions.length, "regression")) + ".", 1), createTextVNode(" " + toDisplayString($setup.plural($setup.regressions.length, "This case passed", "These cases passed")) + " in the previous run and " + toDisplayString($setup.plural($setup.regressions.length, "fails", "fail")) + " now: " + toDisplayString($setup.regressions.map((result) => result.case.title).join(", ")), 1)])) : createCommentVNode("", true),
 			createBaseVNode("div", _hoisted_17$1, [
 				createBaseVNode("div", _hoisted_18$1, [createBaseVNode("div", _hoisted_19$1, [
-					_cache[14] || (_cache[14] = createBaseVNode("label", {
+					_cache[20] || (_cache[20] = createBaseVNode("label", {
 						class: "qa-sr-only",
 						for: "filter-status"
 					}, "Status", -1)),
@@ -38038,13 +38049,13 @@ Use slot props instead:
 						"onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => $setup.filters.status = $event),
 						class: "qa-select",
 						style: { "width": "auto" }
-					}, [_cache[8] || (_cache[8] = createBaseVNode("option", { value: "" }, "All statuses", -1)), (openBlock(true), createElementBlock(Fragment, null, renderList($setup.RESULT_STATUSES, (status) => {
+					}, [_cache[14] || (_cache[14] = createBaseVNode("option", { value: "" }, "All statuses", -1)), (openBlock(true), createElementBlock(Fragment, null, renderList($setup.RESULT_STATUSES, (status) => {
 						return openBlock(), createElementBlock("option", {
 							key: status.value,
 							value: status.value
 						}, toDisplayString($setup.statusLabel(status.value)), 9, _hoisted_20$1);
 					}), 128))], 512), [[vModelSelect, $setup.filters.status]]),
-					_cache[15] || (_cache[15] = createBaseVNode("label", {
+					_cache[21] || (_cache[21] = createBaseVNode("label", {
 						class: "qa-sr-only",
 						for: "filter-suite"
 					}, "Suite", -1)),
@@ -38053,13 +38064,13 @@ Use slot props instead:
 						"onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => $setup.filters.suite = $event),
 						class: "qa-select",
 						style: { "width": "auto" }
-					}, [_cache[9] || (_cache[9] = createBaseVNode("option", { value: "" }, "All suites", -1)), (openBlock(true), createElementBlock(Fragment, null, renderList($setup.caseStore.suites, (suite) => {
+					}, [_cache[15] || (_cache[15] = createBaseVNode("option", { value: "" }, "All suites", -1)), (openBlock(true), createElementBlock(Fragment, null, renderList($setup.caseStore.suites, (suite) => {
 						return openBlock(), createElementBlock("option", {
 							key: suite.id,
 							value: String(suite.id)
 						}, toDisplayString(suite.name), 9, _hoisted_21$1);
 					}), 128))], 512), [[vModelSelect, $setup.filters.suite]]),
-					_cache[16] || (_cache[16] = createBaseVNode("label", {
+					_cache[22] || (_cache[22] = createBaseVNode("label", {
 						class: "qa-sr-only",
 						for: "filter-priority"
 					}, "Priority", -1)),
@@ -38068,7 +38079,7 @@ Use slot props instead:
 						"onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => $setup.filters.priority = $event),
 						class: "qa-select",
 						style: { "width": "auto" }
-					}, [_cache[10] || (_cache[10] = createBaseVNode("option", { value: "" }, "All priorities", -1)), (openBlock(true), createElementBlock(Fragment, null, renderList($setup.PRIORITIES, (priority) => {
+					}, [_cache[16] || (_cache[16] = createBaseVNode("option", { value: "" }, "All priorities", -1)), (openBlock(true), createElementBlock(Fragment, null, renderList($setup.PRIORITIES, (priority) => {
 						return openBlock(), createElementBlock("option", {
 							key: priority.value,
 							value: priority.value
@@ -38077,15 +38088,15 @@ Use slot props instead:
 					createBaseVNode("label", _hoisted_23$1, [withDirectives(createBaseVNode("input", {
 						"onUpdate:modelValue": _cache[5] || (_cache[5] = ($event) => $setup.filters.onlyMine = $event),
 						type: "checkbox"
-					}, null, 512), [[vModelCheckbox, $setup.filters.onlyMine]]), _cache[11] || (_cache[11] = createBaseVNode("span", null, "Only mine", -1))]),
+					}, null, 512), [[vModelCheckbox, $setup.filters.onlyMine]]), _cache[17] || (_cache[17] = createBaseVNode("span", null, "Only mine", -1))]),
 					createBaseVNode("label", _hoisted_24$1, [withDirectives(createBaseVNode("input", {
 						"onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => $setup.filters.onlyUnassigned = $event),
 						type: "checkbox"
-					}, null, 512), [[vModelCheckbox, $setup.filters.onlyUnassigned]]), _cache[12] || (_cache[12] = createBaseVNode("span", null, "Unassigned only", -1))]),
+					}, null, 512), [[vModelCheckbox, $setup.filters.onlyUnassigned]]), _cache[18] || (_cache[18] = createBaseVNode("span", null, "Unassigned only", -1))]),
 					createBaseVNode("label", _hoisted_25$1, [withDirectives(createBaseVNode("input", {
 						"onUpdate:modelValue": _cache[7] || (_cache[7] = ($event) => $setup.filters.onlyFailedLastRun = $event),
 						type: "checkbox"
-					}, null, 512), [[vModelCheckbox, $setup.filters.onlyFailedLastRun]]), _cache[13] || (_cache[13] = createBaseVNode("span", null, "Only failed last run", -1))])
+					}, null, 512), [[vModelCheckbox, $setup.filters.onlyFailedLastRun]]), _cache[19] || (_cache[19] = createBaseVNode("span", null, "Only failed last run", -1))])
 				]), $setup.hasFilters ? (openBlock(), createElementBlock("button", {
 					key: 0,
 					type: "button",
@@ -38153,7 +38164,7 @@ Use slot props instead:
 				class: "qa-button",
 				to: "/"
 			}, {
-				default: withCtx(() => [..._cache[17] || (_cache[17] = [createTextVNode("Back to runs", -1)])]),
+				default: withCtx(() => [..._cache[23] || (_cache[23] = [createTextVNode("Back to runs", -1)])]),
 				_: 1
 			})]),
 			_: 1
