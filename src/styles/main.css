@@ -952,6 +952,33 @@
   margin-bottom: 0;
 }
 
+/*
+ * A closed issue keeps the shape of an open one so the two read as the same object, but
+ * gives up the alarm colouring: the red rule belongs to what is still broken.
+ */
+.qa-issue--resolved {
+  border-color: var(--qa-border);
+  border-left-color: var(--qa-skipped);
+  background: var(--qa-surface-alt);
+}
+
+.qa-issue--resolved .qa-issue__title {
+  color: var(--qa-text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* The resolution note is plain text, so it keeps the line breaks its author typed. */
+.qa-issue__resolution {
+  margin: 0;
+  padding-left: 8px;
+  border-left: 2px solid var(--qa-border-strong);
+  font-size: 12px;
+  color: var(--qa-text-muted);
+  white-space: pre-wrap;
+}
+
 /* ---------------------------------------------------------------- comments */
 
 .qa-comment {

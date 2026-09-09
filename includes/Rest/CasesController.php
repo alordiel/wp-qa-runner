@@ -19,8 +19,8 @@ defined( 'ABSPATH' ) || exit;
 /**
  * CRUD for the case library.
  *
- * A case never carries a status. GET /cases/{id} attaches the case's open issues so the
- * test view can show them without a second round trip.
+ * A case never carries a status. GET /cases/{id} attaches the case's issues, open and
+ * closed in separate lists, so the test view can show both without a second round trip.
  */
 final class CasesController extends Controller {
 
@@ -165,9 +165,18 @@ final class CasesController extends Controller {
 			return $this->not_found( __( 'That case no longer exists.', 'qa-runner' ) );
 		}
 
-		// Only open issues: a tester needs to know what is currently broken, not everything
-		// that was ever wrong with this case.
-		$case['issues'] = $this->issues->for_case( $id, 'open' );
+		// Split rather than filtered: open issues are what a tester must act on, and the
+		// closed ones ride along separately so the test screen can keep them behind a toggle
+		// instead of paying a second request for history nobody may open.
+		$issues = $this->issues->for_case( $id, null );
+
+		$case['issues'] = array_values(
+			array_filter( $issues, static fn( array $issue ): bool => 'open' === $issue['status'] )
+		);
+
+		$case['resolved_issues'] = array_values(
+			array_filter( $issues, static fn( array $issue ): bool => 'open' !== $issue['status'] )
+		);
 
 		return $case;
 	}

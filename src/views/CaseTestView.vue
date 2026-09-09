@@ -36,6 +36,7 @@ const caseId = computed(() => Number(props.caseId));
 
 const testCase = ref(null);
 const issues = ref([]);
+const resolvedIssues = ref([]);
 const comments = ref([]);
 const loading = ref(true);
 
@@ -48,6 +49,10 @@ const savingIssue = ref(false);
 
 const resolvingId = ref(0);
 const resolutionNote = ref('');
+
+// History stays collapsed until asked for: what is still broken is the reason for the
+// screen, and a list of everything ever wrong with the case would drown it.
+const historyOpen = ref(false);
 
 const savingAssignment = ref(false);
 const assignDialogOpen = ref(false);
@@ -173,7 +178,7 @@ async function removeAssignee(person) {
 }
 
 /**
- * Loads the case, its open issues and this run's comments.
+ * Loads the case, its issues and this run's comments.
  *
  * @returns {Promise<void>}
  */
@@ -182,6 +187,7 @@ async function loadCase() {
   // Browser history can change the case under an open dialog, which would leave it showing
   // the previous case's assignees.
   assignDialogOpen.value = false;
+  historyOpen.value = false;
 
   try {
     if (!runStore.run || runStore.run.id !== runId.value) {
@@ -193,6 +199,7 @@ async function loadCase() {
 
     testCase.value = payload;
     issues.value = payload.issues ?? [];
+    resolvedIssues.value = payload.resolved_issues ?? [];
 
     if (result.value) {
       comments.value = await api.results.comments(result.value.id);
@@ -328,7 +335,8 @@ async function raiseIssue() {
 }
 
 /**
- * Resolves or closes an issue, which removes its banner from every later run.
+ * Resolves or closes an issue, which removes its banner from every later run and moves it
+ * into this case's issue history.
  *
  * @param {Object} issue Issue row.
  * @param {'resolved'|'wontfix'} status New status.
@@ -336,9 +344,15 @@ async function raiseIssue() {
  */
 async function resolveIssue(issue, status) {
   try {
-    await api.issues.update(issue.id, {status, resolution_note: resolutionNote.value});
+    const resolved = await api.issues.update(issue.id, {
+      status,
+      resolution_note: resolutionNote.value
+    });
 
     issues.value = issues.value.filter((item) => item.id !== issue.id);
+    // Into the history rather than out of sight, so the tester can still see who closed it
+    // and why without reloading the case.
+    resolvedIssues.value = [resolved, ...resolvedIssues.value];
     resolvingId.value = 0;
     resolutionNote.value = '';
 
@@ -353,6 +367,16 @@ async function resolveIssue(issue, status) {
   } catch (error) {
     ui.toastError(error, 'The issue could not be updated.');
   }
+}
+
+/**
+ * How an issue was closed, for the history list.
+ *
+ * @param {Object} issue Issue row.
+ * @returns {string}
+ */
+function closureLabel(issue) {
+  return issue.status === 'wontfix' ? "Won't fix" : 'Resolved';
 }
 
 /**
@@ -530,8 +554,9 @@ onBeforeUnmount(releaseLock);
       </div>
 
       <!--
-        Open issues only. A resolved issue is history, reachable from the case library; a
-        list of everything that was ever wrong with a case becomes noise fast.
+        Open issues are shown outright; resolved ones sit behind a toggle below them. A list
+        of everything that was ever wrong with a case becomes noise fast, but who closed an
+        old issue and why is worth a click when today's symptom looks familiar.
       -->
       <div v-if="issues.length" class="qa-stack qa-stack--tight">
         <h3>{{ issues.length }} open {{ plural(issues.length, 'issue') }} on this case</h3>
@@ -612,6 +637,74 @@ onBeforeUnmount(releaseLock);
             >
               Resolve issue
             </button>
+          </div>
+        </div>
+      </div>
+
+      <!--
+        Collapsed by default, and counted in the button so the toggle is worth pressing only
+        when there is something behind it.
+      -->
+      <div v-if="resolvedIssues.length" class="qa-stack qa-stack--tight">
+        <div>
+          <button
+            type="button"
+            class="qa-button qa-button--small qa-button--quiet"
+            :aria-expanded="historyOpen"
+            @click="historyOpen = !historyOpen"
+          >
+            {{ historyOpen ? 'Hide' : 'Show' }} {{ resolvedIssues.length }} closed
+            {{ plural(resolvedIssues.length, 'issue') }}
+          </button>
+        </div>
+
+        <div v-if="historyOpen" class="qa-stack qa-stack--tight">
+          <div v-for="issue in resolvedIssues" :key="issue.id" class="qa-issue qa-issue--resolved">
+            <div class="qa-issue__head">
+              <div>
+                <p class="qa-issue__title">
+                  {{ issue.title }}
+                  <span class="qa-badge">{{ closureLabel(issue) }}</span>
+                </p>
+                <p class="qa-issue__meta">
+                  Raised by {{ issue.created_by.name }} ·
+                  <span :title="absoluteTime(issue.created_at)">{{
+                    relativeTime(issue.created_at)
+                  }}</span>
+                  <template v-if="issue.origin_run_id">
+                    · raised in run #{{ issue.origin_run_id }}</template
+                  >
+                </p>
+                <p class="qa-issue__meta">
+                  {{ closureLabel(issue) }} by {{ issue.resolved_by?.name ?? 'somebody' }}
+                  <template v-if="issue.resolved_at">
+                    ·
+                    <span :title="absoluteTime(issue.resolved_at)">{{
+                      relativeTime(issue.resolved_at)
+                    }}</span>
+                  </template>
+                </p>
+              </div>
+              <a
+                v-if="issue.github_url"
+                class="qa-button qa-button--small qa-button--quiet"
+                :href="issue.github_url"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                GitHub ↗
+              </a>
+            </div>
+
+            <div
+              v-if="issue.description"
+              class="qa-issue__body qa-prose"
+              v-html="issue.description"
+            />
+
+            <p v-if="issue.resolution_note" class="qa-issue__resolution">
+              {{ issue.resolution_note }}
+            </p>
           </div>
         </div>
       </div>
