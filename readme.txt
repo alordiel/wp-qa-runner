@@ -4,7 +4,7 @@ Tags: qa, testing, test cases, quality assurance, test management
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 8.2
-Stable tag: 1.1.0
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,7 +82,7 @@ No. It records manual testing done by people.
 
 = Who can see the QA Runner screens? =
 
-Only users with the `qa_view_qa` capability: QA Testers, QA Admins and site administrators.
+Only users with the `qa_view_qa` capability. The plugin adds two roles that have it, QA Tester and QA Admin, and site administrators always have full access.
 
 = What happens to my data when I delete the plugin? =
 
@@ -103,21 +103,14 @@ You can pause both in Settings.
 
 == Changelog ==
 
-= 1.1.0 =
-* The whole plugin, including the admin screen, is now translatable (text domain `qa-runner`).
-* Dates follow the user's WordPress language.
-* Threaded replies on comments, up to three levels.
-* Edit your own comments.
-* Email when someone else assigns you a case within a run.
-* No email when you assign yourself to a run or a case.
-* Removed the daily digest email and its setting.
-* New QA team panel in Settings for site administrators.
-* Fixed the comment editor not clearing after a comment was posted.
-
 = 1.0.0 =
-* First release.
+* Initial release.
 
-== Upgrade Notice ==
 
-= 1.1.0 =
-Adds comment replies and case-assignment emails, and removes the daily digest. The database is upgraded automatically.
+== Screenshots ==
+
+1. QA runs dashboard - list of the test runs with their progress.
+2. Single QA run dashboard - presents the test cases and their assignees and progress.
+3. Case library - every case belongs to a suite.
+4. Suites.
+5. Settings - notifications and managing the users who hold QA roles.
