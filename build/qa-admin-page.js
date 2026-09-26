@@ -36884,158 +36884,153 @@ Use slot props instead:
 	var _hoisted_3$9 = { class: "qa-page-head" };
 	var _hoisted_4$9 = { class: "qa-page-head__meta" };
 	var _hoisted_5$8 = { class: "qa-row" };
-	var _hoisted_6$8 = { class: "qa-subtitle" };
-	var _hoisted_7$8 = { class: "qa-row" };
+	var _hoisted_6$8 = { class: "qa-row" };
+	var _hoisted_7$8 = ["disabled"];
 	var _hoisted_8$8 = ["disabled"];
-	var _hoisted_9$7 = ["disabled"];
-	var _hoisted_10$7 = {
+	var _hoisted_9$7 = {
 		key: 0,
 		class: "qa-notice qa-notice--warning"
 	};
-	var _hoisted_11$7 = {
+	var _hoisted_10$7 = {
 		key: 1,
 		class: "qa-notice qa-notice--warning"
 	};
-	var _hoisted_12$7 = { class: "qa-card" };
-	var _hoisted_13$7 = { class: "qa-card__head" };
-	var _hoisted_14$6 = {
+	var _hoisted_11$7 = { class: "qa-card" };
+	var _hoisted_12$7 = { class: "qa-card__head" };
+	var _hoisted_13$7 = {
 		key: 0,
 		class: "qa-muted"
 	};
-	var _hoisted_15$4 = ["title"];
-	var _hoisted_16$4 = { class: "qa-card__body" };
-	var _hoisted_17$4 = {
+	var _hoisted_14$6 = ["title"];
+	var _hoisted_15$4 = { class: "qa-card__body" };
+	var _hoisted_16$4 = {
 		key: 2,
 		class: "qa-muted"
 	};
-	var _hoisted_18$4 = {
+	var _hoisted_17$4 = {
 		key: 2,
 		class: "qa-card"
 	};
-	var _hoisted_19$4 = { class: "qa-card__head" };
-	var _hoisted_20$4 = {
+	var _hoisted_18$4 = { class: "qa-card__head" };
+	var _hoisted_19$4 = {
 		key: 0,
 		class: "qa-row"
 	};
-	var _hoisted_21$4 = ["disabled"];
-	var _hoisted_22$4 = { class: "qa-card__body" };
-	var _hoisted_23$4 = {
+	var _hoisted_20$4 = ["disabled"];
+	var _hoisted_21$4 = { class: "qa-card__body" };
+	var _hoisted_22$4 = {
 		key: 0,
 		class: "qa-chips"
 	};
-	var _hoisted_24$4 = ["src", "alt"];
-	var _hoisted_25$4 = ["aria-label", "onClick"];
-	var _hoisted_26$4 = {
+	var _hoisted_23$4 = ["src", "alt"];
+	var _hoisted_24$4 = ["aria-label", "onClick"];
+	var _hoisted_25$4 = {
 		key: 1,
 		class: "qa-muted"
 	};
-	var _hoisted_27$3 = { class: "qa-grid-2" };
-	var _hoisted_28$3 = { class: "qa-card" };
-	var _hoisted_29$3 = ["innerHTML"];
-	var _hoisted_30$2 = { class: "qa-card" };
-	var _hoisted_31$2 = ["innerHTML"];
-	var _hoisted_32$2 = {
+	var _hoisted_26$4 = { class: "qa-grid-2" };
+	var _hoisted_27$3 = { class: "qa-card" };
+	var _hoisted_28$3 = ["innerHTML"];
+	var _hoisted_29$3 = { class: "qa-card" };
+	var _hoisted_30$2 = ["innerHTML"];
+	var _hoisted_31$2 = {
 		key: 3,
 		class: "qa-stack qa-stack--tight"
 	};
-	var _hoisted_33$2 = { class: "qa-issue__head" };
-	var _hoisted_34$2 = { class: "qa-issue__title" };
-	var _hoisted_35$2 = { class: "qa-issue__meta" };
-	var _hoisted_36$2 = ["title"];
-	var _hoisted_37$2 = ["href"];
-	var _hoisted_38$2 = ["innerHTML"];
-	var _hoisted_39$2 = { key: 1 };
-	var _hoisted_40$2 = {
+	var _hoisted_32$2 = { class: "qa-issue__head" };
+	var _hoisted_33$2 = { class: "qa-issue__title" };
+	var _hoisted_34$2 = { class: "qa-issue__meta" };
+	var _hoisted_35$2 = ["title"];
+	var _hoisted_36$2 = ["href"];
+	var _hoisted_37$2 = ["innerHTML"];
+	var _hoisted_38$2 = { key: 1 };
+	var _hoisted_39$2 = {
 		key: 0,
 		class: "qa-stack qa-stack--tight"
 	};
-	var _hoisted_41$1 = ["for"];
-	var _hoisted_42 = ["id"];
-	var _hoisted_43 = { class: "qa-row" };
+	var _hoisted_40$2 = ["for"];
+	var _hoisted_41$1 = ["id"];
+	var _hoisted_42 = { class: "qa-row" };
+	var _hoisted_43 = ["onClick"];
 	var _hoisted_44 = ["onClick"];
 	var _hoisted_45 = ["onClick"];
-	var _hoisted_46 = ["onClick"];
-	var _hoisted_47 = {
+	var _hoisted_46 = {
 		key: 4,
 		class: "qa-stack qa-stack--tight"
 	};
-	var _hoisted_48 = ["aria-expanded"];
-	var _hoisted_49 = {
+	var _hoisted_47 = ["aria-expanded"];
+	var _hoisted_48 = {
 		key: 0,
 		class: "qa-stack qa-stack--tight"
 	};
-	var _hoisted_50 = { class: "qa-issue__head" };
-	var _hoisted_51 = { class: "qa-issue__title" };
-	var _hoisted_52 = { class: "qa-badge" };
-	var _hoisted_53 = { class: "qa-issue__meta" };
-	var _hoisted_54 = ["title"];
-	var _hoisted_55 = { class: "qa-issue__meta" };
-	var _hoisted_56 = ["title"];
-	var _hoisted_57 = ["href"];
-	var _hoisted_58 = ["innerHTML"];
-	var _hoisted_59 = {
+	var _hoisted_49 = { class: "qa-issue__head" };
+	var _hoisted_50 = { class: "qa-issue__title" };
+	var _hoisted_51 = { class: "qa-badge" };
+	var _hoisted_52 = { class: "qa-issue__meta" };
+	var _hoisted_53 = ["title"];
+	var _hoisted_54 = { class: "qa-issue__meta" };
+	var _hoisted_55 = ["title"];
+	var _hoisted_56 = ["href"];
+	var _hoisted_57 = ["innerHTML"];
+	var _hoisted_58 = {
 		key: 1,
 		class: "qa-issue__resolution"
 	};
-	var _hoisted_60 = { key: 5 };
-	var _hoisted_61 = { class: "qa-card__body qa-stack" };
+	var _hoisted_59 = { key: 5 };
+	var _hoisted_60 = { class: "qa-card__body qa-stack" };
+	var _hoisted_61 = { class: "qa-field" };
 	var _hoisted_62 = { class: "qa-field" };
 	var _hoisted_63 = { class: "qa-field" };
-	var _hoisted_64 = { class: "qa-field" };
-	var _hoisted_65 = { class: "qa-row" };
-	var _hoisted_66 = ["disabled"];
-	var _hoisted_67 = {
+	var _hoisted_64 = { class: "qa-row" };
+	var _hoisted_65 = ["disabled"];
+	var _hoisted_66 = {
 		key: 6,
 		class: "qa-card"
 	};
-	var _hoisted_68 = { class: "qa-card__body qa-stack" };
-	var _hoisted_69 = { key: 1 };
-	var _hoisted_70 = ["src", "alt"];
-	var _hoisted_71 = { class: "qa-comment__main" };
-	var _hoisted_72 = { class: "qa-comment__head" };
-	var _hoisted_73 = { class: "qa-comment__author" };
-	var _hoisted_74 = ["title"];
-	var _hoisted_75 = {
+	var _hoisted_67 = { class: "qa-card__body qa-stack" };
+	var _hoisted_68 = { key: 1 };
+	var _hoisted_69 = ["src", "alt"];
+	var _hoisted_70 = { class: "qa-comment__main" };
+	var _hoisted_71 = { class: "qa-comment__head" };
+	var _hoisted_72 = { class: "qa-comment__author" };
+	var _hoisted_73 = ["title"];
+	var _hoisted_74 = {
 		key: 0,
 		class: "qa-comment__actions"
 	};
+	var _hoisted_75 = ["onClick"];
 	var _hoisted_76 = ["onClick"];
 	var _hoisted_77 = ["onClick"];
-	var _hoisted_78 = ["onClick"];
-	var _hoisted_79 = { class: "qa-row" };
+	var _hoisted_78 = { class: "qa-row" };
+	var _hoisted_79 = ["disabled"];
 	var _hoisted_80 = ["disabled"];
-	var _hoisted_81 = ["disabled"];
-	var _hoisted_82 = ["innerHTML"];
-	var _hoisted_83 = { class: "qa-row" };
+	var _hoisted_81 = ["innerHTML"];
+	var _hoisted_82 = { class: "qa-row" };
+	var _hoisted_83 = ["disabled"];
 	var _hoisted_84 = ["disabled"];
 	var _hoisted_85 = ["disabled"];
-	var _hoisted_86 = ["disabled"];
 	function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
 		return openBlock(), createElementBlock("div", _hoisted_1$9, [$setup.loading ? (openBlock(), createElementBlock("p", _hoisted_2$9, "Loading case…")) : $setup.testCase ? (openBlock(), createElementBlock(Fragment, { key: 1 }, [
-			createBaseVNode("div", _hoisted_3$9, [createBaseVNode("div", _hoisted_4$9, [
-				createVNode($setup["RouterLink"], {
-					to: `/runs/${$setup.runId}`,
-					class: "qa-subtitle"
-				}, {
-					default: withCtx(() => [createTextVNode(" ← " + toDisplayString($setup.runStore.run?.name ?? "Back to run"), 1)]),
-					_: 1
-				}, 8, ["to"]),
-				createBaseVNode("h2", _hoisted_5$8, [createVNode($setup["PriorityDot"], { priority: $setup.testCase.priority }, null, 8, ["priority"]), createBaseVNode("span", null, toDisplayString($setup.testCase.title), 1)]),
-				createBaseVNode("p", _hoisted_6$8, [createTextVNode(toDisplayString($setup.testCase.suite_name) + " ", 1), $setup.previousRun ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [createTextVNode(" · last run (" + toDisplayString($setup.previousRun.run_name) + "): " + toDisplayString($setup.statusLabel($setup.previousRun.status)), 1)], 64)) : createCommentVNode("", true)])
-			]), createBaseVNode("div", _hoisted_7$8, [createBaseVNode("button", {
+			createBaseVNode("div", _hoisted_3$9, [createBaseVNode("div", _hoisted_4$9, [createVNode($setup["RouterLink"], {
+				to: `/runs/${$setup.runId}`,
+				class: "qa-subtitle"
+			}, {
+				default: withCtx(() => [..._cache[15] || (_cache[15] = [createTextVNode(" ← Back to run ", -1)])]),
+				_: 1
+			}, 8, ["to"]), createBaseVNode("h2", _hoisted_5$8, [createVNode($setup["PriorityDot"], { priority: $setup.testCase.priority }, null, 8, ["priority"]), createBaseVNode("span", null, toDisplayString($setup.testCase.suite_name) + " -> " + toDisplayString($setup.testCase.title), 1)])]), createBaseVNode("div", _hoisted_6$8, [createBaseVNode("button", {
 				type: "button",
 				class: "qa-button qa-button--quiet",
 				disabled: !$setup.previousCaseId,
 				onClick: _cache[0] || (_cache[0] = ($event) => $setup.go($setup.previousCaseId))
-			}, " ← Previous ", 8, _hoisted_8$8), createBaseVNode("button", {
+			}, " ← Previous ", 8, _hoisted_7$8), createBaseVNode("button", {
 				type: "button",
 				class: "qa-button qa-button--quiet",
 				disabled: !$setup.nextCaseId,
 				onClick: _cache[1] || (_cache[1] = ($event) => $setup.go($setup.nextCaseId))
-			}, " Next → ", 8, _hoisted_9$7)])]),
-			$setup.lockedByOther ? (openBlock(), createElementBlock("div", _hoisted_10$7, toDisplayString($setup.result.in_progress_by.name) + " is testing this. You can still record your own result. ", 1)) : createCommentVNode("", true),
-			!$setup.isOpen ? (openBlock(), createElementBlock("div", _hoisted_11$7, " This run is " + toDisplayString($setup.runStore.run?.status) + ". Results and comments are read-only. ", 1)) : createCommentVNode("", true),
-			createBaseVNode("div", _hoisted_12$7, [createBaseVNode("div", _hoisted_13$7, [_cache[15] || (_cache[15] = createBaseVNode("h3", null, "Result", -1)), $setup.result?.tested_by ? (openBlock(), createElementBlock("span", _hoisted_14$6, [createTextVNode(" Set by " + toDisplayString($setup.result.tested_by.name) + " ", 1), createBaseVNode("span", { title: $setup.absoluteTime($setup.result.tested_at) }, toDisplayString($setup.relativeTime($setup.result.tested_at)), 9, _hoisted_15$4)])) : createCommentVNode("", true)]), createBaseVNode("div", _hoisted_16$4, [$setup.canTest && $setup.result ? (openBlock(), createBlock($setup["StatusControl"], {
+			}, " Next → ", 8, _hoisted_8$8)])]),
+			$setup.lockedByOther ? (openBlock(), createElementBlock("div", _hoisted_9$7, toDisplayString($setup.result.in_progress_by.name) + " is testing this. You can still record your own result. ", 1)) : createCommentVNode("", true),
+			!$setup.isOpen ? (openBlock(), createElementBlock("div", _hoisted_10$7, " This run is " + toDisplayString($setup.runStore.run?.status) + ". Results and comments are read-only. ", 1)) : createCommentVNode("", true),
+			createBaseVNode("div", _hoisted_11$7, [createBaseVNode("div", _hoisted_12$7, [_cache[16] || (_cache[16] = createBaseVNode("h3", null, "Result", -1)), $setup.result?.tested_by ? (openBlock(), createElementBlock("span", _hoisted_13$7, [createTextVNode(" Set by " + toDisplayString($setup.result.tested_by.name) + " ", 1), createBaseVNode("span", { title: $setup.absoluteTime($setup.result.tested_at) }, toDisplayString($setup.relativeTime($setup.result.tested_at)), 9, _hoisted_14$6)])) : createCommentVNode("", true)]), createBaseVNode("div", _hoisted_15$4, [$setup.canTest && $setup.result ? (openBlock(), createBlock($setup["StatusControl"], {
 				key: 0,
 				"model-value": $setup.result.status,
 				"case-title": $setup.testCase.title,
@@ -37043,19 +37038,19 @@ Use slot props instead:
 			}, null, 8, ["model-value", "case-title"])) : $setup.result ? (openBlock(), createBlock($setup["StatusBadge"], {
 				key: 1,
 				status: $setup.result.status
-			}, null, 8, ["status"])) : (openBlock(), createElementBlock("p", _hoisted_17$4, "This case is not part of this run."))])]),
-			$setup.result ? (openBlock(), createElementBlock("div", _hoisted_18$4, [
-				createBaseVNode("div", _hoisted_19$4, [_cache[16] || (_cache[16] = createBaseVNode("h3", null, "Assigned testers", -1)), $setup.canAssign ? (openBlock(), createElementBlock("div", _hoisted_20$4, [createBaseVNode("button", {
+			}, null, 8, ["status"])) : (openBlock(), createElementBlock("p", _hoisted_16$4, "This case is not part of this run."))])]),
+			$setup.result ? (openBlock(), createElementBlock("div", _hoisted_17$4, [
+				createBaseVNode("div", _hoisted_18$4, [_cache[17] || (_cache[17] = createBaseVNode("h3", null, "Assigned testers", -1)), $setup.canAssign ? (openBlock(), createElementBlock("div", _hoisted_19$4, [createBaseVNode("button", {
 					type: "button",
 					class: normalizeClass(["qa-button qa-button--small", { "qa-button--primary": !$setup.assignedToMe }]),
 					disabled: $setup.savingAssignment,
 					onClick: $setup.toggleSelf
-				}, toDisplayString($setup.assignedToMe ? "Unassign me" : "Assign me"), 11, _hoisted_21$4), createBaseVNode("button", {
+				}, toDisplayString($setup.assignedToMe ? "Unassign me" : "Assign me"), 11, _hoisted_20$4), createBaseVNode("button", {
 					type: "button",
 					class: "qa-button qa-button--small",
 					onClick: _cache[2] || (_cache[2] = ($event) => $setup.assignDialogOpen = true)
 				}, " Assign others… ")])) : createCommentVNode("", true)]),
-				createBaseVNode("div", _hoisted_22$4, [$setup.assignees.length ? (openBlock(), createElementBlock("div", _hoisted_23$4, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.assignees, (person) => {
+				createBaseVNode("div", _hoisted_21$4, [$setup.assignees.length ? (openBlock(), createElementBlock("div", _hoisted_22$4, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.assignees, (person) => {
 					return openBlock(), createElementBlock("span", {
 						key: person.id,
 						class: "qa-person-badge"
@@ -37067,7 +37062,7 @@ Use slot props instead:
 							width: "24",
 							height: "24",
 							loading: "lazy"
-						}, null, 8, _hoisted_24$4),
+						}, null, 8, _hoisted_23$4),
 						createBaseVNode("span", null, toDisplayString(person.name), 1),
 						$setup.canUnassign(person) ? (openBlock(), createElementBlock("button", {
 							key: 0,
@@ -37075,9 +37070,9 @@ Use slot props instead:
 							class: "qa-person-badge__remove",
 							"aria-label": `Unassign ${person.name}`,
 							onClick: ($event) => $setup.removeAssignee(person)
-						}, " × ", 8, _hoisted_25$4)) : createCommentVNode("", true)
+						}, " × ", 8, _hoisted_24$4)) : createCommentVNode("", true)
 					]);
-				}), 128))])) : (openBlock(), createElementBlock("p", _hoisted_26$4, [_cache[17] || (_cache[17] = createTextVNode(" Nobody is assigned to this case yet. ", -1)), $setup.canAssign ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [createTextVNode("Claim it so the rest of the team knows.")], 64)) : createCommentVNode("", true)]))]),
+				}), 128))])) : (openBlock(), createElementBlock("p", _hoisted_25$4, [_cache[18] || (_cache[18] = createTextVNode(" Nobody is assigned to this case yet. ", -1)), $setup.canAssign ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [createTextVNode("Claim it so the rest of the team knows.")], 64)) : createCommentVNode("", true)]))]),
 				createVNode($setup["AssigneeDialog"], {
 					open: $setup.assignDialogOpen,
 					title: "Assign this case",
@@ -37094,24 +37089,24 @@ Use slot props instead:
 					"saving"
 				])
 			])) : createCommentVNode("", true),
-			createBaseVNode("div", _hoisted_27$3, [createBaseVNode("div", _hoisted_28$3, [_cache[18] || (_cache[18] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "Steps")], -1)), createBaseVNode("div", {
+			createBaseVNode("div", _hoisted_26$4, [createBaseVNode("div", _hoisted_27$3, [_cache[19] || (_cache[19] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "Steps")], -1)), createBaseVNode("div", {
 				class: "qa-card__body qa-prose",
 				innerHTML: $setup.testCase.steps || "<p class='qa-muted'>No steps recorded.</p>"
-			}, null, 8, _hoisted_29$3)]), createBaseVNode("div", _hoisted_30$2, [_cache[19] || (_cache[19] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "Expected result")], -1)), createBaseVNode("div", {
+			}, null, 8, _hoisted_28$3)]), createBaseVNode("div", _hoisted_29$3, [_cache[20] || (_cache[20] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "Expected result")], -1)), createBaseVNode("div", {
 				class: "qa-card__body qa-prose",
 				innerHTML: $setup.testCase.expected || "<p class='qa-muted'>No expected result recorded.</p>"
-			}, null, 8, _hoisted_31$2)])]),
-			$setup.issues.length ? (openBlock(), createElementBlock("div", _hoisted_32$2, [
+			}, null, 8, _hoisted_30$2)])]),
+			$setup.issues.length ? (openBlock(), createElementBlock("div", _hoisted_31$2, [
 				createBaseVNode("h3", null, toDisplayString($setup.issues.length) + " open " + toDisplayString($setup.plural($setup.issues.length, "issue")) + " on this case", 1),
-				_cache[20] || (_cache[20] = createBaseVNode("p", { class: "qa-subtitle" }, "Raised in any run, still unresolved.", -1)),
+				_cache[21] || (_cache[21] = createBaseVNode("p", { class: "qa-subtitle" }, "Raised in any run, still unresolved.", -1)),
 				(openBlock(true), createElementBlock(Fragment, null, renderList($setup.issues, (issue) => {
 					return openBlock(), createElementBlock("div", {
 						key: issue.id,
 						class: "qa-issue"
 					}, [
-						createBaseVNode("div", _hoisted_33$2, [createBaseVNode("div", null, [createBaseVNode("p", _hoisted_34$2, toDisplayString(issue.title), 1), createBaseVNode("p", _hoisted_35$2, [
+						createBaseVNode("div", _hoisted_32$2, [createBaseVNode("div", null, [createBaseVNode("p", _hoisted_33$2, toDisplayString(issue.title), 1), createBaseVNode("p", _hoisted_34$2, [
 							createTextVNode(toDisplayString(issue.created_by.name) + " · ", 1),
-							createBaseVNode("span", { title: $setup.absoluteTime(issue.created_at) }, toDisplayString($setup.relativeTime(issue.created_at)), 9, _hoisted_36$2),
+							createBaseVNode("span", { title: $setup.absoluteTime(issue.created_at) }, toDisplayString($setup.relativeTime(issue.created_at)), 9, _hoisted_35$2),
 							issue.origin_run_id ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [createTextVNode(" · raised in run #" + toDisplayString(issue.origin_run_id), 1)], 64)) : createCommentVNode("", true)
 						])]), issue.github_url ? (openBlock(), createElementBlock("a", {
 							key: 0,
@@ -37119,34 +37114,34 @@ Use slot props instead:
 							href: issue.github_url,
 							target: "_blank",
 							rel: "noopener noreferrer"
-						}, " GitHub ↗ ", 8, _hoisted_37$2)) : createCommentVNode("", true)]),
+						}, " GitHub ↗ ", 8, _hoisted_36$2)) : createCommentVNode("", true)]),
 						issue.description ? (openBlock(), createElementBlock("div", {
 							key: 0,
 							class: "qa-issue__body qa-prose",
 							innerHTML: issue.description
-						}, null, 8, _hoisted_38$2)) : createCommentVNode("", true),
-						$setup.bootstrap.caps?.runTests ? (openBlock(), createElementBlock("div", _hoisted_39$2, [$setup.resolvingId === issue.id ? (openBlock(), createElementBlock("div", _hoisted_40$2, [
+						}, null, 8, _hoisted_37$2)) : createCommentVNode("", true),
+						$setup.bootstrap.caps?.runTests ? (openBlock(), createElementBlock("div", _hoisted_38$2, [$setup.resolvingId === issue.id ? (openBlock(), createElementBlock("div", _hoisted_39$2, [
 							createBaseVNode("label", {
 								class: "qa-sr-only",
 								for: `note-${issue.id}`
-							}, "Resolution note", 8, _hoisted_41$1),
+							}, "Resolution note", 8, _hoisted_40$2),
 							withDirectives(createBaseVNode("textarea", {
 								id: `note-${issue.id}`,
 								"onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => $setup.resolutionNote = $event),
 								class: "qa-textarea",
 								placeholder: "What fixed it, or why it will not be fixed."
-							}, null, 8, _hoisted_42), [[vModelText, $setup.resolutionNote]]),
-							createBaseVNode("div", _hoisted_43, [
+							}, null, 8, _hoisted_41$1), [[vModelText, $setup.resolutionNote]]),
+							createBaseVNode("div", _hoisted_42, [
 								createBaseVNode("button", {
 									type: "button",
 									class: "qa-button qa-button--primary qa-button--small",
 									onClick: ($event) => $setup.resolveIssue(issue, "resolved")
-								}, " Resolve issue ", 8, _hoisted_44),
+								}, " Resolve issue ", 8, _hoisted_43),
 								createBaseVNode("button", {
 									type: "button",
 									class: "qa-button qa-button--small",
 									onClick: ($event) => $setup.resolveIssue(issue, "wontfix")
-								}, " Won't fix ", 8, _hoisted_45),
+								}, " Won't fix ", 8, _hoisted_44),
 								createBaseVNode("button", {
 									type: "button",
 									class: "qa-button qa-button--quiet qa-button--small",
@@ -37161,44 +37156,44 @@ Use slot props instead:
 								$setup.resolvingId = issue.id;
 								$setup.resolutionNote = "";
 							}
-						}, " Resolve issue ", 8, _hoisted_46))])) : createCommentVNode("", true)
+						}, " Resolve issue ", 8, _hoisted_45))])) : createCommentVNode("", true)
 					]);
 				}), 128))
 			])) : createCommentVNode("", true),
-			$setup.resolvedIssues.length ? (openBlock(), createElementBlock("div", _hoisted_47, [createBaseVNode("div", null, [createBaseVNode("button", {
+			$setup.resolvedIssues.length ? (openBlock(), createElementBlock("div", _hoisted_46, [createBaseVNode("div", null, [createBaseVNode("button", {
 				type: "button",
 				class: "qa-button qa-button--small qa-button--quiet",
 				"aria-expanded": $setup.historyOpen,
 				onClick: _cache[6] || (_cache[6] = ($event) => $setup.historyOpen = !$setup.historyOpen)
-			}, toDisplayString($setup.historyOpen ? "Hide" : "Show") + " " + toDisplayString($setup.resolvedIssues.length) + " closed " + toDisplayString($setup.plural($setup.resolvedIssues.length, "issue")), 9, _hoisted_48)]), $setup.historyOpen ? (openBlock(), createElementBlock("div", _hoisted_49, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.resolvedIssues, (issue) => {
+			}, toDisplayString($setup.historyOpen ? "Hide" : "Show") + " " + toDisplayString($setup.resolvedIssues.length) + " closed " + toDisplayString($setup.plural($setup.resolvedIssues.length, "issue")), 9, _hoisted_47)]), $setup.historyOpen ? (openBlock(), createElementBlock("div", _hoisted_48, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.resolvedIssues, (issue) => {
 				return openBlock(), createElementBlock("div", {
 					key: issue.id,
 					class: "qa-issue qa-issue--resolved"
 				}, [
-					createBaseVNode("div", _hoisted_50, [createBaseVNode("div", null, [
-						createBaseVNode("p", _hoisted_51, [createTextVNode(toDisplayString(issue.title) + " ", 1), createBaseVNode("span", _hoisted_52, toDisplayString($setup.closureLabel(issue)), 1)]),
-						createBaseVNode("p", _hoisted_53, [
+					createBaseVNode("div", _hoisted_49, [createBaseVNode("div", null, [
+						createBaseVNode("p", _hoisted_50, [createTextVNode(toDisplayString(issue.title) + " ", 1), createBaseVNode("span", _hoisted_51, toDisplayString($setup.closureLabel(issue)), 1)]),
+						createBaseVNode("p", _hoisted_52, [
 							createTextVNode(" Raised by " + toDisplayString(issue.created_by.name) + " · ", 1),
-							createBaseVNode("span", { title: $setup.absoluteTime(issue.created_at) }, toDisplayString($setup.relativeTime(issue.created_at)), 9, _hoisted_54),
+							createBaseVNode("span", { title: $setup.absoluteTime(issue.created_at) }, toDisplayString($setup.relativeTime(issue.created_at)), 9, _hoisted_53),
 							issue.origin_run_id ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [createTextVNode(" · raised in run #" + toDisplayString(issue.origin_run_id), 1)], 64)) : createCommentVNode("", true)
 						]),
-						createBaseVNode("p", _hoisted_55, [createTextVNode(toDisplayString($setup.closureLabel(issue)) + " by " + toDisplayString(issue.resolved_by?.name ?? "somebody") + " ", 1), issue.resolved_at ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [_cache[21] || (_cache[21] = createTextVNode(" · ", -1)), createBaseVNode("span", { title: $setup.absoluteTime(issue.resolved_at) }, toDisplayString($setup.relativeTime(issue.resolved_at)), 9, _hoisted_56)], 64)) : createCommentVNode("", true)])
+						createBaseVNode("p", _hoisted_54, [createTextVNode(toDisplayString($setup.closureLabel(issue)) + " by " + toDisplayString(issue.resolved_by?.name ?? "somebody") + " ", 1), issue.resolved_at ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [_cache[22] || (_cache[22] = createTextVNode(" · ", -1)), createBaseVNode("span", { title: $setup.absoluteTime(issue.resolved_at) }, toDisplayString($setup.relativeTime(issue.resolved_at)), 9, _hoisted_55)], 64)) : createCommentVNode("", true)])
 					]), issue.github_url ? (openBlock(), createElementBlock("a", {
 						key: 0,
 						class: "qa-button qa-button--small qa-button--quiet",
 						href: issue.github_url,
 						target: "_blank",
 						rel: "noopener noreferrer"
-					}, " GitHub ↗ ", 8, _hoisted_57)) : createCommentVNode("", true)]),
+					}, " GitHub ↗ ", 8, _hoisted_56)) : createCommentVNode("", true)]),
 					issue.description ? (openBlock(), createElementBlock("div", {
 						key: 0,
 						class: "qa-issue__body qa-prose",
 						innerHTML: issue.description
-					}, null, 8, _hoisted_58)) : createCommentVNode("", true),
-					issue.resolution_note ? (openBlock(), createElementBlock("p", _hoisted_59, toDisplayString(issue.resolution_note), 1)) : createCommentVNode("", true)
+					}, null, 8, _hoisted_57)) : createCommentVNode("", true),
+					issue.resolution_note ? (openBlock(), createElementBlock("p", _hoisted_58, toDisplayString(issue.resolution_note), 1)) : createCommentVNode("", true)
 				]);
 			}), 128))])) : createCommentVNode("", true)])) : createCommentVNode("", true),
-			$setup.bootstrap.caps?.runTests ? (openBlock(), createElementBlock("div", _hoisted_60, [!$setup.issueFormOpen ? (openBlock(), createElementBlock("button", {
+			$setup.bootstrap.caps?.runTests ? (openBlock(), createElementBlock("div", _hoisted_59, [!$setup.issueFormOpen ? (openBlock(), createElementBlock("button", {
 				key: 0,
 				type: "button",
 				class: "qa-button qa-button--danger",
@@ -37207,8 +37202,8 @@ Use slot props instead:
 				key: 1,
 				class: "qa-card",
 				onSubmit: withModifiers($setup.raiseIssue, ["prevent"])
-			}, [_cache[26] || (_cache[26] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "Raise an issue")], -1)), createBaseVNode("div", _hoisted_61, [
-				createBaseVNode("div", _hoisted_62, [_cache[22] || (_cache[22] = createBaseVNode("label", {
+			}, [_cache[27] || (_cache[27] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "Raise an issue")], -1)), createBaseVNode("div", _hoisted_60, [
+				createBaseVNode("div", _hoisted_61, [_cache[23] || (_cache[23] = createBaseVNode("label", {
 					class: "qa-field__label",
 					for: "issue-title"
 				}, "Title", -1)), withDirectives(createBaseVNode("input", {
@@ -37219,13 +37214,13 @@ Use slot props instead:
 					placeholder: "What is broken",
 					required: ""
 				}, null, 512), [[vModelText, $setup.issueDraft.title]])]),
-				createBaseVNode("div", _hoisted_63, [_cache[23] || (_cache[23] = createBaseVNode("span", { class: "qa-field__label" }, "Description", -1)), createVNode($setup["RichTextEditor"], {
+				createBaseVNode("div", _hoisted_62, [_cache[24] || (_cache[24] = createBaseVNode("span", { class: "qa-field__label" }, "Description", -1)), createVNode($setup["RichTextEditor"], {
 					modelValue: $setup.issueDraft.description,
 					"onUpdate:modelValue": _cache[9] || (_cache[9] = ($event) => $setup.issueDraft.description = $event),
 					placeholder: "What you saw, and what you expected."
 				}, null, 8, ["modelValue"])]),
-				createBaseVNode("div", _hoisted_64, [
-					_cache[24] || (_cache[24] = createBaseVNode("label", {
+				createBaseVNode("div", _hoisted_63, [
+					_cache[25] || (_cache[25] = createBaseVNode("label", {
 						class: "qa-field__label",
 						for: "issue-url"
 					}, "GitHub issue", -1)),
@@ -37236,23 +37231,23 @@ Use slot props instead:
 						type: "url",
 						placeholder: "https://github.com/owner/repo/issues/123"
 					}, null, 512), [[vModelText, $setup.issueDraft.github_url]]),
-					_cache[25] || (_cache[25] = createBaseVNode("span", { class: "qa-field__hint" }, "Must be a github.com link. Leave blank if you have not filed it yet.", -1))
+					_cache[26] || (_cache[26] = createBaseVNode("span", { class: "qa-field__hint" }, "Must be a github.com link. Leave blank if you have not filed it yet.", -1))
 				]),
-				createBaseVNode("div", _hoisted_65, [createBaseVNode("button", {
+				createBaseVNode("div", _hoisted_64, [createBaseVNode("button", {
 					type: "submit",
 					class: "qa-button qa-button--primary",
 					disabled: $setup.savingIssue
-				}, toDisplayString($setup.savingIssue ? "Saving…" : "Raise issue"), 9, _hoisted_66), createBaseVNode("button", {
+				}, toDisplayString($setup.savingIssue ? "Saving…" : "Raise issue"), 9, _hoisted_65), createBaseVNode("button", {
 					type: "button",
 					class: "qa-button qa-button--quiet",
 					onClick: _cache[11] || (_cache[11] = ($event) => $setup.issueFormOpen = false)
 				}, " Cancel ")])
 			])], 32))])) : createCommentVNode("", true),
-			$setup.result ? (openBlock(), createElementBlock("div", _hoisted_67, [_cache[30] || (_cache[30] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "Comments"), createBaseVNode("span", { class: "qa-muted" }, "Scoped to this run")], -1)), createBaseVNode("div", _hoisted_68, [!$setup.comments.length ? (openBlock(), createBlock($setup["EmptyState"], {
+			$setup.result ? (openBlock(), createElementBlock("div", _hoisted_66, [_cache[31] || (_cache[31] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "Comments"), createBaseVNode("span", { class: "qa-muted" }, "Scoped to this run")], -1)), createBaseVNode("div", _hoisted_67, [!$setup.comments.length ? (openBlock(), createBlock($setup["EmptyState"], {
 				key: 0,
 				title: "No comments on this case yet.",
 				description: "Add one when a result needs explaining."
-			})) : (openBlock(), createElementBlock("div", _hoisted_69, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.threadedComments, ({ comment, depth }) => {
+			})) : (openBlock(), createElementBlock("div", _hoisted_68, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.threadedComments, ({ comment, depth }) => {
 				return openBlock(), createElementBlock("div", {
 					key: comment.id,
 					class: normalizeClass(["qa-comment", { "qa-comment--reply": depth > 1 }]),
@@ -37264,11 +37259,11 @@ Use slot props instead:
 					width: "28",
 					height: "28",
 					loading: "lazy"
-				}, null, 8, _hoisted_70), createBaseVNode("div", _hoisted_71, [
-					createBaseVNode("div", _hoisted_72, [
-						createBaseVNode("span", _hoisted_73, toDisplayString(comment.author.name), 1),
-						createBaseVNode("span", { title: $setup.absoluteTime(comment.created_at) }, toDisplayString($setup.relativeTime(comment.created_at)), 9, _hoisted_74),
-						$setup.isOpen && $setup.editingCommentId !== comment.id ? (openBlock(), createElementBlock("span", _hoisted_75, [
+				}, null, 8, _hoisted_69), createBaseVNode("div", _hoisted_70, [
+					createBaseVNode("div", _hoisted_71, [
+						createBaseVNode("span", _hoisted_72, toDisplayString(comment.author.name), 1),
+						createBaseVNode("span", { title: $setup.absoluteTime(comment.created_at) }, toDisplayString($setup.relativeTime(comment.created_at)), 9, _hoisted_73),
+						$setup.isOpen && $setup.editingCommentId !== comment.id ? (openBlock(), createElementBlock("span", _hoisted_74, [
 							$setup.canTest && depth < $setup.MAX_COMMENT_DEPTH ? (openBlock(), createElementBlock("button", {
 								key: 0,
 								type: "button",
@@ -37276,10 +37271,10 @@ Use slot props instead:
 								title: "Reply",
 								"aria-label": "Reply to comment",
 								onClick: ($event) => $setup.startReply(comment)
-							}, [..._cache[27] || (_cache[27] = [createBaseVNode("span", {
+							}, [..._cache[28] || (_cache[28] = [createBaseVNode("span", {
 								class: "dashicons dashicons-undo",
 								"aria-hidden": "true"
-							}, null, -1)])], 8, _hoisted_76)) : createCommentVNode("", true),
+							}, null, -1)])], 8, _hoisted_75)) : createCommentVNode("", true),
 							comment.author.id === $setup.bootstrap.currentUser?.id ? (openBlock(), createElementBlock("button", {
 								key: 1,
 								type: "button",
@@ -37287,10 +37282,10 @@ Use slot props instead:
 								title: "Edit comment",
 								"aria-label": "Edit comment",
 								onClick: ($event) => $setup.startEditComment(comment)
-							}, [..._cache[28] || (_cache[28] = [createBaseVNode("span", {
+							}, [..._cache[29] || (_cache[29] = [createBaseVNode("span", {
 								class: "dashicons dashicons-edit",
 								"aria-hidden": "true"
-							}, null, -1)])], 8, _hoisted_77)) : createCommentVNode("", true),
+							}, null, -1)])], 8, _hoisted_76)) : createCommentVNode("", true),
 							comment.author.id === $setup.bootstrap.currentUser?.id || $setup.bootstrap.caps?.manageCases ? (openBlock(), createElementBlock("button", {
 								key: 2,
 								type: "button",
@@ -37298,10 +37293,10 @@ Use slot props instead:
 								title: "Delete comment",
 								"aria-label": "Delete comment",
 								onClick: ($event) => $setup.deleteComment(comment)
-							}, [..._cache[29] || (_cache[29] = [createBaseVNode("span", {
+							}, [..._cache[30] || (_cache[30] = [createBaseVNode("span", {
 								class: "dashicons dashicons-trash",
 								"aria-hidden": "true"
-							}, null, -1)])], 8, _hoisted_78)) : createCommentVNode("", true)
+							}, null, -1)])], 8, _hoisted_77)) : createCommentVNode("", true)
 						])) : createCommentVNode("", true)
 					]),
 					$setup.editingCommentId === comment.id ? (openBlock(), createElementBlock("form", {
@@ -37311,20 +37306,20 @@ Use slot props instead:
 					}, [createVNode($setup["RichTextEditor"], {
 						modelValue: $setup.editCommentDraft,
 						"onUpdate:modelValue": _cache[12] || (_cache[12] = ($event) => $setup.editCommentDraft = $event)
-					}, null, 8, ["modelValue"]), createBaseVNode("div", _hoisted_79, [createBaseVNode("button", {
+					}, null, 8, ["modelValue"]), createBaseVNode("div", _hoisted_78, [createBaseVNode("button", {
 						type: "submit",
 						class: "qa-button qa-button--primary qa-button--small",
 						disabled: $setup.savingCommentEdit
-					}, toDisplayString($setup.savingCommentEdit ? "Saving…" : "Save"), 9, _hoisted_80), createBaseVNode("button", {
+					}, toDisplayString($setup.savingCommentEdit ? "Saving…" : "Save"), 9, _hoisted_79), createBaseVNode("button", {
 						type: "button",
 						class: "qa-button qa-button--small qa-button--quiet",
 						disabled: $setup.savingCommentEdit,
 						onClick: $setup.cancelEditComment
-					}, " Cancel ", 8, _hoisted_81)])], 32)) : (openBlock(), createElementBlock("div", {
+					}, " Cancel ", 8, _hoisted_80)])], 32)) : (openBlock(), createElementBlock("div", {
 						key: 1,
 						class: "qa-comment__body qa-prose",
 						innerHTML: comment.content
-					}, null, 8, _hoisted_82)),
+					}, null, 8, _hoisted_81)),
 					$setup.replyingToId === comment.id ? (openBlock(), createElementBlock("form", {
 						key: 2,
 						class: "qa-stack qa-stack--tight qa-comment__reply-form",
@@ -37333,16 +37328,16 @@ Use slot props instead:
 						modelValue: $setup.replyDraft,
 						"onUpdate:modelValue": _cache[13] || (_cache[13] = ($event) => $setup.replyDraft = $event),
 						placeholder: `Reply to ${comment.author.name}`
-					}, null, 8, ["modelValue", "placeholder"]), createBaseVNode("div", _hoisted_83, [createBaseVNode("button", {
+					}, null, 8, ["modelValue", "placeholder"]), createBaseVNode("div", _hoisted_82, [createBaseVNode("button", {
 						type: "submit",
 						class: "qa-button qa-button--primary qa-button--small",
 						disabled: $setup.postingReply
-					}, toDisplayString($setup.postingReply ? "Replying…" : "Reply"), 9, _hoisted_84), createBaseVNode("button", {
+					}, toDisplayString($setup.postingReply ? "Replying…" : "Reply"), 9, _hoisted_83), createBaseVNode("button", {
 						type: "button",
 						class: "qa-button qa-button--small qa-button--quiet",
 						disabled: $setup.postingReply,
 						onClick: $setup.cancelReply
-					}, " Cancel ", 8, _hoisted_85)])], 32)) : createCommentVNode("", true)
+					}, " Cancel ", 8, _hoisted_84)])], 32)) : createCommentVNode("", true)
 				])], 6);
 			}), 128))])), $setup.canTest ? (openBlock(), createElementBlock("form", {
 				key: 2,
@@ -37356,7 +37351,7 @@ Use slot props instead:
 				type: "submit",
 				class: "qa-button qa-button--primary",
 				disabled: $setup.postingComment
-			}, toDisplayString($setup.postingComment ? "Adding…" : "Add comment"), 9, _hoisted_86)])], 32)) : createCommentVNode("", true)])])) : createCommentVNode("", true)
+			}, toDisplayString($setup.postingComment ? "Adding…" : "Add comment"), 9, _hoisted_85)])], 32)) : createCommentVNode("", true)])])) : createCommentVNode("", true)
 		], 64)) : (openBlock(), createBlock($setup["EmptyState"], {
 			key: 2,
 			title: "That case could not be found."
@@ -37365,7 +37360,7 @@ Use slot props instead:
 				class: "qa-button",
 				to: `/runs/${$setup.runId}`
 			}, {
-				default: withCtx(() => [..._cache[31] || (_cache[31] = [createTextVNode("Back to the run", -1)])]),
+				default: withCtx(() => [..._cache[32] || (_cache[32] = [createTextVNode("Back to the run", -1)])]),
 				_: 1
 			}, 8, ["to"])]),
 			_: 1

@@ -563,19 +563,12 @@ onBeforeUnmount(releaseLock);
       <div class="qa-page-head">
         <div class="qa-page-head__meta">
           <RouterLink :to="`/runs/${runId}`" class="qa-subtitle">
-            ← {{ runStore.run?.name ?? 'Back to run' }}
+            ← Back to run
           </RouterLink>
           <h2 class="qa-row">
             <PriorityDot :priority="testCase.priority" />
-            <span>{{ testCase.title }}</span>
+            <span>{{ testCase.suite_name }} -> {{ testCase.title }}</span>
           </h2>
-          <p class="qa-subtitle">
-            {{ testCase.suite_name }}
-            <template v-if="previousRun">
-              · last run ({{ previousRun.run_name }}):
-              {{ statusLabel(previousRun.status) }}
-            </template>
-          </p>
         </div>
 
         <div class="qa-row">
