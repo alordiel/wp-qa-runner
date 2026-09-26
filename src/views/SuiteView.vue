@@ -154,7 +154,6 @@ onMounted(async () => {
     <div class="qa-page-head">
       <div class="qa-page-head__meta">
         <h2>Suites</h2>
-        <p class="qa-subtitle">Suites group related cases — Login, Account, Checkout.</p>
       </div>
     </div>
 

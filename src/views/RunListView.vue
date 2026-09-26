@@ -66,7 +66,6 @@ onMounted(load);
     <div class="qa-page-head">
       <div class="qa-page-head__meta">
         <h2>Test runs</h2>
-        <p class="qa-subtitle">Each run is one pass through a set of cases, at a point in time.</p>
       </div>
       <RouterLink
         v-if="bootstrap.caps?.runTests"

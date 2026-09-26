@@ -39299,7 +39299,7 @@ Use slot props instead:
 	var _hoisted_13$1 = { class: "qa-badge" };
 	function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
 		return openBlock(), createElementBlock("div", _hoisted_1$2, [
-			createBaseVNode("div", _hoisted_2$2, [_cache[1] || (_cache[1] = createBaseVNode("div", { class: "qa-page-head__meta" }, [createBaseVNode("h2", null, "Test runs"), createBaseVNode("p", { class: "qa-subtitle" }, "Each run is one pass through a set of cases, at a point in time.")], -1)), $setup.bootstrap.caps?.runTests ? (openBlock(), createBlock($setup["RouterLink"], {
+			createBaseVNode("div", _hoisted_2$2, [_cache[1] || (_cache[1] = createBaseVNode("div", { class: "qa-page-head__meta" }, [createBaseVNode("h2", null, "Test runs")], -1)), $setup.bootstrap.caps?.runTests ? (openBlock(), createBlock($setup["RouterLink"], {
 				key: 0,
 				class: "qa-button qa-button--primary",
 				to: "/runs/new"
@@ -39690,7 +39690,7 @@ Use slot props instead:
 	};
 	function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
 		return openBlock(), createElementBlock("div", _hoisted_1, [
-			_cache[11] || (_cache[11] = createBaseVNode("div", { class: "qa-page-head" }, [createBaseVNode("div", { class: "qa-page-head__meta" }, [createBaseVNode("h2", null, "Suites"), createBaseVNode("p", { class: "qa-subtitle" }, "Suites group related cases — Login, Account, Checkout.")])], -1)),
+			_cache[11] || (_cache[11] = createBaseVNode("div", { class: "qa-page-head" }, [createBaseVNode("div", { class: "qa-page-head__meta" }, [createBaseVNode("h2", null, "Suites")])], -1)),
 			createBaseVNode("form", {
 				class: "qa-card",
 				onSubmit: withModifiers($setup.create, ["prevent"])
