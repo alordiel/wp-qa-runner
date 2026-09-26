@@ -43,6 +43,10 @@ const loading = ref(true);
 const commentDraft = ref('');
 const postingComment = ref(false);
 
+const editingCommentId = ref(0);
+const editCommentDraft = ref('');
+const savingCommentEdit = ref(false);
+
 const issueFormOpen = ref(false);
 const issueDraft = ref({title: '', description: '', github_url: ''});
 const savingIssue = ref(false);
@@ -267,6 +271,54 @@ async function postComment() {
     ui.toastError(error, 'The comment could not be added.');
   } finally {
     postingComment.value = false;
+  }
+}
+
+/**
+ * Opens the inline editor for a comment.
+ *
+ * @param {Object} comment Comment row.
+ * @returns {void}
+ */
+function startEditComment(comment) {
+  editingCommentId.value = comment.id;
+  editCommentDraft.value = comment.content;
+}
+
+/**
+ * Closes the inline comment editor without saving.
+ *
+ * @returns {void}
+ */
+function cancelEditComment() {
+  editingCommentId.value = 0;
+  editCommentDraft.value = '';
+}
+
+/**
+ * Saves the comment being edited.
+ *
+ * @returns {Promise<void>}
+ */
+async function saveCommentEdit() {
+  const content = editCommentDraft.value.trim();
+
+  if (!content || content === '<p><br></p>') {
+    return;
+  }
+
+  savingCommentEdit.value = true;
+
+  try {
+    const updated = await api.comments.update(editingCommentId.value, content);
+
+    comments.value = comments.value.map((item) => (item.id === updated.id ? updated : item));
+    cancelEditComment();
+    ui.toast('Comment updated.');
+  } catch (error) {
+    ui.toastError(error, 'The comment could not be updated.');
+  } finally {
+    savingCommentEdit.value = false;
   }
 }
 
@@ -801,20 +853,60 @@ onBeforeUnmount(releaseLock);
                   <span :title="absoluteTime(comment.created_at)">{{
                     relativeTime(comment.created_at)
                   }}</span>
-                  <button
-                    v-if="
-                      isOpen &&
-                      (comment.author.id === bootstrap.currentUser?.id ||
-                        bootstrap.caps?.manageCases)
-                    "
-                    type="button"
-                    class="qa-button qa-button--small qa-button--quiet"
-                    @click="deleteComment(comment)"
+                  <span
+                    v-if="isOpen && editingCommentId !== comment.id"
+                    class="qa-comment__actions"
                   >
-                    Delete
-                  </button>
+                    <button
+                      v-if="comment.author.id === bootstrap.currentUser?.id"
+                      type="button"
+                      class="qa-icon-button"
+                      title="Edit comment"
+                      aria-label="Edit comment"
+                      @click="startEditComment(comment)"
+                    >
+                      <span class="dashicons dashicons-edit" aria-hidden="true" />
+                    </button>
+                    <button
+                      v-if="
+                        comment.author.id === bootstrap.currentUser?.id ||
+                        bootstrap.caps?.manageCases
+                      "
+                      type="button"
+                      class="qa-icon-button qa-icon-button--danger"
+                      title="Delete comment"
+                      aria-label="Delete comment"
+                      @click="deleteComment(comment)"
+                    >
+                      <span class="dashicons dashicons-trash" aria-hidden="true" />
+                    </button>
+                  </span>
                 </div>
-                <div class="qa-comment__body qa-prose" v-html="comment.content" />
+                <form
+                  v-if="editingCommentId === comment.id"
+                  class="qa-stack qa-stack--tight"
+                  @submit.prevent="saveCommentEdit"
+                >
+                  <RichTextEditor v-model="editCommentDraft" />
+                  <div class="qa-row">
+                    <button
+                      type="submit"
+                      class="qa-button qa-button--primary qa-button--small"
+                      :disabled="savingCommentEdit"
+                    >
+                      {{ savingCommentEdit ? 'Saving…' : 'Save' }}
+                    </button>
+                    <button
+                      type="button"
+                      class="qa-button qa-button--small qa-button--quiet"
+                      :disabled="savingCommentEdit"
+                      @click="cancelEditComment"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+                <div v-else class="qa-comment__body qa-prose" v-html="comment.content" />
               </div>
             </div>
           </div>

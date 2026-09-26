@@ -1022,6 +1022,44 @@
   font-size: 13px;
 }
 
+.qa-comment__actions {
+  display: inline-flex;
+  gap: 2px;
+  margin-left: auto;
+  align-self: center;
+}
+
+.qa-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--qa-text-muted);
+  cursor: pointer;
+}
+
+.qa-icon-button .dashicons {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.qa-icon-button:hover:not(:disabled),
+.qa-icon-button:focus-visible {
+  background: var(--qa-surface-alt);
+  color: var(--qa-text);
+}
+
+.qa-icon-button--danger:hover:not(:disabled),
+.qa-icon-button--danger:focus-visible {
+  color: var(--qa-fail);
+}
+
 .qa-comment__body :first-child {
   margin-top: 0;
 }
@@ -1274,6 +1312,9 @@
   font-family: inherit;
   font-size: 13px;
   min-height: 110px;
+  /* Quill ships `height: 100%`, which on top of the toolbar overflows the wrapper and
+     covers whatever follows the editor inside a flex column. */
+  height: auto;
 }
 
 .qa-editor .ql-editor {
