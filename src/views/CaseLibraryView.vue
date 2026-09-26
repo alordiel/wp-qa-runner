@@ -12,8 +12,8 @@ import {RouterLink, useRouter} from 'vue-router';
 import EmptyState from '../components/EmptyState.vue';
 import PriorityDot from '../components/PriorityDot.vue';
 import {api} from '../api/client.js';
-import {PRIORITIES} from '../utils/status.js';
-import {plural, shortDate} from '../utils/format.js';
+import {PRIORITIES, issueStatusLabel} from '../utils/status.js';
+import {shortDate} from '../utils/format.js';
 import {useCaseStore} from '../stores/cases.js';
 import {useUiStore} from '../stores/ui.js';
 
@@ -72,7 +72,7 @@ async function load() {
   try {
     await Promise.all([caseStore.loadSuites(), caseStore.loadCases()]);
   } catch (error) {
-    ui.toastError(error, 'The case library could not be loaded.');
+    ui.toastError(error, wp.i18n.__('The case library could not be loaded.', 'qa-runner'));
   } finally {
     loading.value = false;
   }
@@ -94,10 +94,10 @@ async function clone(item) {
   try {
     const copy = await caseStore.cloneCase(item.id);
 
-    ui.toast('Case cloned.');
+    ui.toast(wp.i18n.__('Case cloned.', 'qa-runner'));
     router.push(`/cases/${copy.id}/edit`);
   } catch (error) {
-    ui.toastError(error, 'The case could not be cloned.');
+    ui.toastError(error, wp.i18n.__('The case could not be cloned.', 'qa-runner'));
   } finally {
     cloning.value = 0;
   }
@@ -110,15 +110,21 @@ async function clone(item) {
  * @returns {Promise<void>}
  */
 async function archive(item) {
-  if (!window.confirm(`Archive "${item.title}"? It stays in past runs but cannot join new ones.`)) {
+  const question = wp.i18n.sprintf(
+    /* translators: %s: case title. */
+    wp.i18n.__('Archive "%s"? It stays in past runs but cannot join new ones.', 'qa-runner'),
+    item.title
+  );
+
+  if (!window.confirm(question)) {
     return;
   }
 
   try {
     await caseStore.archiveCase(item.id);
-    ui.toast('Case archived.');
+    ui.toast(wp.i18n.__('Case archived.', 'qa-runner'));
   } catch (error) {
-    ui.toastError(error, 'The case could not be archived.');
+    ui.toastError(error, wp.i18n.__('The case could not be archived.', 'qa-runner'));
   }
 }
 
@@ -139,7 +145,7 @@ async function toggleHistory(id) {
     history.value = await api.cases.issues(id, 'all');
     historyFor.value = id;
   } catch (error) {
-    ui.toastError(error, 'The issue history could not be loaded.');
+    ui.toastError(error, wp.i18n.__('The issue history could not be loaded.', 'qa-runner'));
   }
 }
 
@@ -150,30 +156,34 @@ onMounted(load);
   <div class="qa-stack">
     <div class="qa-page-head">
       <div class="qa-page-head__meta">
-        <h2>Case library</h2>
+        <h2>{{ __('Case library', 'qa-runner') }}</h2>
       </div>
       <div class="qa-row">
-        <RouterLink class="qa-button qa-button--quiet" to="/suites">Manage suites</RouterLink>
-        <RouterLink class="qa-button qa-button--primary" to="/cases/new">New case</RouterLink>
+        <RouterLink class="qa-button qa-button--quiet" to="/suites">{{
+          __('Manage suites', 'qa-runner')
+        }}</RouterLink>
+        <RouterLink class="qa-button qa-button--primary" to="/cases/new">{{
+          __('New case', 'qa-runner')
+        }}</RouterLink>
       </div>
     </div>
 
     <div class="qa-card">
       <div class="qa-card__head" style="flex-wrap: wrap">
         <div class="qa-row">
-          <label class="qa-sr-only" for="case-search">Search cases</label>
+          <label class="qa-sr-only" for="case-search">{{ __('Search cases', 'qa-runner') }}</label>
           <input
             id="case-search"
             v-model="search"
             class="qa-input"
             type="search"
-            placeholder="Search titles"
+            :placeholder="__('Search titles', 'qa-runner')"
             style="width: auto"
           />
 
-          <label class="qa-sr-only" for="case-priority">Priority</label>
+          <label class="qa-sr-only" for="case-priority">{{ __('Priority', 'qa-runner') }}</label>
           <select id="case-priority" v-model="priority" class="qa-select" style="width: auto">
-            <option value="">All priorities</option>
+            <option value="">{{ __('All priorities', 'qa-runner') }}</option>
             <option v-for="option in PRIORITIES" :key="option.value" :value="option.value">
               {{ option.label }}
             </option>
@@ -181,19 +191,23 @@ onMounted(load);
 
           <label class="qa-checkbox">
             <input v-model="showArchived" type="checkbox" />
-            <span>Show archived</span>
+            <span>{{ __('Show archived', 'qa-runner') }}</span>
           </label>
         </div>
       </div>
 
-      <p v-if="loading" class="qa-skeleton">Loading cases…</p>
+      <p v-if="loading" class="qa-skeleton">{{ __('Loading cases…', 'qa-runner') }}</p>
 
       <EmptyState
         v-else-if="!groups.length"
-        title="No cases yet. Add one to start building the library."
-        description="Cases live in suites, so create a suite first if you have none."
+        :title="__('No cases yet. Add one to start building the library.', 'qa-runner')"
+        :description="
+          __('Cases live in suites, so create a suite first if you have none.', 'qa-runner')
+        "
       >
-        <RouterLink class="qa-button qa-button--primary" to="/cases/new">New case</RouterLink>
+        <RouterLink class="qa-button qa-button--primary" to="/cases/new">{{
+          __('New case', 'qa-runner')
+        }}</RouterLink>
       </EmptyState>
 
       <div v-for="group in groups" v-else :key="group.id" class="qa-suite-group">
@@ -201,13 +215,18 @@ onMounted(load);
           <h3>{{ group.name }}</h3>
           <div class="qa-row">
             <span class="qa-muted qa-count">
-              {{ group.cases.length }} {{ plural(group.cases.length, 'case') }}
+              {{
+                sprintf(
+                  _n('%d case', '%d cases', group.cases.length, 'qa-runner'),
+                  group.cases.length
+                )
+              }}
             </span>
             <RouterLink
               class="qa-button qa-button--small qa-button--quiet"
               :to="`/cases/new?suite=${group.id}`"
             >
-              New case here
+              {{ __('New case here', 'qa-runner') }}
             </RouterLink>
           </div>
         </div>
@@ -218,10 +237,14 @@ onMounted(load);
               <div class="qa-case-row__title">
                 <PriorityDot :priority="item.priority" />
                 <RouterLink :to="`/cases/${item.id}/edit`">{{ item.title }}</RouterLink>
-                <span v-if="!item.is_active" class="qa-badge">Archived</span>
+                <span v-if="!item.is_active" class="qa-badge">{{
+                  __('Archived', 'qa-runner')
+                }}</span>
               </div>
               <div class="qa-case-row__meta">
-                <span>Updated {{ shortDate(item.updated_at) }}</span>
+                <span>{{
+                  sprintf(__('Updated %s', 'qa-runner'), shortDate(item.updated_at))
+                }}</span>
               </div>
             </div>
             <div class="qa-case-row__controls">
@@ -230,7 +253,11 @@ onMounted(load);
                 class="qa-button qa-button--small qa-button--quiet"
                 @click="toggleHistory(item.id)"
               >
-                {{ historyFor === item.id ? 'Hide issues' : 'Issue history' }}
+                {{
+                  historyFor === item.id
+                    ? __('Hide issues', 'qa-runner')
+                    : __('Issue history', 'qa-runner')
+                }}
               </button>
               <button
                 type="button"
@@ -238,43 +265,49 @@ onMounted(load);
                 :disabled="cloning === item.id"
                 @click="clone(item)"
               >
-                {{ cloning === item.id ? 'Cloning…' : 'Clone' }}
+                {{ cloning === item.id ? __('Cloning…', 'qa-runner') : __('Clone', 'qa-runner') }}
               </button>
-              <RouterLink class="qa-button qa-button--small" :to="`/cases/${item.id}/edit`"
-                >Edit</RouterLink
-              >
+              <RouterLink class="qa-button qa-button--small" :to="`/cases/${item.id}/edit`">{{
+                __('Edit', 'qa-runner')
+              }}</RouterLink>
               <button
                 v-if="item.is_active"
                 type="button"
                 class="qa-button qa-button--small qa-button--danger"
                 @click="archive(item)"
               >
-                Archive
+                {{ __('Archive', 'qa-runner') }}
               </button>
             </div>
           </div>
 
           <div v-if="historyFor === item.id" class="qa-card__body qa-stack qa-stack--tight">
             <p v-if="!history.length" class="qa-muted">
-              No issues have ever been raised on this case.
+              {{ __('No issues have ever been raised on this case.', 'qa-runner') }}
             </p>
             <table v-else class="qa-table">
               <thead>
                 <tr>
-                  <th scope="col">Issue</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Raised</th>
-                  <th scope="col">Link</th>
+                  <th scope="col">{{ __('Issue', 'qa-runner') }}</th>
+                  <th scope="col">{{ __('Status', 'qa-runner') }}</th>
+                  <th scope="col">{{ __('Raised', 'qa-runner') }}</th>
+                  <th scope="col">{{ __('Link', 'qa-runner') }}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="issue in history" :key="issue.id">
                   <td>{{ issue.title }}</td>
                   <td>
-                    <span class="qa-badge">{{ issue.status }}</span>
+                    <span class="qa-badge">{{ issueStatusLabel(issue.status) }}</span>
                   </td>
                   <td class="qa-muted">
-                    {{ issue.created_by.name }}, {{ shortDate(issue.created_at) }}
+                    {{
+                      sprintf(
+                        _x('%1$s, %2$s', 'issue raiser name, date', 'qa-runner'),
+                        issue.created_by.name,
+                        shortDate(issue.created_at)
+                      )
+                    }}
                   </td>
                   <td>
                     <a
@@ -283,7 +316,7 @@ onMounted(load);
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      GitHub ↗
+                      {{ __('GitHub ↗', 'qa-runner') }}
                     </a>
                     <span v-else class="qa-muted">—</span>
                   </td>

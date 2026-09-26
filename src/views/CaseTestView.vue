@@ -17,8 +17,8 @@ import RichTextEditor from '../components/RichTextEditor.vue';
 import StatusBadge from '../components/StatusBadge.vue';
 import StatusControl from '../components/StatusControl.vue';
 import {api, bootstrap} from '../api/client.js';
-import {absoluteTime, plural, relativeTime} from '../utils/format.js';
-import {statusLabel} from '../utils/status.js';
+import {absoluteTime, relativeTime} from '../utils/format.js';
+import {RUN_STATUSES, statusLabel} from '../utils/status.js';
 import {useRunStore} from '../stores/runs.js';
 import {useUiStore} from '../stores/ui.js';
 
@@ -168,10 +168,10 @@ async function saveAssignees({add, remove}) {
     }
 
     assignDialogOpen.value = false;
-    ui.toast('Assignees updated.');
+    ui.toast(wp.i18n.__('Assignees updated.', 'qa-runner'));
   } catch (error) {
     // The dialog stays open on failure, so the draft is still there to retry or cancel.
-    ui.toastError(error, 'Those assignments could not be saved.');
+    ui.toastError(error, wp.i18n.__('Those assignments could not be saved.', 'qa-runner'));
   } finally {
     savingAssignees.value = false;
   }
@@ -197,9 +197,13 @@ async function toggleSelf() {
 
   try {
     await runStore.setAssignment(result.value.id, bootstrap.currentUser, !assignedToMe.value);
-    ui.toast(assignedToMe.value ? 'Assigned to you.' : 'You are off this case.');
+    ui.toast(
+      assignedToMe.value
+        ? wp.i18n.__('Assigned to you.', 'qa-runner')
+        : wp.i18n.__('You are off this case.', 'qa-runner')
+    );
   } catch (error) {
-    ui.toastError(error, 'That assignment could not be saved.');
+    ui.toastError(error, wp.i18n.__('That assignment could not be saved.', 'qa-runner'));
   } finally {
     savingAssignment.value = false;
   }
@@ -215,7 +219,7 @@ async function removeAssignee(person) {
   try {
     await runStore.setAssignment(result.value.id, person, false);
   } catch (error) {
-    ui.toastError(error, 'That assignment could not be removed.');
+    ui.toastError(error, wp.i18n.__('That assignment could not be removed.', 'qa-runner'));
   }
 }
 
@@ -253,7 +257,7 @@ async function loadCase() {
       }
     }
   } catch (error) {
-    ui.toastError(error, 'This case could not be loaded.');
+    ui.toastError(error, wp.i18n.__('This case could not be loaded.', 'qa-runner'));
   } finally {
     loading.value = false;
   }
@@ -280,7 +284,7 @@ async function setStatus(status) {
   try {
     await runStore.setStatus(result.value.id, status);
   } catch (error) {
-    ui.toastError(error, 'That result could not be saved.');
+    ui.toastError(error, wp.i18n.__('That result could not be saved.', 'qa-runner'));
   }
 }
 
@@ -304,9 +308,9 @@ async function postComment() {
     comments.value = [...comments.value, comment];
     commentDraft.value = '';
     runStore.replaceResult({...result.value, comment_count: result.value.comment_count + 1});
-    ui.toast('Comment added.');
+    ui.toast(wp.i18n.__('Comment added.', 'qa-runner'));
   } catch (error) {
-    ui.toastError(error, 'The comment could not be added.');
+    ui.toastError(error, wp.i18n.__('The comment could not be added.', 'qa-runner'));
   } finally {
     postingComment.value = false;
   }
@@ -354,9 +358,9 @@ async function postReply() {
     comments.value = [...comments.value, comment];
     cancelReply();
     runStore.replaceResult({...result.value, comment_count: result.value.comment_count + 1});
-    ui.toast('Reply added.');
+    ui.toast(wp.i18n.__('Reply added.', 'qa-runner'));
   } catch (error) {
-    ui.toastError(error, 'The reply could not be added.');
+    ui.toastError(error, wp.i18n.__('The reply could not be added.', 'qa-runner'));
   } finally {
     postingReply.value = false;
   }
@@ -403,9 +407,9 @@ async function saveCommentEdit() {
 
     comments.value = comments.value.map((item) => (item.id === updated.id ? updated : item));
     cancelEditComment();
-    ui.toast('Comment updated.');
+    ui.toast(wp.i18n.__('Comment updated.', 'qa-runner'));
   } catch (error) {
-    ui.toastError(error, 'The comment could not be updated.');
+    ui.toastError(error, wp.i18n.__('The comment could not be updated.', 'qa-runner'));
   } finally {
     savingCommentEdit.value = false;
   }
@@ -420,8 +424,8 @@ async function saveCommentEdit() {
 async function deleteComment(comment) {
   const hasReplies = comments.value.some((item) => item.parent_id === comment.id);
   const question = hasReplies
-    ? 'Delete this comment and all of its replies?'
-    : 'Delete this comment?';
+    ? wp.i18n.__('Delete this comment and all of its replies?', 'qa-runner')
+    : wp.i18n.__('Delete this comment?', 'qa-runner');
 
   if (!window.confirm(question)) {
     return;
@@ -445,9 +449,9 @@ async function deleteComment(comment) {
       ...result.value,
       comment_count: Math.max(0, result.value.comment_count - deletedIds.size)
     });
-    ui.toast('Comment deleted.');
+    ui.toast(wp.i18n.__('Comment deleted.', 'qa-runner'));
   } catch (error) {
-    ui.toastError(error, 'The comment could not be deleted.');
+    ui.toastError(error, wp.i18n.__('The comment could not be deleted.', 'qa-runner'));
   }
 }
 
@@ -482,9 +486,9 @@ async function raiseIssue() {
       });
     }
 
-    ui.toast('Issue raised.');
+    ui.toast(wp.i18n.__('Issue raised.', 'qa-runner'));
   } catch (error) {
-    ui.toastError(error, 'The issue could not be raised.');
+    ui.toastError(error, wp.i18n.__('The issue could not be raised.', 'qa-runner'));
   } finally {
     savingIssue.value = false;
   }
@@ -519,9 +523,13 @@ async function resolveIssue(issue, status) {
       });
     }
 
-    ui.toast(status === 'resolved' ? 'Issue resolved.' : "Issue closed as won't fix.");
+    ui.toast(
+      status === 'resolved'
+        ? wp.i18n.__('Issue resolved.', 'qa-runner')
+        : wp.i18n.__('Issue closed as won’t fix.', 'qa-runner')
+    );
   } catch (error) {
-    ui.toastError(error, 'The issue could not be updated.');
+    ui.toastError(error, wp.i18n.__('The issue could not be updated.', 'qa-runner'));
   }
 }
 
@@ -532,7 +540,19 @@ async function resolveIssue(issue, status) {
  * @returns {string}
  */
 function closureLabel(issue) {
-  return issue.status === 'wontfix' ? "Won't fix" : 'Resolved';
+  return issue.status === 'wontfix'
+    ? wp.i18n.__('Won’t fix', 'qa-runner')
+    : wp.i18n.__('Resolved', 'qa-runner');
+}
+
+/**
+ * Translated label for a run status.
+ *
+ * @param {string} status Run status.
+ * @returns {string}
+ */
+function runStatusLabel(status) {
+  return RUN_STATUSES.find((item) => item.value === status)?.label ?? status;
 }
 
 /**
@@ -557,17 +577,23 @@ onBeforeUnmount(releaseLock);
 
 <template>
   <div class="qa-stack">
-    <p v-if="loading" class="qa-skeleton">Loading case…</p>
+    <p v-if="loading" class="qa-skeleton">{{ __('Loading case…', 'qa-runner') }}</p>
 
     <template v-else-if="testCase">
       <div class="qa-page-head">
         <div class="qa-page-head__meta">
           <RouterLink :to="`/runs/${runId}`" class="qa-subtitle">
-            ← Back to run
+            {{ __('← Back to run', 'qa-runner') }}
           </RouterLink>
           <h2 class="qa-row">
             <PriorityDot :priority="testCase.priority" />
-            <span>{{ testCase.suite_name }} -> {{ testCase.title }}</span>
+            <span>{{
+              sprintf(
+                _x('%1$s → %2$s', 'suite name → case title', 'qa-runner'),
+                testCase.suite_name,
+                testCase.title
+              )
+            }}</span>
           </h2>
         </div>
 
@@ -578,7 +604,7 @@ onBeforeUnmount(releaseLock);
             :disabled="!previousCaseId"
             @click="go(previousCaseId)"
           >
-            ← Previous
+            {{ __('← Previous', 'qa-runner') }}
           </button>
           <button
             type="button"
@@ -586,24 +612,34 @@ onBeforeUnmount(releaseLock);
             :disabled="!nextCaseId"
             @click="go(nextCaseId)"
           >
-            Next →
+            {{ __('Next →', 'qa-runner') }}
           </button>
         </div>
       </div>
 
       <div v-if="lockedByOther" class="qa-notice qa-notice--warning">
-        {{ result.in_progress_by.name }} is testing this. You can still record your own result.
+        {{
+          sprintf(
+            __('%s is testing this. You can still record your own result.', 'qa-runner'),
+            result.in_progress_by.name
+          )
+        }}
       </div>
 
       <div v-if="!isOpen" class="qa-notice qa-notice--warning">
-        This run is {{ runStore.run?.status }}. Results and comments are read-only.
+        {{
+          sprintf(
+            __('This run is %s. Results and comments are read-only.', 'qa-runner'),
+            runStatusLabel(runStore.run?.status).toLowerCase()
+          )
+        }}
       </div>
 
       <div class="qa-card">
         <div class="qa-card__head">
-          <h3>Result</h3>
+          <h3>{{ __('Result', 'qa-runner') }}</h3>
           <span v-if="result?.tested_by" class="qa-muted">
-            Set by {{ result.tested_by.name }}
+            {{ sprintf(__('Set by %s', 'qa-runner'), result.tested_by.name) }}
             <span :title="absoluteTime(result.tested_at)">{{
               relativeTime(result.tested_at)
             }}</span>
@@ -617,13 +653,13 @@ onBeforeUnmount(releaseLock);
             @update:model-value="setStatus"
           />
           <StatusBadge v-else-if="result" :status="result.status" />
-          <p v-else class="qa-muted">This case is not part of this run.</p>
+          <p v-else class="qa-muted">{{ __('This case is not part of this run.', 'qa-runner') }}</p>
         </div>
       </div>
 
       <div v-if="result" class="qa-card">
         <div class="qa-card__head">
-          <h3>Assigned testers</h3>
+          <h3>{{ __('Assigned testers', 'qa-runner') }}</h3>
           <div v-if="canAssign" class="qa-row">
             <button
               type="button"
@@ -632,14 +668,14 @@ onBeforeUnmount(releaseLock);
               :disabled="savingAssignment"
               @click="toggleSelf"
             >
-              {{ assignedToMe ? 'Unassign me' : 'Assign me' }}
+              {{ assignedToMe ? __('Unassign me', 'qa-runner') : __('Assign me', 'qa-runner') }}
             </button>
             <button
               type="button"
               class="qa-button qa-button--small"
               @click="assignDialogOpen = true"
             >
-              Assign others…
+              {{ __('Assign others…', 'qa-runner') }}
             </button>
           </div>
         </div>
@@ -659,7 +695,7 @@ onBeforeUnmount(releaseLock);
                 v-if="canUnassign(person)"
                 type="button"
                 class="qa-person-badge__remove"
-                :aria-label="`Unassign ${person.name}`"
+                :aria-label="sprintf(__('Unassign %s', 'qa-runner'), person.name)"
                 @click="removeAssignee(person)"
               >
                 ×
@@ -667,15 +703,22 @@ onBeforeUnmount(releaseLock);
             </span>
           </div>
           <p v-else class="qa-muted">
-            Nobody is assigned to this case yet.
-            <template v-if="canAssign">Claim it so the rest of the team knows.</template>
+            {{ __('Nobody is assigned to this case yet.', 'qa-runner') }}
+            <template v-if="canAssign">{{
+              __('Claim it so the rest of the team knows.', 'qa-runner')
+            }}</template>
           </p>
         </div>
 
         <AssigneeDialog
           :open="assignDialogOpen"
-          title="Assign this case"
-          empty-text="Nobody is assigned to this run yet, so there is no one to hand this case to."
+          :title="__('Assign this case', 'qa-runner')"
+          :empty-text="
+            __(
+              'Nobody is assigned to this run yet, so there is no one to hand this case to.',
+              'qa-runner'
+            )
+          "
           :candidates="candidates"
           :assigned="assignees"
           :saving="savingAssignees"
@@ -686,18 +729,27 @@ onBeforeUnmount(releaseLock);
 
       <div class="qa-grid-2">
         <div class="qa-card">
-          <div class="qa-card__head"><h3>Steps</h3></div>
+          <div class="qa-card__head">
+            <h3>{{ __('Steps', 'qa-runner') }}</h3>
+          </div>
           <div
             class="qa-card__body qa-prose"
-            v-html="testCase.steps || '<p class=\'qa-muted\'>No steps recorded.</p>'"
+            v-html="
+              testCase.steps || `<p class='qa-muted'>${__('No steps recorded.', 'qa-runner')}</p>`
+            "
           />
         </div>
 
         <div class="qa-card">
-          <div class="qa-card__head"><h3>Expected result</h3></div>
+          <div class="qa-card__head">
+            <h3>{{ __('Expected result', 'qa-runner') }}</h3>
+          </div>
           <div
             class="qa-card__body qa-prose"
-            v-html="testCase.expected || '<p class=\'qa-muted\'>No expected result recorded.</p>'"
+            v-html="
+              testCase.expected ||
+              `<p class='qa-muted'>${__('No expected result recorded.', 'qa-runner')}</p>`
+            "
           />
         </div>
       </div>
@@ -708,8 +760,20 @@ onBeforeUnmount(releaseLock);
         old issue and why is worth a click when today's symptom looks familiar.
       -->
       <div v-if="issues.length" class="qa-stack qa-stack--tight">
-        <h3>{{ issues.length }} open {{ plural(issues.length, 'issue') }} on this case</h3>
-        <p class="qa-subtitle">Raised in any run, still unresolved.</p>
+        <h3>
+          {{
+            sprintf(
+              _n(
+                '%d open issue on this case',
+                '%d open issues on this case',
+                issues.length,
+                'qa-runner'
+              ),
+              issues.length
+            )
+          }}
+        </h3>
+        <p class="qa-subtitle">{{ __('Raised in any run, still unresolved.', 'qa-runner') }}</p>
 
         <div v-for="issue in issues" :key="issue.id" class="qa-issue">
           <div class="qa-issue__head">
@@ -721,7 +785,8 @@ onBeforeUnmount(releaseLock);
                   relativeTime(issue.created_at)
                 }}</span>
                 <template v-if="issue.origin_run_id">
-                  · raised in run #{{ issue.origin_run_id }}</template
+                  ·
+                  {{ sprintf(__('raised in run #%d', 'qa-runner'), issue.origin_run_id) }}</template
                 >
               </p>
             </div>
@@ -732,7 +797,7 @@ onBeforeUnmount(releaseLock);
               target="_blank"
               rel="noopener noreferrer"
             >
-              GitHub ↗
+              {{ __('GitHub ↗', 'qa-runner') }}
             </a>
           </div>
 
@@ -744,12 +809,14 @@ onBeforeUnmount(releaseLock);
 
           <div v-if="bootstrap.caps?.runTests">
             <div v-if="resolvingId === issue.id" class="qa-stack qa-stack--tight">
-              <label class="qa-sr-only" :for="`note-${issue.id}`">Resolution note</label>
+              <label class="qa-sr-only" :for="`note-${issue.id}`">{{
+                __('Resolution note', 'qa-runner')
+              }}</label>
               <textarea
                 :id="`note-${issue.id}`"
                 v-model="resolutionNote"
                 class="qa-textarea"
-                placeholder="What fixed it, or why it will not be fixed."
+                :placeholder="__('What fixed it, or why it will not be fixed.', 'qa-runner')"
               />
               <div class="qa-row">
                 <button
@@ -757,21 +824,21 @@ onBeforeUnmount(releaseLock);
                   class="qa-button qa-button--primary qa-button--small"
                   @click="resolveIssue(issue, 'resolved')"
                 >
-                  Resolve issue
+                  {{ __('Resolve issue', 'qa-runner') }}
                 </button>
                 <button
                   type="button"
                   class="qa-button qa-button--small"
                   @click="resolveIssue(issue, 'wontfix')"
                 >
-                  Won't fix
+                  {{ __('Won’t fix', 'qa-runner') }}
                 </button>
                 <button
                   type="button"
                   class="qa-button qa-button--quiet qa-button--small"
                   @click="resolvingId = 0"
                 >
-                  Cancel
+                  {{ __('Cancel', 'qa-runner') }}
                 </button>
               </div>
             </div>
@@ -784,7 +851,7 @@ onBeforeUnmount(releaseLock);
                 resolutionNote = '';
               "
             >
-              Resolve issue
+              {{ __('Resolve issue', 'qa-runner') }}
             </button>
           </div>
         </div>
@@ -802,8 +869,27 @@ onBeforeUnmount(releaseLock);
             :aria-expanded="historyOpen"
             @click="historyOpen = !historyOpen"
           >
-            {{ historyOpen ? 'Hide' : 'Show' }} {{ resolvedIssues.length }} closed
-            {{ plural(resolvedIssues.length, 'issue') }}
+            {{
+              historyOpen
+                ? sprintf(
+                    _n(
+                      'Hide %d closed issue',
+                      'Hide %d closed issues',
+                      resolvedIssues.length,
+                      'qa-runner'
+                    ),
+                    resolvedIssues.length
+                  )
+                : sprintf(
+                    _n(
+                      'Show %d closed issue',
+                      'Show %d closed issues',
+                      resolvedIssues.length,
+                      'qa-runner'
+                    ),
+                    resolvedIssues.length
+                  )
+            }}
           </button>
         </div>
 
@@ -816,16 +902,25 @@ onBeforeUnmount(releaseLock);
                   <span class="qa-badge">{{ closureLabel(issue) }}</span>
                 </p>
                 <p class="qa-issue__meta">
-                  Raised by {{ issue.created_by.name }} ·
+                  {{ sprintf(__('Raised by %s', 'qa-runner'), issue.created_by.name) }} ·
                   <span :title="absoluteTime(issue.created_at)">{{
                     relativeTime(issue.created_at)
                   }}</span>
                   <template v-if="issue.origin_run_id">
-                    · raised in run #{{ issue.origin_run_id }}</template
+                    ·
+                    {{
+                      sprintf(__('raised in run #%d', 'qa-runner'), issue.origin_run_id)
+                    }}</template
                   >
                 </p>
                 <p class="qa-issue__meta">
-                  {{ closureLabel(issue) }} by {{ issue.resolved_by?.name ?? 'somebody' }}
+                  {{
+                    sprintf(
+                      _x('%1$s by %2$s', 'closure label, e.g. Resolved, by person', 'qa-runner'),
+                      closureLabel(issue),
+                      issue.resolved_by?.name ?? __('somebody', 'qa-runner')
+                    )
+                  }}
                   <template v-if="issue.resolved_at">
                     ·
                     <span :title="absoluteTime(issue.resolved_at)">{{
@@ -841,7 +936,7 @@ onBeforeUnmount(releaseLock);
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                GitHub ↗
+                {{ __('GitHub ↗', 'qa-runner') }}
               </a>
             </div>
 
@@ -865,34 +960,40 @@ onBeforeUnmount(releaseLock);
           class="qa-button qa-button--danger"
           @click="issueFormOpen = true"
         >
-          Raise an issue
+          {{ __('Raise an issue', 'qa-runner') }}
         </button>
 
         <form v-else class="qa-card" @submit.prevent="raiseIssue">
-          <div class="qa-card__head"><h3>Raise an issue</h3></div>
+          <div class="qa-card__head">
+            <h3>{{ __('Raise an issue', 'qa-runner') }}</h3>
+          </div>
           <div class="qa-card__body qa-stack">
             <div class="qa-field">
-              <label class="qa-field__label" for="issue-title">Title</label>
+              <label class="qa-field__label" for="issue-title">{{
+                __('Title', 'qa-runner')
+              }}</label>
               <input
                 id="issue-title"
                 v-model="issueDraft.title"
                 class="qa-input"
                 type="text"
-                placeholder="What is broken"
+                :placeholder="__('What is broken', 'qa-runner')"
                 required
               />
             </div>
 
             <div class="qa-field">
-              <span class="qa-field__label">Description</span>
+              <span class="qa-field__label">{{ __('Description', 'qa-runner') }}</span>
               <RichTextEditor
                 v-model="issueDraft.description"
-                placeholder="What you saw, and what you expected."
+                :placeholder="__('What you saw, and what you expected.', 'qa-runner')"
               />
             </div>
 
             <div class="qa-field">
-              <label class="qa-field__label" for="issue-url">GitHub issue</label>
+              <label class="qa-field__label" for="issue-url">{{
+                __('GitHub issue', 'qa-runner')
+              }}</label>
               <input
                 id="issue-url"
                 v-model="issueDraft.github_url"
@@ -900,21 +1001,24 @@ onBeforeUnmount(releaseLock);
                 type="url"
                 placeholder="https://github.com/owner/repo/issues/123"
               />
-              <span class="qa-field__hint"
-                >Must be a github.com link. Leave blank if you have not filed it yet.</span
-              >
+              <span class="qa-field__hint">{{
+                __(
+                  'Must be a github.com link. Leave blank if you have not filed it yet.',
+                  'qa-runner'
+                )
+              }}</span>
             </div>
 
             <div class="qa-row">
               <button type="submit" class="qa-button qa-button--primary" :disabled="savingIssue">
-                {{ savingIssue ? 'Saving…' : 'Raise issue' }}
+                {{ savingIssue ? __('Saving…', 'qa-runner') : __('Raise issue', 'qa-runner') }}
               </button>
               <button
                 type="button"
                 class="qa-button qa-button--quiet"
                 @click="issueFormOpen = false"
               >
-                Cancel
+                {{ __('Cancel', 'qa-runner') }}
               </button>
             </div>
           </div>
@@ -923,15 +1027,15 @@ onBeforeUnmount(releaseLock);
 
       <div v-if="result" class="qa-card">
         <div class="qa-card__head">
-          <h3>Comments</h3>
-          <span class="qa-muted">Scoped to this run</span>
+          <h3>{{ __('Comments', 'qa-runner') }}</h3>
+          <span class="qa-muted">{{ __('Scoped to this run', 'qa-runner') }}</span>
         </div>
 
         <div class="qa-card__body qa-stack">
           <EmptyState
             v-if="!comments.length"
-            title="No comments on this case yet."
-            description="Add one when a result needs explaining."
+            :title="__('No comments on this case yet.', 'qa-runner')"
+            :description="__('Add one when a result needs explaining.', 'qa-runner')"
           />
 
           <div v-else>
@@ -964,8 +1068,8 @@ onBeforeUnmount(releaseLock);
                       v-if="canTest && depth < MAX_COMMENT_DEPTH"
                       type="button"
                       class="qa-icon-button"
-                      title="Reply"
-                      aria-label="Reply to comment"
+                      :title="__('Reply', 'qa-runner')"
+                      :aria-label="__('Reply to comment', 'qa-runner')"
                       @click="startReply(comment)"
                     >
                       <span class="dashicons dashicons-undo" aria-hidden="true" />
@@ -974,8 +1078,8 @@ onBeforeUnmount(releaseLock);
                       v-if="comment.author.id === bootstrap.currentUser?.id"
                       type="button"
                       class="qa-icon-button"
-                      title="Edit comment"
-                      aria-label="Edit comment"
+                      :title="__('Edit comment', 'qa-runner')"
+                      :aria-label="__('Edit comment', 'qa-runner')"
                       @click="startEditComment(comment)"
                     >
                       <span class="dashicons dashicons-edit" aria-hidden="true" />
@@ -987,8 +1091,8 @@ onBeforeUnmount(releaseLock);
                       "
                       type="button"
                       class="qa-icon-button qa-icon-button--danger"
-                      title="Delete comment"
-                      aria-label="Delete comment"
+                      :title="__('Delete comment', 'qa-runner')"
+                      :aria-label="__('Delete comment', 'qa-runner')"
                       @click="deleteComment(comment)"
                     >
                       <span class="dashicons dashicons-trash" aria-hidden="true" />
@@ -1007,7 +1111,7 @@ onBeforeUnmount(releaseLock);
                       class="qa-button qa-button--primary qa-button--small"
                       :disabled="savingCommentEdit"
                     >
-                      {{ savingCommentEdit ? 'Saving…' : 'Save' }}
+                      {{ savingCommentEdit ? __('Saving…', 'qa-runner') : __('Save', 'qa-runner') }}
                     </button>
                     <button
                       type="button"
@@ -1015,7 +1119,7 @@ onBeforeUnmount(releaseLock);
                       :disabled="savingCommentEdit"
                       @click="cancelEditComment"
                     >
-                      Cancel
+                      {{ __('Cancel', 'qa-runner') }}
                     </button>
                   </div>
                 </form>
@@ -1027,7 +1131,7 @@ onBeforeUnmount(releaseLock);
                 >
                   <RichTextEditor
                     v-model="replyDraft"
-                    :placeholder="`Reply to ${comment.author.name}`"
+                    :placeholder="sprintf(__('Reply to %s', 'qa-runner'), comment.author.name)"
                   />
                   <div class="qa-row">
                     <button
@@ -1035,7 +1139,7 @@ onBeforeUnmount(releaseLock);
                       class="qa-button qa-button--primary qa-button--small"
                       :disabled="postingReply"
                     >
-                      {{ postingReply ? 'Replying…' : 'Reply' }}
+                      {{ postingReply ? __('Replying…', 'qa-runner') : __('Reply', 'qa-runner') }}
                     </button>
                     <button
                       type="button"
@@ -1043,7 +1147,7 @@ onBeforeUnmount(releaseLock);
                       :disabled="postingReply"
                       @click="cancelReply"
                     >
-                      Cancel
+                      {{ __('Cancel', 'qa-runner') }}
                     </button>
                   </div>
                 </form>
@@ -1052,10 +1156,13 @@ onBeforeUnmount(releaseLock);
           </div>
 
           <form v-if="canTest" class="qa-stack qa-stack--tight" @submit.prevent="postComment">
-            <RichTextEditor v-model="commentDraft" placeholder="Add a comment" />
+            <RichTextEditor
+              v-model="commentDraft"
+              :placeholder="__('Add a comment', 'qa-runner')"
+            />
             <div>
               <button type="submit" class="qa-button qa-button--primary" :disabled="postingComment">
-                {{ postingComment ? 'Adding…' : 'Add comment' }}
+                {{ postingComment ? __('Adding…', 'qa-runner') : __('Add comment', 'qa-runner') }}
               </button>
             </div>
           </form>
@@ -1063,8 +1170,10 @@ onBeforeUnmount(releaseLock);
       </div>
     </template>
 
-    <EmptyState v-else title="That case could not be found.">
-      <RouterLink class="qa-button" :to="`/runs/${runId}`">Back to the run</RouterLink>
+    <EmptyState v-else :title="__('That case could not be found.', 'qa-runner')">
+      <RouterLink class="qa-button" :to="`/runs/${runId}`">{{
+        __('Back to the run', 'qa-runner')
+      }}</RouterLink>
     </EmptyState>
   </div>
 </template>

@@ -14,7 +14,8 @@ export default [
       sourceType: 'module',
       globals: {
         ...globals.browser,
-        qaRunner: 'readonly'
+        qaRunner: 'readonly',
+        wp: 'readonly'
       }
     },
     rules: {

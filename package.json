@@ -9,7 +9,8 @@
     "build": "vite build",
     "lint": "eslint src",
     "format": "prettier --write src",
-    "release": "bin/build-release.sh"
+    "release": "bin/build-release.sh",
+    "make-pot": "wp i18n make-pot . languages/qa-runner.pot --domain=qa-runner --exclude=src,dist,node_modules,vendor,bin"
   },
   "dependencies": {
     "@vueup/vue-quill": "^1.5.5",

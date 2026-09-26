@@ -109,13 +109,20 @@ watch(
   <dialog ref="dialog" class="qa-dialog qa-dialog--wide" @close="cancel" @cancel="cancel">
     <form @submit.prevent="save">
       <div class="qa-dialog__head">
-        <h3 class="qa-dialog__title">Edit run details</h3>
-        <button type="button" class="qa-dialog__close" aria-label="Close" @click="cancel">×</button>
+        <h3 class="qa-dialog__title">{{ __('Edit run details', 'qa-runner') }}</h3>
+        <button
+          type="button"
+          class="qa-dialog__close"
+          :aria-label="__('Close', 'qa-runner')"
+          @click="cancel"
+        >
+          ×
+        </button>
       </div>
 
       <div class="qa-dialog__body qa-stack">
         <div class="qa-field">
-          <label class="qa-field__label" for="edit-run-name">Name</label>
+          <label class="qa-field__label" for="edit-run-name">{{ __('Name', 'qa-runner') }}</label>
           <input
             id="edit-run-name"
             v-model="form.name"
@@ -128,7 +135,9 @@ watch(
 
         <div class="qa-row" style="align-items: flex-start; gap: 16px">
           <div class="qa-field" style="flex: 1; min-width: 140px">
-            <label class="qa-field__label" for="edit-run-environment">Environment</label>
+            <label class="qa-field__label" for="edit-run-environment">{{
+              __('Environment', 'qa-runner')
+            }}</label>
             <select
               id="edit-run-environment"
               v-model="form.environment"
@@ -142,13 +151,15 @@ watch(
           </div>
 
           <div class="qa-field" style="flex: 1; min-width: 140px">
-            <label class="qa-field__label" for="edit-run-version">Version</label>
+            <label class="qa-field__label" for="edit-run-version">{{
+              __('Version', 'qa-runner')
+            }}</label>
             <input
               id="edit-run-version"
               v-model="form.version"
               class="qa-input"
               type="text"
-              placeholder="2.4.0 or a commit ref"
+              :placeholder="__('2.4.0 or a commit ref', 'qa-runner')"
               :disabled="saving"
               required
             />
@@ -156,12 +167,14 @@ watch(
         </div>
 
         <div class="qa-field">
-          <label class="qa-field__label" for="edit-run-notes">Notes</label>
+          <label class="qa-field__label" for="edit-run-notes">{{ __('Notes', 'qa-runner') }}</label>
           <textarea
             id="edit-run-notes"
             v-model="form.notes"
             class="qa-textarea"
-            placeholder="What this run covers, and anything the testers should know."
+            :placeholder="
+              __('What this run covers, and anything the testers should know.', 'qa-runner')
+            "
             :disabled="saving"
           />
         </div>
@@ -169,14 +182,14 @@ watch(
 
       <div class="qa-dialog__foot">
         <button type="button" class="qa-button qa-button--quiet" :disabled="saving" @click="cancel">
-          Cancel
+          {{ __('Cancel', 'qa-runner') }}
         </button>
         <button
           type="submit"
           class="qa-button qa-button--primary"
           :disabled="!dirty || !valid || saving"
         >
-          {{ saving ? 'Saving…' : 'Save' }}
+          {{ saving ? __('Saving…', 'qa-runner') : __('Save', 'qa-runner') }}
         </button>
       </div>
     </form>

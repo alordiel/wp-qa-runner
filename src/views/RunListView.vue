@@ -13,7 +13,8 @@ import AvatarStack from '../components/AvatarStack.vue';
 import EmptyState from '../components/EmptyState.vue';
 import ProgressBar from '../components/ProgressBar.vue';
 import {bootstrap} from '../api/client.js';
-import {plural, shortDate} from '../utils/format.js';
+import {shortDate} from '../utils/format.js';
+import {RUN_STATUSES} from '../utils/status.js';
 import {useRunStore} from '../stores/runs.js';
 import {useUiStore} from '../stores/ui.js';
 
@@ -24,10 +25,20 @@ const filter = ref('open');
 const loading = ref(true);
 
 const FILTERS = [
-  {value: 'open', label: 'Open'},
-  {value: 'completed', label: 'Completed'},
-  {value: '', label: 'All'}
+  {value: 'open', label: wp.i18n._x('Open', 'run status', 'qa-runner')},
+  {value: 'completed', label: wp.i18n.__('Completed', 'qa-runner')},
+  {value: '', label: wp.i18n.__('All', 'qa-runner')}
 ];
+
+/**
+ * Translated label for a run status.
+ *
+ * @param {string} status Run status.
+ * @returns {string}
+ */
+function runStatusLabel(status) {
+  return RUN_STATUSES.find((item) => item.value === status)?.label ?? status;
+}
 
 /**
  * Loads the run list for the current filter.
@@ -40,7 +51,7 @@ async function load() {
   try {
     await runStore.loadRuns(filter.value);
   } catch (error) {
-    ui.toastError(error, 'The runs could not be loaded.');
+    ui.toastError(error, wp.i18n.__('The runs could not be loaded.', 'qa-runner'));
   } finally {
     loading.value = false;
   }
@@ -65,18 +76,18 @@ onMounted(load);
   <div class="qa-stack">
     <div class="qa-page-head">
       <div class="qa-page-head__meta">
-        <h2>Test runs</h2>
+        <h2>{{ __('Test runs', 'qa-runner') }}</h2>
       </div>
       <RouterLink
         v-if="bootstrap.caps?.runTests"
         class="qa-button qa-button--primary"
         to="/runs/new"
       >
-        New run
+        {{ __('New run', 'qa-runner') }}
       </RouterLink>
     </div>
 
-    <div class="qa-chips" role="group" aria-label="Filter runs by status">
+    <div class="qa-chips" role="group" :aria-label="__('Filter runs by status', 'qa-runner')">
       <button
         v-for="option in FILTERS"
         :key="option.label"
@@ -91,14 +102,14 @@ onMounted(load);
     </div>
 
     <div class="qa-card">
-      <p v-if="loading" class="qa-skeleton">Loading runs…</p>
+      <p v-if="loading" class="qa-skeleton">{{ __('Loading runs…', 'qa-runner') }}</p>
 
       <EmptyState
         v-else-if="!runStore.runs.length"
         :title="
           filter === 'open'
-            ? 'No open runs. Create one to start testing.'
-            : 'No runs match this filter.'
+            ? __('No open runs. Create one to start testing.', 'qa-runner')
+            : __('No runs match this filter.', 'qa-runner')
         "
       >
         <RouterLink
@@ -106,7 +117,7 @@ onMounted(load);
           class="qa-button qa-button--primary"
           to="/runs/new"
         >
-          New run
+          {{ __('New run', 'qa-runner') }}
         </RouterLink>
       </EmptyState>
 
@@ -114,12 +125,12 @@ onMounted(load);
         <table class="qa-table">
           <thead>
             <tr>
-              <th scope="col">Run</th>
-              <th scope="col">Version</th>
-              <th scope="col" style="min-width: 200px">Progress</th>
-              <th scope="col">Assignees</th>
-              <th scope="col">Created</th>
-              <th scope="col">Status</th>
+              <th scope="col">{{ _x('Run', 'noun', 'qa-runner') }}</th>
+              <th scope="col">{{ __('Version', 'qa-runner') }}</th>
+              <th scope="col" style="min-width: 200px">{{ __('Progress', 'qa-runner') }}</th>
+              <th scope="col">{{ __('Assignees', 'qa-runner') }}</th>
+              <th scope="col">{{ __('Created', 'qa-runner') }}</th>
+              <th scope="col">{{ __('Status', 'qa-runner') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -139,7 +150,7 @@ onMounted(load);
               <td><AvatarStack :people="run.assignees" /></td>
               <td class="qa-muted">{{ shortDate(run.created_at) }}</td>
               <td>
-                <span class="qa-badge">{{ run.status }}</span>
+                <span class="qa-badge">{{ runStatusLabel(run.status) }}</span>
               </td>
             </tr>
           </tbody>

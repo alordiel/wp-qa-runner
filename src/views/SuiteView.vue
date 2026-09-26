@@ -36,9 +36,9 @@ async function create() {
   try {
     await caseStore.createSuite({...draft.value, sort_order: caseStore.suites.length});
     draft.value = {name: '', description: ''};
-    ui.toast('Suite created.');
+    ui.toast(wp.i18n.__('Suite created.', 'qa-runner'));
   } catch (error) {
-    ui.toastError(error, 'The suite could not be created.');
+    ui.toastError(error, wp.i18n.__('The suite could not be created.', 'qa-runner'));
   } finally {
     saving.value = false;
   }
@@ -68,9 +68,9 @@ async function saveEdit() {
   try {
     await caseStore.updateSuite(editingId.value, editDraft.value);
     editingId.value = 0;
-    ui.toast('Suite saved.');
+    ui.toast(wp.i18n.__('Suite saved.', 'qa-runner'));
   } catch (error) {
-    ui.toastError(error, 'The suite could not be saved.');
+    ui.toastError(error, wp.i18n.__('The suite could not be saved.', 'qa-runner'));
   }
 }
 
@@ -102,19 +102,33 @@ async function remove(suite) {
   }
 
   const archived = suite.archived_case_count ?? 0;
-  const warning = archived
-    ? ` Its ${archived} archived ${archived === 1 ? 'case' : 'cases'} will be deleted with it.`
-    : '';
+  const question = archived
+    ? wp.i18n.sprintf(
+        /* translators: 1: suite name, 2: number of archived cases. */
+        wp.i18n._n(
+          'Delete the suite "%1$s"? Its %2$d archived case will be deleted with it.',
+          'Delete the suite "%1$s"? Its %2$d archived cases will be deleted with it.',
+          archived,
+          'qa-runner'
+        ),
+        suite.name,
+        archived
+      )
+    : wp.i18n.sprintf(
+        /* translators: %s: suite name. */
+        wp.i18n.__('Delete the suite "%s"?', 'qa-runner'),
+        suite.name
+      );
 
-  if (!window.confirm(`Delete the suite "${suite.name}"?${warning}`)) {
+  if (!window.confirm(question)) {
     return;
   }
 
   try {
     await caseStore.deleteSuite(suite.id);
-    ui.toast('Suite deleted.');
+    ui.toast(wp.i18n.__('Suite deleted.', 'qa-runner'));
   } catch (error) {
-    ui.toastError(error, 'The suite could not be deleted.');
+    ui.toastError(error, wp.i18n.__('The suite could not be deleted.', 'qa-runner'));
   }
 }
 
@@ -130,9 +144,9 @@ async function confirmMove(suite) {
   try {
     await caseStore.deleteSuite(suite.id, Number(moveTarget.value));
     movingId.value = 0;
-    ui.toast('Archived cases moved and suite deleted.');
+    ui.toast(wp.i18n.__('Archived cases moved and suite deleted.', 'qa-runner'));
   } catch (error) {
-    ui.toastError(error, 'The suite could not be deleted.');
+    ui.toastError(error, wp.i18n.__('The suite could not be deleted.', 'qa-runner'));
   } finally {
     moving.value = false;
   }
@@ -142,7 +156,7 @@ onMounted(async () => {
   try {
     await caseStore.loadSuites(true);
   } catch (error) {
-    ui.toastError(error, 'The suites could not be loaded.');
+    ui.toastError(error, wp.i18n.__('The suites could not be loaded.', 'qa-runner'));
   } finally {
     loading.value = false;
   }
@@ -153,55 +167,59 @@ onMounted(async () => {
   <div class="qa-stack">
     <div class="qa-page-head">
       <div class="qa-page-head__meta">
-        <h2>Suites</h2>
+        <h2>{{ __('Suites', 'qa-runner') }}</h2>
       </div>
     </div>
 
     <form class="qa-card" @submit.prevent="create">
-      <div class="qa-card__head"><h3>New suite</h3></div>
+      <div class="qa-card__head">
+        <h3>{{ __('New suite', 'qa-runner') }}</h3>
+      </div>
       <div class="qa-card__body qa-inline-form">
         <div class="qa-field" style="flex: 1; min-width: 180px">
-          <label class="qa-field__label" for="suite-name">Name</label>
+          <label class="qa-field__label" for="suite-name">{{ __('Name', 'qa-runner') }}</label>
           <input
             id="suite-name"
             v-model="draft.name"
             class="qa-input"
             type="text"
-            placeholder="Checkout"
+            :placeholder="__('Checkout', 'qa-runner')"
             required
           />
         </div>
         <div class="qa-field" style="flex: 2; min-width: 220px">
-          <label class="qa-field__label" for="suite-description">Description</label>
+          <label class="qa-field__label" for="suite-description">{{
+            __('Description', 'qa-runner')
+          }}</label>
           <input
             id="suite-description"
             v-model="draft.description"
             class="qa-input"
             type="text"
-            placeholder="What this area covers"
+            :placeholder="__('What this area covers', 'qa-runner')"
           />
         </div>
         <button type="submit" class="qa-button qa-button--primary" :disabled="saving">
-          {{ saving ? 'Adding…' : 'Add suite' }}
+          {{ saving ? __('Adding…', 'qa-runner') : __('Add suite', 'qa-runner') }}
         </button>
       </div>
     </form>
 
     <div class="qa-card">
-      <p v-if="loading" class="qa-skeleton">Loading suites…</p>
+      <p v-if="loading" class="qa-skeleton">{{ __('Loading suites…', 'qa-runner') }}</p>
 
       <EmptyState
         v-else-if="!caseStore.suites.length"
-        title="No suites yet. Add one above to start grouping cases."
+        :title="__('No suites yet. Add one above to start grouping cases.', 'qa-runner')"
       />
 
       <div v-else class="qa-table-scroll">
         <table class="qa-table">
           <thead>
             <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Description</th>
-              <th scope="col">Cases</th>
+              <th scope="col">{{ __('Name', 'qa-runner') }}</th>
+              <th scope="col">{{ __('Description', 'qa-runner') }}</th>
+              <th scope="col">{{ __('Cases', 'qa-runner') }}</th>
               <th scope="col" />
             </tr>
           </thead>
@@ -214,7 +232,7 @@ onMounted(async () => {
                       v-model="editDraft.name"
                       class="qa-input"
                       type="text"
-                      aria-label="Suite name"
+                      :aria-label="__('Suite name', 'qa-runner')"
                     />
                   </td>
                   <td>
@@ -222,7 +240,7 @@ onMounted(async () => {
                       v-model="editDraft.description"
                       class="qa-input"
                       type="text"
-                      aria-label="Suite description"
+                      :aria-label="__('Suite description', 'qa-runner')"
                     />
                   </td>
                   <td class="qa-count">{{ suite.case_count }}</td>
@@ -233,14 +251,14 @@ onMounted(async () => {
                         class="qa-button qa-button--small qa-button--primary"
                         @click="saveEdit"
                       >
-                        Save
+                        {{ __('Save', 'qa-runner') }}
                       </button>
                       <button
                         type="button"
                         class="qa-button qa-button--small qa-button--quiet"
                         @click="editingId = 0"
                       >
-                        Cancel
+                        {{ __('Cancel', 'qa-runner') }}
                       </button>
                     </div>
                   </td>
@@ -251,7 +269,7 @@ onMounted(async () => {
                   <td class="qa-count">
                     {{ suite.case_count }}
                     <span v-if="suite.archived_case_count" class="qa-muted">
-                      + {{ suite.archived_case_count }} archived
+                      {{ sprintf(__('+ %d archived', 'qa-runner'), suite.archived_case_count) }}
                     </span>
                   </td>
                   <td>
@@ -261,7 +279,7 @@ onMounted(async () => {
                         class="qa-button qa-button--small"
                         @click="startEdit(suite)"
                       >
-                        Edit
+                        {{ __('Edit', 'qa-runner') }}
                       </button>
                       <button
                         type="button"
@@ -269,12 +287,12 @@ onMounted(async () => {
                         :disabled="suite.case_count > 0"
                         :title="
                           suite.case_count > 0
-                            ? 'Archive or move this suite\'s cases first.'
-                            : 'Delete this suite'
+                            ? __('Archive or move this suite’s cases first.', 'qa-runner')
+                            : __('Delete this suite', 'qa-runner')
                         "
                         @click="remove(suite)"
                       >
-                        Delete
+                        {{ __('Delete', 'qa-runner') }}
                       </button>
                     </div>
                   </td>
@@ -285,16 +303,22 @@ onMounted(async () => {
                 <td colspan="4">
                   <div class="qa-inline-form">
                     <p class="qa-muted" style="flex: 1; min-width: 220px; margin: 0">
-                      {{ suite.retained_case_count }} archived
-                      {{ suite.retained_case_count === 1 ? 'case' : 'cases' }} here still
-                      {{ suite.retained_case_count === 1 ? 'appears' : 'appear' }} in past runs, so
-                      {{ suite.retained_case_count === 1 ? 'it needs' : 'they need' }} a suite to
-                      stay in. Move {{ suite.retained_case_count === 1 ? 'it' : 'them' }} to:
+                      {{
+                        sprintf(
+                          _n(
+                            '%d archived case here still appears in past runs, so it needs a suite to stay in. Move it to:',
+                            '%d archived cases here still appear in past runs, so they need a suite to stay in. Move them to:',
+                            suite.retained_case_count,
+                            'qa-runner'
+                          ),
+                          suite.retained_case_count
+                        )
+                      }}
                     </p>
 
                     <template v-if="moveTargets(suite).length">
                       <label class="qa-sr-only" :for="`move-target-${suite.id}`">
-                        Destination suite
+                        {{ __('Destination suite', 'qa-runner') }}
                       </label>
                       <select
                         :id="`move-target-${suite.id}`"
@@ -316,11 +340,17 @@ onMounted(async () => {
                         :disabled="!moveTarget || moving"
                         @click="confirmMove(suite)"
                       >
-                        {{ moving ? 'Moving…' : 'Move & delete suite' }}
+                        {{
+                          moving
+                            ? __('Moving…', 'qa-runner')
+                            : __('Move & delete suite', 'qa-runner')
+                        }}
                       </button>
                     </template>
                     <span v-else class="qa-muted">
-                      Add another suite first — there is nowhere to move them.
+                      {{
+                        __('Add another suite first — there is nowhere to move them.', 'qa-runner')
+                      }}
                     </span>
 
                     <button
@@ -328,7 +358,7 @@ onMounted(async () => {
                       class="qa-button qa-button--small qa-button--quiet"
                       @click="movingId = 0"
                     >
-                      Cancel
+                      {{ __('Cancel', 'qa-runner') }}
                     </button>
                   </div>
                 </td>

@@ -21,6 +21,15 @@ fi
 # The dev watcher writes an unminified bundle with a source map; never ship that.
 npm run build
 
+# Refresh the translation template from the bundle that is about to ship. The bundle, not
+# src/, is scanned: .vue files are invisible to make-pot, and WordPress loads JS
+# translations for the file it enqueues.
+if command -v wp >/dev/null 2>&1; then
+  npm run make-pot
+else
+  echo "WP-CLI not found: languages/qa-runner.pot was NOT regenerated." >&2
+fi
+
 rm -rf dist
 mkdir -p "dist/$slug"
 rsync -a --exclude-from=.distignore ./ "dist/$slug/"

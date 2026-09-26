@@ -16,7 +16,6 @@ import {computed, nextTick, ref, watch} from 'vue';
 
 import PriorityDot from './PriorityDot.vue';
 import StatusBadge from './StatusBadge.vue';
-import {plural} from '../utils/format.js';
 
 const props = defineProps({
   open: {type: Boolean, default: false},
@@ -98,12 +97,32 @@ const canSave = computed(
  * @type {import('vue').ComputedRef<string>}
  */
 const removalWarning = computed(() => {
-  const names = removed.value.map((result) => `<li><strong>${result.case.title}</strong></li>`).join(' ');
-  const them = plural(removed.value.length, 'it', 'them');
-  const cases = plural(removed.value.length, 'case', 'cases');
+  const names = removed.value
+    .map((result) => `<li><strong>${escapeHtml(result.case.title)}</strong></li>`)
+    .join(' ');
+  const warning = wp.i18n._n(
+    'This will delete everything this run recorded against it: the status, every comment and any issue raised on it here. The case itself is not deleted, but its history in this run is erased.',
+    'This will delete everything this run recorded against them: the status, every comment and any issue raised on them here. The cases themselves are not deleted, but their history in this run is erased.',
+    removed.value.length,
+    'qa-runner'
+  );
 
-  return `Removing: <br><ul>${names}</ul> This action will delete everything this run recorded against ${them}: the status, every comment and any issue raised on ${them} here. The ${cases} won't be deleted, but any history of ${them} related to the current run will be erased.`;
+  return `${escapeHtml(wp.i18n.__('Removing:', 'qa-runner'))}<ul>${names}</ul>${escapeHtml(warning)}`;
 });
+
+/**
+ * Escapes text for the v-html warning above. Case titles are user input.
+ *
+ * @param {string} text Plain text.
+ * @returns {string} HTML-safe text.
+ */
+function escapeHtml(text) {
+  const element = document.createElement('span');
+
+  element.textContent = text;
+
+  return element.innerHTML;
+}
 
 /**
  * What one row would lose, as a short list of phrases.
@@ -115,11 +134,21 @@ function recorded(result) {
   const parts = [];
 
   if (result.comment_count > 0) {
-    parts.push(`${result.comment_count} ${plural(result.comment_count, 'comment')}`);
+    parts.push(
+      wp.i18n.sprintf(
+        wp.i18n._n('%d comment', '%d comments', result.comment_count, 'qa-runner'),
+        result.comment_count
+      )
+    );
   }
 
   if (result.open_issue_count > 0) {
-    parts.push(`${result.open_issue_count} open ${plural(result.open_issue_count, 'issue')}`);
+    parts.push(
+      wp.i18n.sprintf(
+        wp.i18n._n('%d open issue', '%d open issues', result.open_issue_count, 'qa-runner'),
+        result.open_issue_count
+      )
+    );
   }
 
   return parts;
@@ -190,16 +219,29 @@ watch(
 <template>
   <dialog ref="dialog" class="qa-dialog qa-dialog--wide" @close="cancel" @cancel="cancel">
     <div class="qa-dialog__head">
-      <h3 class="qa-dialog__title">Cases in this run</h3>
-      <button type="button" class="qa-dialog__close" aria-label="Close" @click="cancel">×</button>
+      <h3 class="qa-dialog__title">{{ __('Cases in this run', 'qa-runner') }}</h3>
+      <button
+        type="button"
+        class="qa-dialog__close"
+        :aria-label="__('Close', 'qa-runner')"
+        @click="cancel"
+      >
+        ×
+      </button>
     </div>
 
     <div ref="body" class="qa-dialog__body qa-stack">
       <div class="qa-stack qa-stack--tight">
-        <span class="qa-field__label"> On the run ({{ results.length }}) </span>
-        <p class="qa-field__hint">Untick a case to take it off this run.</p>
+        <span class="qa-field__label">{{
+          sprintf(__('On the run (%d)', 'qa-runner'), results.length)
+        }}</span>
+        <p class="qa-field__hint">
+          {{ __('Untick a case to take it off this run.', 'qa-runner') }}
+        </p>
 
-        <p v-if="!results.length" class="qa-muted">This run has no cases yet.</p>
+        <p v-if="!results.length" class="qa-muted">
+          {{ __('This run has no cases yet.', 'qa-runner') }}
+        </p>
 
         <ul v-else class="qa-dialog__list">
           <li v-for="result in results" :key="result.id">
@@ -225,21 +267,23 @@ watch(
       </div>
 
       <div class="qa-stack qa-stack--tight">
-        <span class="qa-field__label">Add from the library</span>
+        <span class="qa-field__label">{{ __('Add from the library', 'qa-runner') }}</span>
 
         <div class="qa-row">
-          <label class="qa-sr-only" for="run-cases-search">Search cases</label>
+          <label class="qa-sr-only" for="run-cases-search">{{
+            __('Search cases', 'qa-runner')
+          }}</label>
           <input
             id="run-cases-search"
             v-model="search"
             class="qa-input"
             type="search"
-            placeholder="Search by title"
+            :placeholder="__('Search by title', 'qa-runner')"
             :disabled="saving"
             style="flex: 1; min-width: 140px"
           />
 
-          <label class="qa-sr-only" for="run-cases-suite">Suite</label>
+          <label class="qa-sr-only" for="run-cases-suite">{{ __('Suite', 'qa-runner') }}</label>
           <select
             id="run-cases-suite"
             v-model="suiteFilter"
@@ -247,19 +291,19 @@ watch(
             :disabled="saving"
             style="width: auto"
           >
-            <option value="">All suites</option>
+            <option value="">{{ __('All suites', 'qa-runner') }}</option>
             <option v-for="suite in suites" :key="suite.id" :value="String(suite.id)">
               {{ suite.name }}
             </option>
           </select>
         </div>
 
-        <p v-if="loading" class="qa-muted">Loading the case library…</p>
+        <p v-if="loading" class="qa-muted">{{ __('Loading the case library…', 'qa-runner') }}</p>
         <p v-else-if="!hasFilter" class="qa-field__hint">
-          Search or pick a suite to see the cases you can add.
+          {{ __('Search or pick a suite to see the cases you can add.', 'qa-runner') }}
         </p>
         <p v-else-if="!candidates.length" class="qa-muted">
-          No cases match, or they are all on this run already.
+          {{ __('No cases match, or they are all on this run already.', 'qa-runner') }}
         </p>
 
         <ul v-else class="qa-dialog__list">
@@ -281,9 +325,17 @@ watch(
         <label class="qa-checkbox" style="margin-top: 8px">
           <input v-model="confirmed" type="checkbox" :disabled="saving" />
           <span>
-            Yes, remove
-            {{ removed.length }} {{ plural(removed.length, 'case') }} and delete what this run
-            recorded against {{ plural(removed.length, 'it', 'them') }}.
+            {{
+              sprintf(
+                _n(
+                  'Yes, remove %d case and delete what this run recorded against it.',
+                  'Yes, remove %d cases and delete what this run recorded against them.',
+                  removed.length,
+                  'qa-runner'
+                ),
+                removed.length
+              )
+            }}
           </span>
         </label>
       </div>
@@ -291,10 +343,10 @@ watch(
 
     <div class="qa-dialog__foot">
       <button type="button" class="qa-button qa-button--quiet" :disabled="saving" @click="cancel">
-        Cancel
+        {{ __('Cancel', 'qa-runner') }}
       </button>
       <button type="button" class="qa-button qa-button--primary" :disabled="!canSave" @click="save">
-        {{ saving ? 'Saving…' : 'Save' }}
+        {{ saving ? __('Saving…', 'qa-runner') : __('Save', 'qa-runner') }}
       </button>
     </div>
   </dialog>

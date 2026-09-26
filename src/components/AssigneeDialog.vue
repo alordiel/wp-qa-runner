@@ -18,9 +18,12 @@ import {computed, ref, watch} from 'vue';
 
 const props = defineProps({
   open: {type: Boolean, default: false},
-  title: {type: String, default: 'Assign'},
+  title: {type: String, default: () => wp.i18n.__('Assign', 'qa-runner')},
   /** Shown in place of the list when there are no candidates at all. */
-  emptyText: {type: String, default: 'There is nobody to choose from.'},
+  emptyText: {
+    type: String,
+    default: () => wp.i18n.__('There is nobody to choose from.', 'qa-runner')
+  },
   /** Warning shown when a save would remove people. '%s' becomes their names. */
   removalWarning: {type: String, default: ''},
   /** People who can be picked, as {id, name, avatar}. */
@@ -102,7 +105,14 @@ watch(
   <dialog ref="dialog" class="qa-dialog" @close="cancel" @cancel="cancel">
     <div class="qa-dialog__head">
       <h3 class="qa-dialog__title">{{ title }}</h3>
-      <button type="button" class="qa-dialog__close" aria-label="Close" @click="cancel">×</button>
+      <button
+        type="button"
+        class="qa-dialog__close"
+        :aria-label="__('Close', 'qa-runner')"
+        @click="cancel"
+      >
+        ×
+      </button>
     </div>
 
     <div class="qa-dialog__body">
@@ -132,7 +142,7 @@ watch(
 
     <div class="qa-dialog__foot">
       <button type="button" class="qa-button qa-button--quiet" :disabled="saving" @click="cancel">
-        Cancel
+        {{ __('Cancel', 'qa-runner') }}
       </button>
       <button
         type="button"
@@ -140,7 +150,7 @@ watch(
         :disabled="!dirty || saving"
         @click="save"
       >
-        {{ saving ? 'Saving…' : 'Save' }}
+        {{ saving ? __('Saving…', 'qa-runner') : __('Save', 'qa-runner') }}
       </button>
     </div>
   </dialog>

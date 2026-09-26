@@ -19,8 +19,8 @@ import RunDetailsDialog from '../components/RunDetailsDialog.vue';
 import StatusBadge from '../components/StatusBadge.vue';
 import StatusControl from '../components/StatusControl.vue';
 import {api, bootstrap} from '../api/client.js';
-import {absoluteTime, plural, relativeTime} from '../utils/format.js';
-import {PRIORITIES, RESULT_STATUSES, statusLabel} from '../utils/status.js';
+import {absoluteTime, relativeTime} from '../utils/format.js';
+import {PRIORITIES, RESULT_STATUSES, RUN_STATUSES, statusLabel} from '../utils/status.js';
 import {useCaseStore} from '../stores/cases.js';
 import {useRunStore} from '../stores/runs.js';
 import {useUiStore} from '../stores/ui.js';
@@ -153,7 +153,7 @@ async function load() {
     ]);
     runStore.startPolling(runId.value);
   } catch (error) {
-    ui.toastError(error, 'This run could not be loaded.');
+    ui.toastError(error, wp.i18n.__('This run could not be loaded.', 'qa-runner'));
   } finally {
     loading.value = false;
   }
@@ -170,7 +170,7 @@ async function setStatus(result, status) {
   try {
     await runStore.setStatus(result.id, status);
   } catch (error) {
-    ui.toastError(error, 'That result could not be saved.');
+    ui.toastError(error, wp.i18n.__('That result could not be saved.', 'qa-runner'));
   }
 }
 
@@ -194,7 +194,7 @@ async function openRunCasesDialog() {
   try {
     await caseStore.loadCases({active: true});
   } catch (error) {
-    ui.toastError(error, 'The case library could not be loaded.');
+    ui.toastError(error, wp.i18n.__('The case library could not be loaded.', 'qa-runner'));
   } finally {
     loadingLibrary.value = false;
   }
@@ -212,10 +212,10 @@ async function saveRunCases(changes) {
   try {
     await runStore.setRunCases(runId.value, changes);
     runCasesDialogOpen.value = false;
-    ui.toast('Run cases updated.');
+    ui.toast(wp.i18n.__('Run cases updated.', 'qa-runner'));
   } catch (error) {
     // The dialog stays open on failure, so the draft is still there to retry or cancel.
-    ui.toastError(error, 'The run cases could not be saved.');
+    ui.toastError(error, wp.i18n.__('The run cases could not be saved.', 'qa-runner'));
   } finally {
     savingRunCases.value = false;
   }
@@ -233,10 +233,10 @@ async function saveRunDetails(changes) {
   try {
     await runStore.updateRun(runId.value, changes);
     runDetailsDialogOpen.value = false;
-    ui.toast('Run details updated.');
+    ui.toast(wp.i18n.__('Run details updated.', 'qa-runner'));
   } catch (error) {
     // The dialog stays open on failure, so the draft is still there to retry or cancel.
-    ui.toastError(error, 'The run details could not be saved.');
+    ui.toastError(error, wp.i18n.__('The run details could not be saved.', 'qa-runner'));
   } finally {
     savingRunDetails.value = false;
   }
@@ -254,10 +254,10 @@ async function saveRunAssignees(changes) {
   try {
     await runStore.setRunAssignees(runId.value, changes);
     runAssigneeDialogOpen.value = false;
-    ui.toast('Run assignees updated.');
+    ui.toast(wp.i18n.__('Run assignees updated.', 'qa-runner'));
   } catch (error) {
     // The dialog stays open on failure, so the draft is still there to retry or cancel.
-    ui.toastError(error, 'The run assignees could not be saved.');
+    ui.toastError(error, wp.i18n.__('The run assignees could not be saved.', 'qa-runner'));
   } finally {
     savingRunAssignees.value = false;
   }
@@ -273,8 +273,18 @@ async function toggleAssignment(result) {
   try {
     await runStore.setAssignment(result.id, bootstrap.currentUser, !isMine(result));
   } catch (error) {
-    ui.toastError(error, 'That assignment could not be saved.');
+    ui.toastError(error, wp.i18n.__('That assignment could not be saved.', 'qa-runner'));
   }
+}
+
+/**
+ * Translated label for a run status.
+ *
+ * @param {string} status Run status.
+ * @returns {string}
+ */
+function runStatusLabel(status) {
+  return RUN_STATUSES.find((item) => item.value === status)?.label ?? status;
 }
 
 /**
@@ -297,9 +307,9 @@ async function completeRun() {
   try {
     await runStore.updateRun(runId.value, {status: 'completed'});
     runStore.stopPolling();
-    ui.toast('Run completed.');
+    ui.toast(wp.i18n.__('Run completed.', 'qa-runner'));
   } catch (error) {
-    ui.toastError(error, 'The run could not be completed.');
+    ui.toastError(error, wp.i18n.__('The run could not be completed.', 'qa-runner'));
   }
 }
 
@@ -312,9 +322,9 @@ async function reopenRun() {
   try {
     await runStore.updateRun(runId.value, {status: 'open'});
     runStore.startPolling(runId.value);
-    ui.toast('Run reopened.');
+    ui.toast(wp.i18n.__('Run reopened.', 'qa-runner'));
   } catch (error) {
-    ui.toastError(error, 'The run could not be reopened.');
+    ui.toastError(error, wp.i18n.__('The run could not be reopened.', 'qa-runner'));
   }
 }
 
@@ -329,10 +339,10 @@ async function cloneRun() {
   try {
     const clone = await api.runs.clone(runId.value);
 
-    ui.toast('Run cloned.');
+    ui.toast(wp.i18n.__('Run cloned.', 'qa-runner'));
     window.location.hash = `#/runs/${clone.id}`;
   } catch (error) {
-    ui.toastError(error, 'The run could not be cloned.');
+    ui.toastError(error, wp.i18n.__('The run could not be cloned.', 'qa-runner'));
   } finally {
     cloning.value = false;
   }
@@ -363,16 +373,19 @@ onBeforeUnmount(() => runStore.reset());
 
 <template>
   <div class="qa-stack">
-    <p v-if="loading" class="qa-skeleton">Loading run…</p>
+    <p v-if="loading" class="qa-skeleton">{{ __('Loading run…', 'qa-runner') }}</p>
 
     <template v-else-if="runStore.run">
       <div class="qa-page-head">
         <div class="qa-page-head__meta">
           <h2 class="qa-run-title">{{ runStore.run.name }}</h2>
           <p class="qa-subtitle">
-            environment: <strong>{{ runStore.run.environment }}</strong> · version:
+            {{ __('environment:', 'qa-runner') }}
+            <strong>{{ runStore.run.environment }}</strong> ·
+            {{ __('version:', 'qa-runner') }}
             <strong>{{ runStore.run.version }}</strong> <br />
-            created by <strong>{{ runStore.run.created_by.name }}</strong> &nbsp;
+            {{ __('created by', 'qa-runner') }}
+            <strong>{{ runStore.run.created_by.name }}</strong> &nbsp;
             <strong>
               <span :title="absoluteTime(runStore.run.created_at)">{{
                 relativeTime(runStore.run.created_at)
@@ -389,7 +402,7 @@ onBeforeUnmount(() => runStore.reset());
             class="qa-button qa-button--quiet"
             @click="runDetailsDialogOpen = true"
           >
-            Edit details
+            {{ __('Edit details', 'qa-runner') }}
           </button>
           <button
             v-if="bootstrap.caps?.runTests"
@@ -398,7 +411,7 @@ onBeforeUnmount(() => runStore.reset());
             :disabled="cloning"
             @click="cloneRun"
           >
-            {{ cloning ? 'Cloning…' : 'Clone run' }}
+            {{ cloning ? __('Cloning…', 'qa-runner') : __('Clone run', 'qa-runner') }}
           </button>
           <button
             v-if="bootstrap.caps?.runTests && isOpen"
@@ -406,7 +419,7 @@ onBeforeUnmount(() => runStore.reset());
             class="qa-button qa-button--primary"
             @click="completeRun"
           >
-            Complete run
+            {{ __('Complete run', 'qa-runner') }}
           </button>
           <button
             v-else-if="bootstrap.caps?.runTests && runStore.run.status === 'completed'"
@@ -414,7 +427,7 @@ onBeforeUnmount(() => runStore.reset());
             class="qa-button"
             @click="reopenRun"
           >
-            Reopen run
+            {{ __('Reopen run', 'qa-runner') }}
           </button>
         </div>
 
@@ -431,7 +444,7 @@ onBeforeUnmount(() => runStore.reset());
         <div class="qa-card__body qa-row" style="justify-content: space-between; gap: 24px">
           <ProgressBar :counts="runStore.run.counts" />
           <div class="qa-row" style="gap: 16px">
-            <span class="qa-badge">{{ runStore.run.status }}</span>
+            <span class="qa-badge">{{ runStatusLabel(runStore.run.status) }}</span>
 
             <AvatarStack :people="runStore.run.assignees" />
 
@@ -441,16 +454,23 @@ onBeforeUnmount(() => runStore.reset());
               class="qa-button qa-button--small"
               @click="runAssigneeDialogOpen = true"
             >
-              Edit assignees
+              {{ __('Edit assignees', 'qa-runner') }}
             </button>
           </div>
         </div>
 
         <AssigneeDialog
           :open="runAssigneeDialogOpen"
-          title="Who is on this run"
-          empty-text="No testers exist yet. Give somebody the QA Tester role first."
-          removal-warning="Removing %s also drops the cases they claimed on this run. Adding them back will not restore those claims."
+          :title="__('Who is on this run', 'qa-runner')"
+          :empty-text="
+            __('No testers exist yet. Give somebody the QA Tester role first.', 'qa-runner')
+          "
+          :removal-warning="
+            __(
+              'Removing %s also drops the cases they claimed on this run. Adding them back will not restore those claims.',
+              'qa-runner'
+            )
+          "
           :candidates="caseStore.users"
           :assigned="runStore.run.assignees"
           :saving="savingRunAssignees"
@@ -460,48 +480,68 @@ onBeforeUnmount(() => runStore.reset());
       </div>
 
       <div v-if="!isOpen" class="qa-notice qa-notice--warning">
-        This run is {{ runStore.run.status }}. Results, comments and locks are read-only.
+        {{
+          sprintf(
+            __('This run is %s. Results, comments and locks are read-only.', 'qa-runner'),
+            runStatusLabel(runStore.run.status).toLowerCase()
+          )
+        }}
       </div>
 
       <div v-if="regressions.length" class="qa-notice qa-notice--error">
-        <strong>{{ regressions.length }} {{ plural(regressions.length, 'regression') }}.</strong>
-        {{ plural(regressions.length, 'This case passed', 'These cases passed') }} in the previous
-        run and {{ plural(regressions.length, 'fails', 'fail') }} now:
-        {{ regressions.map((result) => result.case.title).join(', ') }}
+        <strong>{{
+          sprintf(
+            _n('%d regression.', '%d regressions.', regressions.length, 'qa-runner'),
+            regressions.length
+          )
+        }}</strong>
+        {{
+          sprintf(
+            _n(
+              'This case passed in the previous run and fails now: %s',
+              'These cases passed in the previous run and fail now: %s',
+              regressions.length,
+              'qa-runner'
+            ),
+            regressions.map((result) => result.case.title).join(', ')
+          )
+        }}
       </div>
 
       <div class="qa-card">
         <div class="qa-card__head" style="flex-wrap: wrap">
           <div class="qa-row">
-            <label class="qa-sr-only" for="filter-status">Status</label>
+            <label class="qa-sr-only" for="filter-status">{{ __('Status', 'qa-runner') }}</label>
             <select
               id="filter-status"
               v-model="filters.status"
               class="qa-select"
               style="width: auto"
             >
-              <option value="">All statuses</option>
+              <option value="">{{ __('All statuses', 'qa-runner') }}</option>
               <option v-for="status in RESULT_STATUSES" :key="status.value" :value="status.value">
                 {{ statusLabel(status.value) }}
               </option>
             </select>
 
-            <label class="qa-sr-only" for="filter-suite">Suite</label>
+            <label class="qa-sr-only" for="filter-suite">{{ __('Suite', 'qa-runner') }}</label>
             <select id="filter-suite" v-model="filters.suite" class="qa-select" style="width: auto">
-              <option value="">All suites</option>
+              <option value="">{{ __('All suites', 'qa-runner') }}</option>
               <option v-for="suite in caseStore.suites" :key="suite.id" :value="String(suite.id)">
                 {{ suite.name }}
               </option>
             </select>
 
-            <label class="qa-sr-only" for="filter-priority">Priority</label>
+            <label class="qa-sr-only" for="filter-priority">{{
+              __('Priority', 'qa-runner')
+            }}</label>
             <select
               id="filter-priority"
               v-model="filters.priority"
               class="qa-select"
               style="width: auto"
             >
-              <option value="">All priorities</option>
+              <option value="">{{ __('All priorities', 'qa-runner') }}</option>
               <option v-for="priority in PRIORITIES" :key="priority.value" :value="priority.value">
                 {{ priority.label }}
               </option>
@@ -509,17 +549,17 @@ onBeforeUnmount(() => runStore.reset());
 
             <label class="qa-checkbox">
               <input v-model="filters.onlyMine" type="checkbox" />
-              <span>Only mine</span>
+              <span>{{ __('Only mine', 'qa-runner') }}</span>
             </label>
 
             <label class="qa-checkbox">
               <input v-model="filters.onlyUnassigned" type="checkbox" />
-              <span>Unassigned only</span>
+              <span>{{ __('Unassigned only', 'qa-runner') }}</span>
             </label>
 
             <label class="qa-checkbox">
               <input v-model="filters.onlyFailedLastRun" type="checkbox" />
-              <span>Only failed last run</span>
+              <span>{{ __('Only failed last run', 'qa-runner') }}</span>
             </label>
           </div>
 
@@ -530,7 +570,7 @@ onBeforeUnmount(() => runStore.reset());
               class="qa-button qa-button--small qa-button--quiet"
               @click="clearFilters"
             >
-              Clear filters
+              {{ __('Clear filters', 'qa-runner') }}
             </button>
 
             <button
@@ -539,7 +579,7 @@ onBeforeUnmount(() => runStore.reset());
               class="qa-button qa-button--small"
               @click="openRunCasesDialog"
             >
-              Edit cases
+              {{ __('Edit cases', 'qa-runner') }}
             </button>
           </div>
         </div>
@@ -557,15 +597,24 @@ onBeforeUnmount(() => runStore.reset());
 
         <EmptyState
           v-if="!filtered.length"
-          :title="hasFilters ? 'No cases match these filters.' : 'This run has no cases yet.'"
-          :description="hasFilters ? 'Clear a filter to see more of the run.' : ''"
+          :title="
+            hasFilters
+              ? __('No cases match these filters.', 'qa-runner')
+              : __('This run has no cases yet.', 'qa-runner')
+          "
+          :description="hasFilters ? __('Clear a filter to see more of the run.', 'qa-runner') : ''"
         />
 
         <div v-for="group in groups" :key="group.id" class="qa-suite-group">
           <div class="qa-card__head">
             <h3>{{ group.name }}</h3>
             <span class="qa-muted qa-count">
-              {{ group.results.length }} {{ plural(group.results.length, 'case') }}
+              {{
+                sprintf(
+                  _n('%d case', '%d cases', group.results.length, 'qa-runner'),
+                  group.results.length
+                )
+              }}
             </span>
           </div>
 
@@ -586,14 +635,24 @@ onBeforeUnmount(() => runStore.reset());
                     relativeTime(result.tested_at)
                   }}</span>
                 </span>
-                <span v-else>Not tested yet</span>
+                <span v-else>{{ __('Not tested yet', 'qa-runner') }}</span>
 
                 <span v-if="result.comment_count" class="qa-badge">
-                  {{ result.comment_count }} {{ plural(result.comment_count, 'comment') }}
+                  {{
+                    sprintf(
+                      _n('%d comment', '%d comments', result.comment_count, 'qa-runner'),
+                      result.comment_count
+                    )
+                  }}
                 </span>
 
                 <span v-if="result.open_issue_count" class="qa-badge qa-badge--issue">
-                  {{ result.open_issue_count }} open {{ plural(result.open_issue_count, 'issue') }}
+                  {{
+                    sprintf(
+                      _n('%d open issue', '%d open issues', result.open_issue_count, 'qa-runner'),
+                      result.open_issue_count
+                    )
+                  }}
                 </span>
 
                 <span
@@ -602,15 +661,25 @@ onBeforeUnmount(() => runStore.reset());
                   "
                   class="qa-badge qa-badge--lock"
                 >
-                  {{ result.in_progress_by.name }} is testing this
+                  {{ sprintf(__('%s is testing this', 'qa-runner'), result.in_progress_by.name) }}
                 </span>
 
                 <span
                   v-if="runStore.previousStatus[result.case.id]"
                   class="qa-muted"
-                  :title="`Previous run: ${runStore.previousStatus[result.case.id].run_name}`"
+                  :title="
+                    sprintf(
+                      __('Previous run: %s', 'qa-runner'),
+                      runStore.previousStatus[result.case.id].run_name
+                    )
+                  "
                 >
-                  Last run: {{ statusLabel(runStore.previousStatus[result.case.id].status) }}
+                  {{
+                    sprintf(
+                      __('Last run: %s', 'qa-runner'),
+                      statusLabel(runStore.previousStatus[result.case.id].status)
+                    )
+                  }}
                 </span>
               </div>
             </div>
@@ -620,10 +689,14 @@ onBeforeUnmount(() => runStore.reset());
                 v-if="canAssignSelf"
                 type="button"
                 class="qa-button qa-button--small qa-button--quiet"
-                :title="isMine(result) ? 'Take yourself off this case' : 'Claim this case'"
+                :title="
+                  isMine(result)
+                    ? __('Take yourself off this case', 'qa-runner')
+                    : __('Claim this case', 'qa-runner')
+                "
                 @click="toggleAssignment(result)"
               >
-                {{ isMine(result) ? 'Unassign me' : 'Assign me' }}
+                {{ isMine(result) ? __('Unassign me', 'qa-runner') : __('Assign me', 'qa-runner') }}
               </button>
 
               <StatusControl
@@ -639,8 +712,12 @@ onBeforeUnmount(() => runStore.reset());
       </div>
     </template>
 
-    <EmptyState v-else title="That run could not be found." description="It may have been deleted.">
-      <RouterLink class="qa-button" to="/">Back to runs</RouterLink>
+    <EmptyState
+      v-else
+      :title="__('That run could not be found.', 'qa-runner')"
+      :description="__('It may have been deleted.', 'qa-runner')"
+    >
+      <RouterLink class="qa-button" to="/">{{ __('Back to runs', 'qa-runner') }}</RouterLink>
     </EmptyState>
   </div>
 </template>

@@ -16,13 +16,19 @@ import {useUiStore} from '../stores/ui.js';
 const ui = useUiStore();
 
 const ROLE_OPTIONS = [
-  {value: 'qa_tester', label: 'QA Tester'},
-  {value: 'qa_admin', label: 'QA Admin'}
+  {value: 'qa_tester', label: wp.i18n.__('QA Tester', 'qa-runner')},
+  {value: 'qa_admin', label: wp.i18n.__('QA Admin', 'qa-runner')}
 ];
 
 const ROLE_HINTS = {
-  qa_tester: 'Runs tests: creates runs, records results, comments and raises issues.',
-  qa_admin: 'Everything a tester can do, plus the case library, suites and settings.'
+  qa_tester: wp.i18n.__(
+    'Runs tests: creates runs, records results, comments and raises issues.',
+    'qa-runner'
+  ),
+  qa_admin: wp.i18n.__(
+    'Everything a tester can do, plus the case library, suites and settings.',
+    'qa-runner'
+  )
 };
 
 const members = ref([]);
@@ -49,7 +55,7 @@ async function loadMembers() {
   try {
     members.value = await api.team.list();
   } catch (error) {
-    ui.toastError(error, 'The QA team could not be loaded.');
+    ui.toastError(error, wp.i18n.__('The QA team could not be loaded.', 'qa-runner'));
   } finally {
     loading.value = false;
   }
@@ -70,7 +76,7 @@ async function loadCandidates() {
       newUserId.value = candidates.value[0]?.id ?? 0;
     }
   } catch (error) {
-    ui.toastError(error, 'The user list could not be loaded.');
+    ui.toastError(error, wp.i18n.__('The user list could not be loaded.', 'qa-runner'));
   } finally {
     loadingCandidates.value = false;
   }
@@ -99,11 +105,12 @@ async function addMember() {
     const member = await api.team.add(newUserId.value, newRole.value);
 
     members.value = [...members.value, member];
-    ui.toast(`${member.name} added to the QA team.`);
+    /* translators: %s: user display name. */
+    ui.toast(wp.i18n.sprintf(wp.i18n.__('%s added to the QA team.', 'qa-runner'), member.name));
     search.value = '';
     await loadCandidates();
   } catch (error) {
-    ui.toastError(error, 'That person could not be added.');
+    ui.toastError(error, wp.i18n.__('That person could not be added.', 'qa-runner'));
   } finally {
     adding.value = false;
   }
@@ -123,9 +130,16 @@ async function changeRole(member, role) {
     const updated = await api.team.update(member.id, role);
 
     members.value = members.value.map((item) => (item.id === updated.id ? updated : item));
-    ui.toast(`${updated.name} is now a ${roleLabel(updated.qa_role)}.`);
+    ui.toast(
+      wp.i18n.sprintf(
+        /* translators: 1: user display name, 2: QA role name. */
+        wp.i18n.__('%1$s is now a %2$s.', 'qa-runner'),
+        updated.name,
+        roleLabel(updated.qa_role)
+      )
+    );
   } catch (error) {
-    ui.toastError(error, 'The role could not be changed.');
+    ui.toastError(error, wp.i18n.__('The role could not be changed.', 'qa-runner'));
   } finally {
     savingId.value = 0;
   }
@@ -138,15 +152,26 @@ async function changeRole(member, role) {
  * @returns {Promise<void>}
  */
 async function removeMember(member) {
-  const keeps = member.wp_roles.length
-    ? `They keep their WordPress role (${member.wp_roles.join(', ')})`
-    : 'They have no other WordPress role, so they become a Subscriber';
+  const question = member.wp_roles.length
+    ? wp.i18n.sprintf(
+        /* translators: 1: user display name, 2: their WordPress role names. */
+        wp.i18n.__(
+          'Remove %1$s from the QA team? They keep their WordPress role (%2$s), but lose access to QA Runner.',
+          'qa-runner'
+        ),
+        member.name,
+        member.wp_roles.join(', ')
+      )
+    : wp.i18n.sprintf(
+        /* translators: %s: user display name. */
+        wp.i18n.__(
+          'Remove %s from the QA team? They have no other WordPress role, so they become a Subscriber and lose access to QA Runner.',
+          'qa-runner'
+        ),
+        member.name
+      );
 
-  if (
-    !window.confirm(
-      `Remove ${member.name} from the QA team? ${keeps}, but lose access to QA Runner.`
-    )
-  ) {
+  if (!window.confirm(question)) {
     return;
   }
 
@@ -156,10 +181,11 @@ async function removeMember(member) {
     await api.team.remove(member.id);
 
     members.value = members.value.filter((item) => item.id !== member.id);
-    ui.toast(`${member.name} removed from the QA team.`);
+    /* translators: %s: user display name. */
+    ui.toast(wp.i18n.sprintf(wp.i18n.__('%s removed from the QA team.', 'qa-runner'), member.name));
     await loadCandidates();
   } catch (error) {
-    ui.toastError(error, 'That person could not be removed.');
+    ui.toastError(error, wp.i18n.__('That person could not be removed.', 'qa-runner'));
   } finally {
     savingId.value = 0;
   }
@@ -172,7 +198,10 @@ async function removeMember(member) {
  * @returns {string}
  */
 function roleLabel(role) {
-  return ROLE_OPTIONS.find((option) => option.value === role)?.label ?? 'Administrator';
+  return (
+    ROLE_OPTIONS.find((option) => option.value === role)?.label ??
+    wp.i18n.__('Administrator', 'qa-runner')
+  );
 }
 
 /**
@@ -194,19 +223,23 @@ onMounted(() => {
 <template>
   <div class="qa-card">
     <div class="qa-card__head">
-      <h3>QA team</h3>
+      <h3>{{ __('QA team', 'qa-runner') }}</h3>
     </div>
 
-    <p v-if="loading" class="qa-card__body qa-skeleton">Loading the QA team…</p>
+    <p v-if="loading" class="qa-card__body qa-skeleton">
+      {{ __('Loading the QA team…', 'qa-runner') }}
+    </p>
 
     <div v-else class="qa-table-scroll">
       <table class="qa-table">
         <thead>
           <tr>
-            <th scope="col">User</th>
-            <th scope="col">WordPress role</th>
-            <th scope="col">QA role</th>
-            <th scope="col"><span class="screen-reader-text">Actions</span></th>
+            <th scope="col">{{ __('User', 'qa-runner') }}</th>
+            <th scope="col">{{ __('WordPress role', 'qa-runner') }}</th>
+            <th scope="col">{{ __('QA role', 'qa-runner') }}</th>
+            <th scope="col">
+              <span class="screen-reader-text">{{ __('Actions', 'qa-runner') }}</span>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -234,7 +267,7 @@ onMounted(() => {
                 class="qa-select"
                 :value="member.qa_role"
                 :disabled="savingId === member.id"
-                :aria-label="`QA role for ${member.name}`"
+                :aria-label="sprintf(__('QA role for %s', 'qa-runner'), member.name)"
                 @change="changeRole(member, $event.target.value)"
               >
                 <option v-for="option in ROLE_OPTIONS" :key="option.value" :value="option.value">
@@ -242,10 +275,11 @@ onMounted(() => {
                 </option>
               </select>
               <span v-else-if="member.qa_role === 'administrator'" class="qa-muted">
-                Full access (site administrator)
+                {{ __('Full access (site administrator)', 'qa-runner') }}
               </span>
               <span v-else
-                >{{ roleLabel(member.qa_role) }} <span class="qa-muted">(you)</span></span
+                >{{ roleLabel(member.qa_role) }}
+                <span class="qa-muted">{{ __('(you)', 'qa-runner') }}</span></span
               >
             </td>
             <td class="qa-team-actions">
@@ -253,8 +287,8 @@ onMounted(() => {
                 v-if="isEditable(member)"
                 type="button"
                 class="qa-icon-button qa-icon-button--danger"
-                :title="`Remove ${member.name} from the QA team`"
-                :aria-label="`Remove ${member.name} from the QA team`"
+                :title="sprintf(__('Remove %s from the QA team', 'qa-runner'), member.name)"
+                :aria-label="sprintf(__('Remove %s from the QA team', 'qa-runner'), member.name)"
                 :disabled="savingId === member.id"
                 @click="removeMember(member)"
               >
@@ -267,22 +301,24 @@ onMounted(() => {
     </div>
 
     <form class="qa-card__body qa-team-add" @submit.prevent="addMember">
-      <h4 class="qa-team-add__title">Add an existing user</h4>
+      <h4 class="qa-team-add__title">{{ __('Add an existing user', 'qa-runner') }}</h4>
       <div class="qa-team-add__fields">
         <div class="qa-field">
-          <label class="qa-field__label" for="team-search">Search users</label>
+          <label class="qa-field__label" for="team-search">{{
+            __('Search users', 'qa-runner')
+          }}</label>
           <input
             id="team-search"
             v-model="search"
             class="qa-input"
             type="search"
-            placeholder="Name, username or email"
+            :placeholder="__('Name, username or email', 'qa-runner')"
             autocomplete="off"
           />
         </div>
 
         <div class="qa-field">
-          <label class="qa-field__label" for="team-user">User</label>
+          <label class="qa-field__label" for="team-user">{{ __('User', 'qa-runner') }}</label>
           <select
             id="team-user"
             v-model.number="newUserId"
@@ -290,7 +326,11 @@ onMounted(() => {
             :disabled="loadingCandidates || !candidates.length"
           >
             <option v-if="!candidates.length" :value="0">
-              {{ loadingCandidates ? 'Loading…' : 'No matching users without QA access' }}
+              {{
+                loadingCandidates
+                  ? __('Loading…', 'qa-runner')
+                  : __('No matching users without QA access', 'qa-runner')
+              }}
             </option>
             <option v-for="user in candidates" :key="user.id" :value="user.id">
               {{ user.name }} ({{ user.email }})
@@ -299,7 +339,7 @@ onMounted(() => {
         </div>
 
         <div class="qa-field">
-          <label class="qa-field__label" for="team-role">QA role</label>
+          <label class="qa-field__label" for="team-role">{{ __('QA role', 'qa-runner') }}</label>
           <select id="team-role" v-model="newRole" class="qa-select">
             <option v-for="option in ROLE_OPTIONS" :key="option.value" :value="option.value">
               {{ option.label }}
@@ -312,12 +352,17 @@ onMounted(() => {
           class="qa-button qa-button--primary"
           :disabled="adding || !selectedCandidate"
         >
-          {{ adding ? 'Adding…' : 'Add to team' }}
+          {{ adding ? __('Adding…', 'qa-runner') : __('Add to team', 'qa-runner') }}
         </button>
       </div>
       <p class="qa-field__hint">
-        {{ ROLE_HINTS[newRole] }} The QA role is added alongside their current WordPress role. Site
-        administrators always have full access.
+        {{ ROLE_HINTS[newRole] }}
+        {{
+          __(
+            'The QA role is added alongside their current WordPress role. Site administrators always have full access.',
+            'qa-runner'
+          )
+        }}
       </p>
     </form>
   </div>

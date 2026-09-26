@@ -88,6 +88,10 @@ Only users with the `qa_view_qa` capability: QA Testers, QA Admins and site admi
 
 Deleting the plugin always removes its roles, capabilities and settings. Your suites, cases, runs, results, comments and issues are kept, unless you turn on **Delete all QA data when the plugin is uninstalled** in Settings first.
 
+= Can I translate QA Runner? =
+
+Yes. Every string, including the admin screen, uses the `qa-runner` text domain. Translations are managed on [translate.wordpress.org](https://translate.wordpress.org/), and `languages/qa-runner.pot` is included as a template.
+
 = Which emails does the plugin send? =
 
 Two, and only when someone assigns *another* person:
@@ -100,6 +104,8 @@ You can pause both in Settings.
 == Changelog ==
 
 = 1.1.0 =
+* The whole plugin, including the admin screen, is now translatable (text domain `qa-runner`).
+* Dates follow the user's WordPress language.
 * Threaded replies on comments, up to three levels.
 * Edit your own comments.
 * Email when someone else assigns you a case within a run.

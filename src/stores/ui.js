@@ -35,8 +35,13 @@ export const useUiStore = defineStore('ui', () => {
    * @param {string} [fallback] Message used when the error carries none.
    * @returns {void}
    */
-  function toastError(error, fallback = 'Something went wrong. Please try again.') {
-    toast(error?.message || fallback, 'error');
+  function toastError(error, fallback) {
+    toast(
+      error?.message ||
+        fallback ||
+        wp.i18n.__('Something went wrong. Please try again.', 'qa-runner'),
+      'error'
+    );
   }
 
   /**

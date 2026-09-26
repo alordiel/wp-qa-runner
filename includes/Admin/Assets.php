@@ -67,7 +67,7 @@ final class Assets {
 		wp_enqueue_script(
 			self::HANDLE,
 			QA_RUNNER_URL . self::SCRIPT,
-			array(),
+			array( 'wp-i18n' ),
 			$this->asset_version( $script ),
 			array(
 				'in_footer' => true,
@@ -94,8 +94,9 @@ final class Assets {
 			'before'
 		);
 
-		// No path: WordPress.org language packs are found in WP_LANG_DIR automatically.
-		wp_set_script_translations( self::HANDLE, 'qa-runner' );
+		// Bundled JSON in languages/ is tried first; WordPress.org language packs in
+		// WP_LANG_DIR are the fallback.
+		wp_set_script_translations( self::HANDLE, 'qa-runner', QA_RUNNER_PATH . 'languages' );
 	}
 
 	/**
@@ -142,6 +143,7 @@ final class Assets {
 			'adminUrl'     => admin_url( 'admin.php?page=' . QA_RUNNER_SLUG ),
 			'environments' => \QARunner\Support\Enum::ENVIRONMENTS,
 			'timezone'     => wp_timezone_string(),
+			'locale'       => str_replace( '_', '-', get_user_locale() ),
 		);
 	}
 

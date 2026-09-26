@@ -36,7 +36,9 @@ function choose(status) {
   <div
     class="qa-segmented"
     role="group"
-    :aria-label="caseTitle ? `Result for ${caseTitle}` : 'Result'"
+    :aria-label="
+      caseTitle ? sprintf(__('Result for %s', 'qa-runner'), caseTitle) : __('Result', 'qa-runner')
+    "
   >
     <button
       v-for="status in RESULT_STATUSES"
@@ -48,7 +50,9 @@ function choose(status) {
       :disabled="disabled"
       :aria-pressed="status.value === modelValue"
       :title="
-        status.value === 'untested' ? 'Clear this result' : `Mark as ${status.label.toLowerCase()}`
+        status.value === 'untested'
+          ? __('Clear this result', 'qa-runner')
+          : sprintf(__('Mark as %s', 'qa-runner'), status.label)
       "
       @click="choose(status.value)"
     >

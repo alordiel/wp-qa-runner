@@ -17,7 +17,10 @@ onSessionExpired(() => ui.expireSession());
 
 onMounted(() => {
   if (route.query.denied) {
-    ui.toast('You do not have permission to manage the case library.', 'error');
+    ui.toast(
+      wp.i18n.__('You do not have permission to manage the case library.', 'qa-runner'),
+      'error'
+    );
   }
 });
 
@@ -33,17 +36,19 @@ function reload() {
 
 <template>
   <div class="qa-shell">
-    <h1>QA Runner</h1>
+    <h1>{{ __('QA Runner', 'qa-runner') }}</h1>
 
-    <nav class="qa-nav" aria-label="QA Runner sections">
-      <RouterLink class="qa-nav__link" active-class="is-active" to="/">Runs</RouterLink>
+    <nav class="qa-nav" :aria-label="__('QA Runner sections', 'qa-runner')">
+      <RouterLink class="qa-nav__link" active-class="is-active" to="/">{{
+        __('Runs', 'qa-runner')
+      }}</RouterLink>
       <RouterLink
         v-if="bootstrap.caps?.manageCases"
         class="qa-nav__link"
         active-class="is-active"
         to="/cases"
       >
-        Cases
+        {{ __('Cases', 'qa-runner') }}
       </RouterLink>
       <RouterLink
         v-if="bootstrap.caps?.manageCases"
@@ -51,7 +56,7 @@ function reload() {
         active-class="is-active"
         to="/suites"
       >
-        Suites
+        {{ __('Suites', 'qa-runner') }}
       </RouterLink>
       <span class="qa-nav__spacer" />
       <RouterLink
@@ -60,7 +65,7 @@ function reload() {
         active-class="is-active"
         to="/settings"
       >
-        Settings
+        {{ __('Settings', 'qa-runner') }}
       </RouterLink>
     </nav>
 
@@ -70,8 +75,10 @@ function reload() {
     -->
     <div v-if="ui.sessionExpired" class="qa-notice qa-notice--error" role="alert">
       <div class="qa-row">
-        <span>Your session expired. Reload the page to continue.</span>
-        <button type="button" class="qa-button qa-button--small" @click="reload">Reload now</button>
+        <span>{{ __('Your session expired. Reload the page to continue.', 'qa-runner') }}</span>
+        <button type="button" class="qa-button qa-button--small" @click="reload">
+          {{ __('Reload now', 'qa-runner') }}
+        </button>
       </div>
     </div>
 

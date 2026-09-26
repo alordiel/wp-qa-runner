@@ -122,6 +122,28 @@ and removed immediately after, so other plugins' mail is untouched.
 
 "Pause notifications" in Settings stops both.
 
+## Translations
+
+Text domain `qa-runner`. PHP uses the usual `__()` family. The Vue app uses WordPress's
+`wp-i18n` script, in two forms that both survive minification — the only way strings reach
+`wp i18n make-pot`, which reads the built bundle (it cannot parse `.vue` files):
+
+- **Templates:** `{{ __('Text', 'qa-runner') }}`, plus `_n`, `_x` and `sprintf`. These are
+  app-wide globals (`src/main.js`) and compile to `_ctx.__(…)`.
+- **Script code:** `wp.i18n.__('Text', 'qa-runner')`. Never import or destructure `__`: the
+  minifier renames it, and its strings silently drop out of the POT.
+
+Always pass the text domain as a literal, and use `sprintf` placeholders, never string
+concatenation, so translators can reorder words.
+
+```
+npm run make-pot    # regenerate languages/qa-runner.pot (needs WP-CLI); release does this too
+```
+
+`Assets.php` calls `wp_set_script_translations()` with `languages/` as the path, so a
+`qa-runner-{locale}-{md5}.json` built there with `wp i18n make-json` is picked up first.
+WordPress.org language packs are the fallback.
+
 ## Uninstall
 
 Removing the plugin always removes the role, its capabilities and the plugin options. The

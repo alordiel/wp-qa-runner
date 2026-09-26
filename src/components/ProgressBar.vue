@@ -8,7 +8,6 @@
  */
 
 import {computed} from 'vue';
-import {plural} from '../utils/format.js';
 
 const props = defineProps({
   counts: {type: Object, default: () => ({})},
@@ -29,6 +28,16 @@ const segments = computed(() =>
 const tested = computed(() => segments.value.reduce((sum, segment) => sum + segment.count, 0));
 const remaining = computed(() => Math.max(0, total.value - tested.value));
 const failCount = computed(() => props.counts.fail ?? 0);
+
+/**
+ * Wraps a count in the bold legend markup, for the translated "%s passed" strings.
+ *
+ * @param {number} count Count.
+ * @returns {string} HTML.
+ */
+function bold(count) {
+  return `<b class="qa-count">${Number(count) || 0}</b>`;
+}
 </script>
 
 <template>
@@ -36,7 +45,19 @@ const failCount = computed(() => props.counts.fail ?? 0);
     <div
       class="qa-progress__track"
       role="img"
-      :aria-label="`${tested} of ${total} cases tested, ${failCount} failing`"
+      :aria-label="
+        sprintf(
+          _n(
+            '%1$d of %2$d case tested, %3$d failing',
+            '%1$d of %2$d cases tested, %3$d failing',
+            total,
+            'qa-runner'
+          ),
+          tested,
+          total,
+          failCount
+        )
+      "
     >
       <div
         v-for="segment in segments"
@@ -47,13 +68,45 @@ const failCount = computed(() => props.counts.fail ?? 0);
       />
     </div>
     <div v-if="!compact" class="qa-progress__legend">
-      <span class="qa-badge qa-badge--success"><b class="qa-count">{{ counts.pass ?? 0 }}</b> passed</span>
-      <span :class="{'qa-badge--issue': failCount > 0, 'qa-badge--env': failCount === 0}"  class="qa-badge"><b class="qa-count">{{ failCount }}</b> failed</span>
-      <span class="qa-badge qa-badge--issue" v-if="counts.blocked"><b class="qa-count">{{ counts.blocked }}</b> blocked</span>
-      <span class="qa-badge qa-badge--env" v-if="counts.skipped"><b class="qa-count">{{ counts.skipped }}</b> skipped</span>
-      <span class="qa-badge qa-badge--lock"><b class="qa-count">{{ remaining }}</b> remaining</span>
+      <!-- The counts are integers wrapped in <b>, so v-html here carries no user input. -->
+      <span
+        class="qa-badge qa-badge--success"
+        v-html="
+          sprintf(
+            _n('%s passed', '%s passed', counts.pass ?? 0, 'qa-runner'),
+            bold(counts.pass ?? 0)
+          )
+        "
+      />
+      <span
+        :class="{'qa-badge--issue': failCount > 0, 'qa-badge--env': failCount === 0}"
+        class="qa-badge"
+        v-html="sprintf(_n('%s failed', '%s failed', failCount, 'qa-runner'), bold(failCount))"
+      />
+      <span
+        v-if="counts.blocked"
+        class="qa-badge qa-badge--issue"
+        v-html="
+          sprintf(_n('%s blocked', '%s blocked', counts.blocked, 'qa-runner'), bold(counts.blocked))
+        "
+      />
+      <span
+        v-if="counts.skipped"
+        class="qa-badge qa-badge--env"
+        v-html="
+          sprintf(_n('%s skipped', '%s skipped', counts.skipped, 'qa-runner'), bold(counts.skipped))
+        "
+      />
+      <span
+        class="qa-badge qa-badge--lock"
+        v-html="
+          sprintf(_n('%s remaining', '%s remaining', remaining, 'qa-runner'), bold(remaining))
+        "
+      />
       <span v-if="issues > 0" class="qa-badge qa-badge--issue">
-        <span class="qa-count">{{ issues + ' ' + plural(issues, 'open issue', 'open issues') }}</span>
+        <span class="qa-count">{{
+          sprintf(_n('%d open issue', '%d open issues', issues, 'qa-runner'), issues)
+        }}</span>
       </span>
     </div>
   </div>

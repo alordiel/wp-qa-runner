@@ -3,7 +3,12 @@
  * happens here and nowhere else.
  */
 
-const RELATIVE = new Intl.RelativeTimeFormat(undefined, {numeric: 'auto'});
+import {bootstrap} from '../api/client.js';
+
+// Dates follow the user's WordPress language, not the browser's.
+const LOCALE = bootstrap.locale || undefined;
+
+const RELATIVE = new Intl.RelativeTimeFormat(LOCALE, {numeric: 'auto'});
 
 const UNITS = [
   ['year', 31536000],
@@ -29,7 +34,7 @@ export function relativeTime(iso) {
   const magnitude = Math.abs(seconds);
 
   if (magnitude < 60) {
-    return 'just now';
+    return wp.i18n.__('just now', 'qa-runner');
   }
 
   const [unit, size] = UNITS.find(([, unitSize]) => magnitude >= unitSize) ?? ['minute', 60];
@@ -48,7 +53,7 @@ export function absoluteTime(iso) {
     return '';
   }
 
-  return new Date(iso).toLocaleString(undefined, {
+  return new Date(iso).toLocaleString(LOCALE, {
     dateStyle: 'medium',
     timeStyle: 'short'
   });
@@ -65,17 +70,5 @@ export function shortDate(iso) {
     return '';
   }
 
-  return new Date(iso).toLocaleDateString(undefined, {dateStyle: 'medium'});
-}
-
-/**
- * Pluralises a countable noun.
- *
- * @param {number} count Quantity.
- * @param {string} singular Singular noun.
- * @param {string} [plural] Plural noun, defaulting to singular + 's'.
- * @returns {string}
- */
-export function plural(count, singular, plural_) {
-  return count === 1 ? singular : (plural_ ?? `${singular}s`);
+  return new Date(iso).toLocaleDateString(LOCALE, {dateStyle: 'medium'});
 }

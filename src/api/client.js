@@ -124,7 +124,7 @@ async function request(path, {method = 'GET', body, params} = {}) {
     response = await fetch(url, init);
   } catch {
     throw new ApiError(
-      'Could not reach the server. Check your connection and try again.',
+      wp.i18n.__('Could not reach the server. Check your connection and try again.', 'qa-runner'),
       0,
       'network_error',
       null
@@ -144,7 +144,7 @@ async function request(path, {method = 'GET', body, params} = {}) {
 
   if (!response.ok) {
     const error = new ApiError(
-      payload?.message ?? 'Something went wrong. Please try again.',
+      payload?.message ?? wp.i18n.__('Something went wrong. Please try again.', 'qa-runner'),
       response.status,
       payload?.code ?? 'unknown_error',
       payload?.data ?? null

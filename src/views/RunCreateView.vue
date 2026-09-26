@@ -10,7 +10,6 @@ import EmptyState from '../components/EmptyState.vue';
 import PriorityDot from '../components/PriorityDot.vue';
 import {api} from '../api/client.js';
 import {PRIORITIES} from '../utils/status.js';
-import {plural} from '../utils/format.js';
 import {useCaseStore} from '../stores/cases.js';
 import {useUiStore} from '../stores/ui.js';
 
@@ -130,7 +129,18 @@ function selectAllCritical() {
 
   selectedIds.value = [...new Set([...selectedIds.value, ...critical])];
 
-  ui.toast(`Added ${critical.length} critical ${plural(critical.length, 'case')}.`);
+  ui.toast(
+    wp.i18n.sprintf(
+      /* translators: %d: number of critical cases added. */
+      wp.i18n._n(
+        'Added %d critical case.',
+        'Added %d critical cases.',
+        critical.length,
+        'qa-runner'
+      ),
+      critical.length
+    )
+  );
 }
 
 /**
@@ -166,10 +176,10 @@ async function submit() {
       assignee_ids: assigneeIds.value
     });
 
-    ui.toast('Run created.');
+    ui.toast(wp.i18n.__('Run created.', 'qa-runner'));
     router.push(`/runs/${run.id}`);
   } catch (error) {
-    ui.toastError(error, 'The run could not be created.');
+    ui.toastError(error, wp.i18n.__('The run could not be created.', 'qa-runner'));
   } finally {
     saving.value = false;
   }
@@ -183,7 +193,7 @@ onMounted(async () => {
       caseStore.loadCases({active: true})
     ]);
   } catch (error) {
-    ui.toastError(error, 'The case library could not be loaded.');
+    ui.toastError(error, wp.i18n.__('The case library could not be loaded.', 'qa-runner'));
   } finally {
     loading.value = false;
   }
@@ -194,15 +204,22 @@ onMounted(async () => {
   <form class="qa-stack" @submit.prevent="submit">
     <div class="qa-page-head">
       <div class="qa-page-head__meta">
-        <h2>New run</h2>
+        <h2>{{ __('New run', 'qa-runner') }}</h2>
         <p class="qa-subtitle">
-          Environment and version are required — a run without them cannot be audited later.
+          {{
+            __(
+              'Environment and version are required — a run without them cannot be audited later.',
+              'qa-runner'
+            )
+          }}
         </p>
       </div>
       <div class="qa-row">
-        <RouterLink class="qa-button qa-button--quiet" to="/">Cancel</RouterLink>
+        <RouterLink class="qa-button qa-button--quiet" to="/">{{
+          __('Cancel', 'qa-runner')
+        }}</RouterLink>
         <button type="submit" class="qa-button qa-button--primary" :disabled="!canSubmit">
-          {{ saving ? 'Creating…' : 'Create run' }}
+          {{ saving ? __('Creating…', 'qa-runner') : __('Create run', 'qa-runner') }}
         </button>
       </div>
     </div>
@@ -210,20 +227,22 @@ onMounted(async () => {
     <div class="qa-card">
       <div class="qa-card__body qa-stack">
         <div class="qa-field">
-          <label class="qa-field__label" for="run-name">Name</label>
+          <label class="qa-field__label" for="run-name">{{ __('Name', 'qa-runner') }}</label>
           <input
             id="run-name"
             v-model="form.name"
             class="qa-input"
             type="text"
-            placeholder="2.4.0 — Account changes"
+            :placeholder="__('2.4.0 — Account changes', 'qa-runner')"
             required
           />
         </div>
 
         <div class="qa-row" style="align-items: flex-start; gap: 16px">
           <div class="qa-field" style="flex: 1; min-width: 180px">
-            <label class="qa-field__label" for="run-environment">Environment</label>
+            <label class="qa-field__label" for="run-environment">{{
+              __('Environment', 'qa-runner')
+            }}</label>
             <select id="run-environment" v-model="form.environment" class="qa-select">
               <option v-for="environment in ENVIRONMENTS" :key="environment" :value="environment">
                 {{ environment }}
@@ -232,42 +251,50 @@ onMounted(async () => {
           </div>
 
           <div class="qa-field" style="flex: 1; min-width: 180px">
-            <label class="qa-field__label" for="run-version">Version</label>
+            <label class="qa-field__label" for="run-version">{{
+              __('Version', 'qa-runner')
+            }}</label>
             <input
               id="run-version"
               v-model="form.version"
               class="qa-input"
               type="text"
-              placeholder="2.4.0 or a commit ref"
+              :placeholder="__('2.4.0 or a commit ref', 'qa-runner')"
               required
             />
           </div>
         </div>
 
         <div class="qa-field">
-          <label class="qa-field__label" for="run-notes">Notes</label>
+          <label class="qa-field__label" for="run-notes">{{ __('Notes', 'qa-runner') }}</label>
           <textarea
             id="run-notes"
             v-model="form.notes"
             class="qa-textarea"
-            placeholder="What this run covers, and anything the testers should know."
+            :placeholder="
+              __('What this run covers, and anything the testers should know.', 'qa-runner')
+            "
           />
         </div>
 
         <div class="qa-field">
-          <span class="qa-field__label">Assignees</span>
+          <span class="qa-field__label">{{ __('Assignees', 'qa-runner') }}</span>
           <p class="qa-field__hint">
-            Assignment is informational and sends one email. Anyone on the QA team can test any case
-            in an open run.
+            {{
+              __(
+                'Assignment is informational and sends one email. Anyone on the QA team can test any case in an open run.',
+                'qa-runner'
+              )
+            }}
           </p>
           <div class="qa-row">
             <label v-for="user in caseStore.users" :key="user.id" class="qa-checkbox">
               <input v-model="assigneeIds" type="checkbox" :value="user.id" />
               <span>{{ user.name }}</span>
             </label>
-            <span v-if="!caseStore.users.length" class="qa-muted"
-              >No one else can run tests yet.</span
-            >
+            <span v-if="!caseStore.users.length" class="qa-muted">{{
+              __('No one else can run tests yet.', 'qa-runner')
+            }}</span>
           </div>
         </div>
       </div>
@@ -275,26 +302,35 @@ onMounted(async () => {
 
     <div class="qa-page-head">
       <div class="qa-page-head__meta">
-        <h2>Cases</h2>
+        <h2>{{ __('Cases', 'qa-runner') }}</h2>
         <p class="qa-subtitle">
-          <span class="qa-count">{{ selectedIds.length }}</span>
-          {{ plural(selectedIds.length, 'case') }} selected
+          {{
+            sprintf(
+              _n('%d case selected', '%d cases selected', selectedIds.length, 'qa-runner'),
+              selectedIds.length
+            )
+          }}
         </p>
       </div>
       <button type="button" class="qa-button qa-button--quiet" @click="selectAllCritical">
-        Select all critical
+        {{ __('Select all critical', 'qa-runner') }}
       </button>
     </div>
 
     <div class="qa-picker">
       <div class="qa-picker__filters">
         <div class="qa-filter-group">
-          <span class="qa-filter-group__label">Search case</span>
-          <input v-model="search" class="qa-input" type="search" placeholder="Case title" />
+          <span class="qa-filter-group__label">{{ __('Search case', 'qa-runner') }}</span>
+          <input
+            v-model="search"
+            class="qa-input"
+            type="search"
+            :placeholder="__('Case title', 'qa-runner')"
+          />
         </div>
 
         <div class="qa-filter-group">
-          <span class="qa-filter-group__label">Suite</span>
+          <span class="qa-filter-group__label">{{ __('Suite', 'qa-runner') }}</span>
           <label v-for="suite in caseStore.suites" :key="suite.id" class="qa-checkbox">
             <input
               type="checkbox"
@@ -308,7 +344,7 @@ onMounted(async () => {
         </div>
 
         <div class="qa-filter-group">
-          <span class="qa-filter-group__label">Priority</span>
+          <span class="qa-filter-group__label">{{ __('Priority', 'qa-runner') }}</span>
           <label v-for="priority in PRIORITIES" :key="priority.value" class="qa-checkbox">
             <input
               type="checkbox"
@@ -323,8 +359,12 @@ onMounted(async () => {
       <div class="qa-picker__results">
         <div class="qa-card__head">
           <span>
-            <span class="qa-count">{{ visibleCases.length }}</span>
-            {{ plural(visibleCases.length, 'case') }} matching
+            {{
+              sprintf(
+                _n('%d case matching', '%d cases matching', visibleCases.length, 'qa-runner'),
+                visibleCases.length
+              )
+            }}
           </span>
           <button
             type="button"
@@ -332,22 +372,27 @@ onMounted(async () => {
             :disabled="!visibleCases.length"
             @click="selectVisible"
           >
-            Add all matching
+            {{ __('Add all matching', 'qa-runner') }}
           </button>
         </div>
 
-        <p v-if="loading" class="qa-skeleton">Loading cases…</p>
+        <p v-if="loading" class="qa-skeleton">{{ __('Loading cases…', 'qa-runner') }}</p>
 
         <EmptyState
           v-else-if="!hasFilter"
-          title="Pick a suite to start selecting cases."
-          description="Filter by suite, priority or title, then tick the cases this run should cover."
+          :title="__('Pick a suite to start selecting cases.', 'qa-runner')"
+          :description="
+            __(
+              'Filter by suite, priority or title, then tick the cases this run should cover.',
+              'qa-runner'
+            )
+          "
         />
 
         <EmptyState
           v-else-if="!visibleCases.length"
-          title="No cases match these filters."
-          description="Try widening the suite or priority selection."
+          :title="__('No cases match these filters.', 'qa-runner')"
+          :description="__('Try widening the suite or priority selection.', 'qa-runner')"
         />
 
         <div v-else class="qa-picker__list">
@@ -371,13 +416,13 @@ onMounted(async () => {
 
     <div v-if="selectedCases.length" class="qa-card">
       <div class="qa-card__head">
-        <h3>Selected cases</h3>
+        <h3>{{ __('Selected cases', 'qa-runner') }}</h3>
         <button
           type="button"
           class="qa-button qa-button--small qa-button--quiet"
           @click="selectedIds = []"
         >
-          Clear selection
+          {{ __('Clear selection', 'qa-runner') }}
         </button>
       </div>
       <div class="qa-card__body qa-chips">
@@ -386,7 +431,7 @@ onMounted(async () => {
           :key="item.id"
           type="button"
           class="qa-chip is-active"
-          :title="`Remove ${item.title}`"
+          :title="sprintf(__('Remove %s', 'qa-runner'), item.title)"
           @click="toggleCase(item.id)"
         >
           {{ item.title }} ×
