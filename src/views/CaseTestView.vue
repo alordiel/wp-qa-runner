@@ -43,6 +43,13 @@ const loading = ref(true);
 const commentDraft = ref('');
 const postingComment = ref(false);
 
+const replyingToId = ref(0);
+const replyDraft = ref('');
+const postingReply = ref(false);
+
+// Matches CommentRepository::MAX_DEPTH: a comment, a reply, and a reply to that reply.
+const MAX_COMMENT_DEPTH = 3;
+
 const editingCommentId = ref(0);
 const editCommentDraft = ref('');
 const savingCommentEdit = ref(false);
@@ -65,6 +72,37 @@ const savingAssignees = ref(false);
 const result = computed(() => runStore.resultsByCaseId[caseId.value] ?? null);
 const isOpen = computed(() => runStore.run?.status === 'open');
 const canTest = computed(() => Boolean(bootstrap.caps?.runTests) && isOpen.value);
+
+/**
+ * Comments in reading order — each reply directly under its parent, oldest first — with
+ * the depth each one sits at. A reply whose parent is missing is shown at the top level.
+ */
+const threadedComments = computed(() => {
+  const ids = new Set(comments.value.map((comment) => comment.id));
+  const children = new Map();
+
+  for (const comment of comments.value) {
+    const parentId = ids.has(comment.parent_id) ? comment.parent_id : 0;
+
+    if (!children.has(parentId)) {
+      children.set(parentId, []);
+    }
+
+    children.get(parentId).push(comment);
+  }
+
+  const ordered = [];
+  const walk = (parentId, depth) => {
+    for (const comment of children.get(parentId) ?? []) {
+      ordered.push({comment, depth});
+      walk(comment.id, depth + 1);
+    }
+  };
+
+  walk(0, 1);
+
+  return ordered;
+});
 
 const position = computed(() => runStore.orderedCaseIds.indexOf(caseId.value));
 const previousCaseId = computed(() =>
@@ -275,12 +313,63 @@ async function postComment() {
 }
 
 /**
+ * Opens the reply form under a comment, closing any open edit.
+ *
+ * @param {Object} comment Comment being replied to.
+ * @returns {void}
+ */
+function startReply(comment) {
+  cancelEditComment();
+  replyingToId.value = comment.id;
+  replyDraft.value = '';
+}
+
+/**
+ * Closes the reply form without posting.
+ *
+ * @returns {void}
+ */
+function cancelReply() {
+  replyingToId.value = 0;
+  replyDraft.value = '';
+}
+
+/**
+ * Posts the reply being written.
+ *
+ * @returns {Promise<void>}
+ */
+async function postReply() {
+  const content = replyDraft.value.trim();
+
+  if (!content || content === '<p><br></p>') {
+    return;
+  }
+
+  postingReply.value = true;
+
+  try {
+    const comment = await api.results.addComment(result.value.id, content, replyingToId.value);
+
+    comments.value = [...comments.value, comment];
+    cancelReply();
+    runStore.replaceResult({...result.value, comment_count: result.value.comment_count + 1});
+    ui.toast('Reply added.');
+  } catch (error) {
+    ui.toastError(error, 'The reply could not be added.');
+  } finally {
+    postingReply.value = false;
+  }
+}
+
+/**
  * Opens the inline editor for a comment.
  *
  * @param {Object} comment Comment row.
  * @returns {void}
  */
 function startEditComment(comment) {
+  cancelReply();
   editingCommentId.value = comment.id;
   editCommentDraft.value = comment.content;
 }
@@ -329,17 +418,32 @@ async function saveCommentEdit() {
  * @returns {Promise<void>}
  */
 async function deleteComment(comment) {
-  if (!window.confirm('Delete this comment?')) {
+  const hasReplies = comments.value.some((item) => item.parent_id === comment.id);
+  const question = hasReplies
+    ? 'Delete this comment and all of its replies?'
+    : 'Delete this comment?';
+
+  if (!window.confirm(question)) {
     return;
   }
 
   try {
-    await api.comments.remove(comment.id);
+    const response = await api.comments.remove(comment.id);
+    const deletedIds = new Set(response?.deleted_ids ?? [comment.id]);
 
-    comments.value = comments.value.filter((item) => item.id !== comment.id);
+    comments.value = comments.value.filter((item) => !deletedIds.has(item.id));
+
+    if (deletedIds.has(replyingToId.value)) {
+      cancelReply();
+    }
+
+    if (deletedIds.has(editingCommentId.value)) {
+      cancelEditComment();
+    }
+
     runStore.replaceResult({
       ...result.value,
-      comment_count: Math.max(0, result.value.comment_count - 1)
+      comment_count: Math.max(0, result.value.comment_count - deletedIds.size)
     });
     ui.toast('Comment deleted.');
   } catch (error) {
@@ -838,7 +942,13 @@ onBeforeUnmount(releaseLock);
           />
 
           <div v-else>
-            <div v-for="comment in comments" :key="comment.id" class="qa-comment">
+            <div
+              v-for="{comment, depth} in threadedComments"
+              :key="comment.id"
+              class="qa-comment"
+              :class="{'qa-comment--reply': depth > 1}"
+              :style="{'--qa-comment-depth': depth - 1}"
+            >
               <img
                 class="qa-comment__avatar"
                 :src="comment.author.avatar"
@@ -857,6 +967,16 @@ onBeforeUnmount(releaseLock);
                     v-if="isOpen && editingCommentId !== comment.id"
                     class="qa-comment__actions"
                   >
+                    <button
+                      v-if="canTest && depth < MAX_COMMENT_DEPTH"
+                      type="button"
+                      class="qa-icon-button"
+                      title="Reply"
+                      aria-label="Reply to comment"
+                      @click="startReply(comment)"
+                    >
+                      <span class="dashicons dashicons-undo" aria-hidden="true" />
+                    </button>
                     <button
                       v-if="comment.author.id === bootstrap.currentUser?.id"
                       type="button"
@@ -907,6 +1027,33 @@ onBeforeUnmount(releaseLock);
                   </div>
                 </form>
                 <div v-else class="qa-comment__body qa-prose" v-html="comment.content" />
+                <form
+                  v-if="replyingToId === comment.id"
+                  class="qa-stack qa-stack--tight qa-comment__reply-form"
+                  @submit.prevent="postReply"
+                >
+                  <RichTextEditor
+                    v-model="replyDraft"
+                    :placeholder="`Reply to ${comment.author.name}`"
+                  />
+                  <div class="qa-row">
+                    <button
+                      type="submit"
+                      class="qa-button qa-button--primary qa-button--small"
+                      :disabled="postingReply"
+                    >
+                      {{ postingReply ? 'Replying…' : 'Reply' }}
+                    </button>
+                    <button
+                      type="button"
+                      class="qa-button qa-button--small qa-button--quiet"
+                      :disabled="postingReply"
+                      @click="cancelReply"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>

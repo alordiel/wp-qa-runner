@@ -74,11 +74,16 @@ final class CommentsController extends Controller {
 					'callback'            => array( $this, 'create' ),
 					'permission_callback' => array( $this, 'can_test' ),
 					'args'                => array(
-						'id'      => $this->id_arg(),
-						'content' => array(
+						'id'        => $this->id_arg(),
+						'content'   => array(
 							'required'          => true,
 							'type'              => 'string',
 							'validate_callback' => static fn( $value ): bool => is_string( $value ) && '' !== trim( wp_strip_all_tags( $value ) ),
+						),
+						'parent_id' => array(
+							'type'              => 'integer',
+							'default'           => 0,
+							'sanitize_callback' => 'absint',
 						),
 					),
 				),
@@ -131,6 +136,8 @@ final class CommentsController extends Controller {
 	/**
 	 * POST /results/{id}/comments
 	 *
+	 * An optional parent_id makes the comment a reply, up to CommentRepository::MAX_DEPTH.
+	 *
 	 * @param WP_REST_Request $request Request.
 	 * @return array<string, mixed>|\WP_Error
 	 */
@@ -146,7 +153,21 @@ final class CommentsController extends Controller {
 			return $this->run_closed();
 		}
 
-		$comment_id = $this->comments->create( $id, get_current_user_id(), (string) $request->get_param( 'content' ) );
+		$parent_id = (int) $request->get_param( 'parent_id' );
+
+		if ( $parent_id > 0 ) {
+			$parent = $this->comments->find( $parent_id );
+
+			if ( null === $parent || $parent['result_id'] !== $id ) {
+				return $this->bad_request( __( 'The comment you are replying to no longer exists.', 'qa-runner' ) );
+			}
+
+			if ( $this->comments->depth( $parent_id ) >= CommentRepository::MAX_DEPTH ) {
+				return $this->bad_request( __( 'This thread is too deep to reply to.', 'qa-runner' ) );
+			}
+		}
+
+		$comment_id = $this->comments->create( $id, get_current_user_id(), (string) $request->get_param( 'content' ), $parent_id );
 
 		if ( 0 === $comment_id ) {
 			return $this->write_failed( __( 'The comment could not be saved.', 'qa-runner' ) );
@@ -191,7 +212,8 @@ final class CommentsController extends Controller {
 	/**
 	 * DELETE /comments/{id}
 	 *
-	 * Authors delete their own; qa_manage_cases holders delete any.
+	 * Authors delete their own; qa_manage_cases holders delete any. Replies beneath the
+	 * comment go with it.
 	 *
 	 * @param WP_REST_Request $request Request.
 	 * @return array<string, mixed>|\WP_Error
@@ -214,11 +236,16 @@ final class CommentsController extends Controller {
 			return $guard;
 		}
 
-		if ( ! $this->comments->delete( $id ) ) {
+		$deleted_ids = $this->comments->delete_thread( $id );
+
+		if ( ! $deleted_ids ) {
 			return $this->write_failed( __( 'The comment could not be deleted.', 'qa-runner' ) );
 		}
 
-		return array( 'deleted' => true );
+		return array(
+			'deleted'     => true,
+			'deleted_ids' => $deleted_ids,
+		);
 	}
 
 	/**

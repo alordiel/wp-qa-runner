@@ -21350,9 +21350,12 @@ Use slot props instead:
 			lock: (id) => request(`results/${id}/lock`, { method: "PUT" }),
 			unlock: (id) => request(`results/${id}/lock`, { method: "DELETE" }),
 			comments: (id) => request(`results/${id}/comments`),
-			addComment: (id, content) => request(`results/${id}/comments`, {
+			addComment: (id, content, parentId = 0) => request(`results/${id}/comments`, {
 				method: "POST",
-				body: { content }
+				body: {
+					content,
+					parent_id: parentId
+				}
 			})
 		},
 		comments: {
@@ -36335,6 +36338,7 @@ Use slot props instead:
 	});
 	//#endregion
 	//#region src/views/CaseTestView.vue
+	var MAX_COMMENT_DEPTH = 3;
 	var _sfc_main$9 = {
 		__name: "CaseTestView",
 		props: {
@@ -36369,6 +36373,9 @@ Use slot props instead:
 			const loading = /* @__PURE__ */ ref(true);
 			const commentDraft = /* @__PURE__ */ ref("");
 			const postingComment = /* @__PURE__ */ ref(false);
+			const replyingToId = /* @__PURE__ */ ref(0);
+			const replyDraft = /* @__PURE__ */ ref("");
+			const postingReply = /* @__PURE__ */ ref(false);
 			const editingCommentId = /* @__PURE__ */ ref(0);
 			const editCommentDraft = /* @__PURE__ */ ref("");
 			const savingCommentEdit = /* @__PURE__ */ ref(false);
@@ -36388,6 +36395,31 @@ Use slot props instead:
 			const result = computed(() => runStore.resultsByCaseId[caseId.value] ?? null);
 			const isOpen = computed(() => runStore.run?.status === "open");
 			const canTest = computed(() => Boolean(bootstrap.caps?.runTests) && isOpen.value);
+			/**
+			* Comments in reading order — each reply directly under its parent, oldest first — with
+			* the depth each one sits at. A reply whose parent is missing is shown at the top level.
+			*/
+			const threadedComments = computed(() => {
+				const ids = new Set(comments.value.map((comment) => comment.id));
+				const children = /* @__PURE__ */ new Map();
+				for (const comment of comments.value) {
+					const parentId = ids.has(comment.parent_id) ? comment.parent_id : 0;
+					if (!children.has(parentId)) children.set(parentId, []);
+					children.get(parentId).push(comment);
+				}
+				const ordered = [];
+				const walk = (parentId, depth) => {
+					for (const comment of children.get(parentId) ?? []) {
+						ordered.push({
+							comment,
+							depth
+						});
+						walk(comment.id, depth + 1);
+					}
+				};
+				walk(0, 1);
+				return ordered;
+			});
 			const position = computed(() => runStore.orderedCaseIds.indexOf(caseId.value));
 			const previousCaseId = computed(() => position.value > 0 ? runStore.orderedCaseIds[position.value - 1] : null);
 			const nextCaseId = computed(() => position.value >= 0 && position.value < runStore.orderedCaseIds.length - 1 ? runStore.orderedCaseIds[position.value + 1] : null);
@@ -36542,12 +36574,57 @@ Use slot props instead:
 				}
 			}
 			/**
+			* Opens the reply form under a comment, closing any open edit.
+			*
+			* @param {Object} comment Comment being replied to.
+			* @returns {void}
+			*/
+			function startReply(comment) {
+				cancelEditComment();
+				replyingToId.value = comment.id;
+				replyDraft.value = "";
+			}
+			/**
+			* Closes the reply form without posting.
+			*
+			* @returns {void}
+			*/
+			function cancelReply() {
+				replyingToId.value = 0;
+				replyDraft.value = "";
+			}
+			/**
+			* Posts the reply being written.
+			*
+			* @returns {Promise<void>}
+			*/
+			async function postReply() {
+				const content = replyDraft.value.trim();
+				if (!content || content === "<p><br></p>") return;
+				postingReply.value = true;
+				try {
+					const comment = await api.results.addComment(result.value.id, content, replyingToId.value);
+					comments.value = [...comments.value, comment];
+					cancelReply();
+					runStore.replaceResult({
+						...result.value,
+						comment_count: result.value.comment_count + 1
+					});
+					ui.toast("Reply added.");
+				} catch (error) {
+					ui.toastError(error, "The reply could not be added.");
+				} finally {
+					postingReply.value = false;
+				}
+			}
+			/**
 			* Opens the inline editor for a comment.
 			*
 			* @param {Object} comment Comment row.
 			* @returns {void}
 			*/
 			function startEditComment(comment) {
+				cancelReply();
 				editingCommentId.value = comment.id;
 				editCommentDraft.value = comment.content;
 			}
@@ -36587,13 +36664,17 @@ Use slot props instead:
 			* @returns {Promise<void>}
 			*/
 			async function deleteComment(comment) {
-				if (!window.confirm("Delete this comment?")) return;
+				const question = comments.value.some((item) => item.parent_id === comment.id) ? "Delete this comment and all of its replies?" : "Delete this comment?";
+				if (!window.confirm(question)) return;
 				try {
-					await api.comments.remove(comment.id);
-					comments.value = comments.value.filter((item) => item.id !== comment.id);
+					const response = await api.comments.remove(comment.id);
+					const deletedIds = new Set(response?.deleted_ids ?? [comment.id]);
+					comments.value = comments.value.filter((item) => !deletedIds.has(item.id));
+					if (deletedIds.has(replyingToId.value)) cancelReply();
+					if (deletedIds.has(editingCommentId.value)) cancelEditComment();
 					runStore.replaceResult({
 						...result.value,
-						comment_count: Math.max(0, result.value.comment_count - 1)
+						comment_count: Math.max(0, result.value.comment_count - deletedIds.size)
 					});
 					ui.toast("Comment deleted.");
 				} catch (error) {
@@ -36698,6 +36779,10 @@ Use slot props instead:
 				loading,
 				commentDraft,
 				postingComment,
+				replyingToId,
+				replyDraft,
+				postingReply,
+				MAX_COMMENT_DEPTH,
 				editingCommentId,
 				editCommentDraft,
 				savingCommentEdit,
@@ -36713,6 +36798,7 @@ Use slot props instead:
 				result,
 				isOpen,
 				canTest,
+				threadedComments,
 				position,
 				previousCaseId,
 				nextCaseId,
@@ -36730,6 +36816,9 @@ Use slot props instead:
 				releaseLock,
 				setStatus,
 				postComment,
+				startReply,
+				cancelReply,
+				postReply,
 				startEditComment,
 				cancelEditComment,
 				saveCommentEdit,
@@ -36912,11 +37001,15 @@ Use slot props instead:
 	};
 	var _hoisted_76 = ["onClick"];
 	var _hoisted_77 = ["onClick"];
-	var _hoisted_78 = { class: "qa-row" };
-	var _hoisted_79 = ["disabled"];
+	var _hoisted_78 = ["onClick"];
+	var _hoisted_79 = { class: "qa-row" };
 	var _hoisted_80 = ["disabled"];
-	var _hoisted_81 = ["innerHTML"];
-	var _hoisted_82 = ["disabled"];
+	var _hoisted_81 = ["disabled"];
+	var _hoisted_82 = ["innerHTML"];
+	var _hoisted_83 = { class: "qa-row" };
+	var _hoisted_84 = ["disabled"];
+	var _hoisted_85 = ["disabled"];
+	var _hoisted_86 = ["disabled"];
 	function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
 		return openBlock(), createElementBlock("div", _hoisted_1$9, [$setup.loading ? (openBlock(), createElementBlock("p", _hoisted_2$9, "Loading case…")) : $setup.testCase ? (openBlock(), createElementBlock(Fragment, { key: 1 }, [
 			createBaseVNode("div", _hoisted_3$9, [createBaseVNode("div", _hoisted_4$9, [
@@ -36942,7 +37035,7 @@ Use slot props instead:
 			}, " Next → ", 8, _hoisted_9$7)])]),
 			$setup.lockedByOther ? (openBlock(), createElementBlock("div", _hoisted_10$7, toDisplayString($setup.result.in_progress_by.name) + " is testing this. You can still record your own result. ", 1)) : createCommentVNode("", true),
 			!$setup.isOpen ? (openBlock(), createElementBlock("div", _hoisted_11$7, " This run is " + toDisplayString($setup.runStore.run?.status) + ". Results and comments are read-only. ", 1)) : createCommentVNode("", true),
-			createBaseVNode("div", _hoisted_12$7, [createBaseVNode("div", _hoisted_13$7, [_cache[14] || (_cache[14] = createBaseVNode("h3", null, "Result", -1)), $setup.result?.tested_by ? (openBlock(), createElementBlock("span", _hoisted_14$6, [createTextVNode(" Set by " + toDisplayString($setup.result.tested_by.name) + " ", 1), createBaseVNode("span", { title: $setup.absoluteTime($setup.result.tested_at) }, toDisplayString($setup.relativeTime($setup.result.tested_at)), 9, _hoisted_15$4)])) : createCommentVNode("", true)]), createBaseVNode("div", _hoisted_16$4, [$setup.canTest && $setup.result ? (openBlock(), createBlock($setup["StatusControl"], {
+			createBaseVNode("div", _hoisted_12$7, [createBaseVNode("div", _hoisted_13$7, [_cache[15] || (_cache[15] = createBaseVNode("h3", null, "Result", -1)), $setup.result?.tested_by ? (openBlock(), createElementBlock("span", _hoisted_14$6, [createTextVNode(" Set by " + toDisplayString($setup.result.tested_by.name) + " ", 1), createBaseVNode("span", { title: $setup.absoluteTime($setup.result.tested_at) }, toDisplayString($setup.relativeTime($setup.result.tested_at)), 9, _hoisted_15$4)])) : createCommentVNode("", true)]), createBaseVNode("div", _hoisted_16$4, [$setup.canTest && $setup.result ? (openBlock(), createBlock($setup["StatusControl"], {
 				key: 0,
 				"model-value": $setup.result.status,
 				"case-title": $setup.testCase.title,
@@ -36952,7 +37045,7 @@ Use slot props instead:
 				status: $setup.result.status
 			}, null, 8, ["status"])) : (openBlock(), createElementBlock("p", _hoisted_17$4, "This case is not part of this run."))])]),
 			$setup.result ? (openBlock(), createElementBlock("div", _hoisted_18$4, [
-				createBaseVNode("div", _hoisted_19$4, [_cache[15] || (_cache[15] = createBaseVNode("h3", null, "Assigned testers", -1)), $setup.canAssign ? (openBlock(), createElementBlock("div", _hoisted_20$4, [createBaseVNode("button", {
+				createBaseVNode("div", _hoisted_19$4, [_cache[16] || (_cache[16] = createBaseVNode("h3", null, "Assigned testers", -1)), $setup.canAssign ? (openBlock(), createElementBlock("div", _hoisted_20$4, [createBaseVNode("button", {
 					type: "button",
 					class: normalizeClass(["qa-button qa-button--small", { "qa-button--primary": !$setup.assignedToMe }]),
 					disabled: $setup.savingAssignment,
@@ -36984,7 +37077,7 @@ Use slot props instead:
 							onClick: ($event) => $setup.removeAssignee(person)
 						}, " × ", 8, _hoisted_25$4)) : createCommentVNode("", true)
 					]);
-				}), 128))])) : (openBlock(), createElementBlock("p", _hoisted_26$4, [_cache[16] || (_cache[16] = createTextVNode(" Nobody is assigned to this case yet. ", -1)), $setup.canAssign ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [createTextVNode("Claim it so the rest of the team knows.")], 64)) : createCommentVNode("", true)]))]),
+				}), 128))])) : (openBlock(), createElementBlock("p", _hoisted_26$4, [_cache[17] || (_cache[17] = createTextVNode(" Nobody is assigned to this case yet. ", -1)), $setup.canAssign ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [createTextVNode("Claim it so the rest of the team knows.")], 64)) : createCommentVNode("", true)]))]),
 				createVNode($setup["AssigneeDialog"], {
 					open: $setup.assignDialogOpen,
 					title: "Assign this case",
@@ -37001,16 +37094,16 @@ Use slot props instead:
 					"saving"
 				])
 			])) : createCommentVNode("", true),
-			createBaseVNode("div", _hoisted_27$3, [createBaseVNode("div", _hoisted_28$3, [_cache[17] || (_cache[17] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "Steps")], -1)), createBaseVNode("div", {
+			createBaseVNode("div", _hoisted_27$3, [createBaseVNode("div", _hoisted_28$3, [_cache[18] || (_cache[18] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "Steps")], -1)), createBaseVNode("div", {
 				class: "qa-card__body qa-prose",
 				innerHTML: $setup.testCase.steps || "<p class='qa-muted'>No steps recorded.</p>"
-			}, null, 8, _hoisted_29$3)]), createBaseVNode("div", _hoisted_30$2, [_cache[18] || (_cache[18] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "Expected result")], -1)), createBaseVNode("div", {
+			}, null, 8, _hoisted_29$3)]), createBaseVNode("div", _hoisted_30$2, [_cache[19] || (_cache[19] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "Expected result")], -1)), createBaseVNode("div", {
 				class: "qa-card__body qa-prose",
 				innerHTML: $setup.testCase.expected || "<p class='qa-muted'>No expected result recorded.</p>"
 			}, null, 8, _hoisted_31$2)])]),
 			$setup.issues.length ? (openBlock(), createElementBlock("div", _hoisted_32$2, [
 				createBaseVNode("h3", null, toDisplayString($setup.issues.length) + " open " + toDisplayString($setup.plural($setup.issues.length, "issue")) + " on this case", 1),
-				_cache[19] || (_cache[19] = createBaseVNode("p", { class: "qa-subtitle" }, "Raised in any run, still unresolved.", -1)),
+				_cache[20] || (_cache[20] = createBaseVNode("p", { class: "qa-subtitle" }, "Raised in any run, still unresolved.", -1)),
 				(openBlock(true), createElementBlock(Fragment, null, renderList($setup.issues, (issue) => {
 					return openBlock(), createElementBlock("div", {
 						key: issue.id,
@@ -37089,7 +37182,7 @@ Use slot props instead:
 							createBaseVNode("span", { title: $setup.absoluteTime(issue.created_at) }, toDisplayString($setup.relativeTime(issue.created_at)), 9, _hoisted_54),
 							issue.origin_run_id ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [createTextVNode(" · raised in run #" + toDisplayString(issue.origin_run_id), 1)], 64)) : createCommentVNode("", true)
 						]),
-						createBaseVNode("p", _hoisted_55, [createTextVNode(toDisplayString($setup.closureLabel(issue)) + " by " + toDisplayString(issue.resolved_by?.name ?? "somebody") + " ", 1), issue.resolved_at ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [_cache[20] || (_cache[20] = createTextVNode(" · ", -1)), createBaseVNode("span", { title: $setup.absoluteTime(issue.resolved_at) }, toDisplayString($setup.relativeTime(issue.resolved_at)), 9, _hoisted_56)], 64)) : createCommentVNode("", true)])
+						createBaseVNode("p", _hoisted_55, [createTextVNode(toDisplayString($setup.closureLabel(issue)) + " by " + toDisplayString(issue.resolved_by?.name ?? "somebody") + " ", 1), issue.resolved_at ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [_cache[21] || (_cache[21] = createTextVNode(" · ", -1)), createBaseVNode("span", { title: $setup.absoluteTime(issue.resolved_at) }, toDisplayString($setup.relativeTime(issue.resolved_at)), 9, _hoisted_56)], 64)) : createCommentVNode("", true)])
 					]), issue.github_url ? (openBlock(), createElementBlock("a", {
 						key: 0,
 						class: "qa-button qa-button--small qa-button--quiet",
@@ -37114,8 +37207,8 @@ Use slot props instead:
 				key: 1,
 				class: "qa-card",
 				onSubmit: withModifiers($setup.raiseIssue, ["prevent"])
-			}, [_cache[25] || (_cache[25] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "Raise an issue")], -1)), createBaseVNode("div", _hoisted_61, [
-				createBaseVNode("div", _hoisted_62, [_cache[21] || (_cache[21] = createBaseVNode("label", {
+			}, [_cache[26] || (_cache[26] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "Raise an issue")], -1)), createBaseVNode("div", _hoisted_61, [
+				createBaseVNode("div", _hoisted_62, [_cache[22] || (_cache[22] = createBaseVNode("label", {
 					class: "qa-field__label",
 					for: "issue-title"
 				}, "Title", -1)), withDirectives(createBaseVNode("input", {
@@ -37126,13 +37219,13 @@ Use slot props instead:
 					placeholder: "What is broken",
 					required: ""
 				}, null, 512), [[vModelText, $setup.issueDraft.title]])]),
-				createBaseVNode("div", _hoisted_63, [_cache[22] || (_cache[22] = createBaseVNode("span", { class: "qa-field__label" }, "Description", -1)), createVNode($setup["RichTextEditor"], {
+				createBaseVNode("div", _hoisted_63, [_cache[23] || (_cache[23] = createBaseVNode("span", { class: "qa-field__label" }, "Description", -1)), createVNode($setup["RichTextEditor"], {
 					modelValue: $setup.issueDraft.description,
 					"onUpdate:modelValue": _cache[9] || (_cache[9] = ($event) => $setup.issueDraft.description = $event),
 					placeholder: "What you saw, and what you expected."
 				}, null, 8, ["modelValue"])]),
 				createBaseVNode("div", _hoisted_64, [
-					_cache[23] || (_cache[23] = createBaseVNode("label", {
+					_cache[24] || (_cache[24] = createBaseVNode("label", {
 						class: "qa-field__label",
 						for: "issue-url"
 					}, "GitHub issue", -1)),
@@ -37143,7 +37236,7 @@ Use slot props instead:
 						type: "url",
 						placeholder: "https://github.com/owner/repo/issues/123"
 					}, null, 512), [[vModelText, $setup.issueDraft.github_url]]),
-					_cache[24] || (_cache[24] = createBaseVNode("span", { class: "qa-field__hint" }, "Must be a github.com link. Leave blank if you have not filed it yet.", -1))
+					_cache[25] || (_cache[25] = createBaseVNode("span", { class: "qa-field__hint" }, "Must be a github.com link. Leave blank if you have not filed it yet.", -1))
 				]),
 				createBaseVNode("div", _hoisted_65, [createBaseVNode("button", {
 					type: "submit",
@@ -37155,14 +37248,15 @@ Use slot props instead:
 					onClick: _cache[11] || (_cache[11] = ($event) => $setup.issueFormOpen = false)
 				}, " Cancel ")])
 			])], 32))])) : createCommentVNode("", true),
-			$setup.result ? (openBlock(), createElementBlock("div", _hoisted_67, [_cache[28] || (_cache[28] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "Comments"), createBaseVNode("span", { class: "qa-muted" }, "Scoped to this run")], -1)), createBaseVNode("div", _hoisted_68, [!$setup.comments.length ? (openBlock(), createBlock($setup["EmptyState"], {
+			$setup.result ? (openBlock(), createElementBlock("div", _hoisted_67, [_cache[30] || (_cache[30] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "Comments"), createBaseVNode("span", { class: "qa-muted" }, "Scoped to this run")], -1)), createBaseVNode("div", _hoisted_68, [!$setup.comments.length ? (openBlock(), createBlock($setup["EmptyState"], {
 				key: 0,
 				title: "No comments on this case yet.",
 				description: "Add one when a result needs explaining."
-			})) : (openBlock(), createElementBlock("div", _hoisted_69, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.comments, (comment) => {
+			})) : (openBlock(), createElementBlock("div", _hoisted_69, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.threadedComments, ({ comment, depth }) => {
 				return openBlock(), createElementBlock("div", {
 					key: comment.id,
-					class: "qa-comment"
+					class: normalizeClass(["qa-comment", { "qa-comment--reply": depth > 1 }]),
+					style: normalizeStyle({ "--qa-comment-depth": depth - 1 })
 				}, [createBaseVNode("img", {
 					class: "qa-comment__avatar",
 					src: comment.author.avatar,
@@ -37170,64 +37264,99 @@ Use slot props instead:
 					width: "28",
 					height: "28",
 					loading: "lazy"
-				}, null, 8, _hoisted_70), createBaseVNode("div", _hoisted_71, [createBaseVNode("div", _hoisted_72, [
-					createBaseVNode("span", _hoisted_73, toDisplayString(comment.author.name), 1),
-					createBaseVNode("span", { title: $setup.absoluteTime(comment.created_at) }, toDisplayString($setup.relativeTime(comment.created_at)), 9, _hoisted_74),
-					$setup.isOpen && $setup.editingCommentId !== comment.id ? (openBlock(), createElementBlock("span", _hoisted_75, [comment.author.id === $setup.bootstrap.currentUser?.id ? (openBlock(), createElementBlock("button", {
+				}, null, 8, _hoisted_70), createBaseVNode("div", _hoisted_71, [
+					createBaseVNode("div", _hoisted_72, [
+						createBaseVNode("span", _hoisted_73, toDisplayString(comment.author.name), 1),
+						createBaseVNode("span", { title: $setup.absoluteTime(comment.created_at) }, toDisplayString($setup.relativeTime(comment.created_at)), 9, _hoisted_74),
+						$setup.isOpen && $setup.editingCommentId !== comment.id ? (openBlock(), createElementBlock("span", _hoisted_75, [
+							$setup.canTest && depth < $setup.MAX_COMMENT_DEPTH ? (openBlock(), createElementBlock("button", {
+								key: 0,
+								type: "button",
+								class: "qa-icon-button",
+								title: "Reply",
+								"aria-label": "Reply to comment",
+								onClick: ($event) => $setup.startReply(comment)
+							}, [..._cache[27] || (_cache[27] = [createBaseVNode("span", {
+								class: "dashicons dashicons-undo",
+								"aria-hidden": "true"
+							}, null, -1)])], 8, _hoisted_76)) : createCommentVNode("", true),
+							comment.author.id === $setup.bootstrap.currentUser?.id ? (openBlock(), createElementBlock("button", {
+								key: 1,
+								type: "button",
+								class: "qa-icon-button",
+								title: "Edit comment",
+								"aria-label": "Edit comment",
+								onClick: ($event) => $setup.startEditComment(comment)
+							}, [..._cache[28] || (_cache[28] = [createBaseVNode("span", {
+								class: "dashicons dashicons-edit",
+								"aria-hidden": "true"
+							}, null, -1)])], 8, _hoisted_77)) : createCommentVNode("", true),
+							comment.author.id === $setup.bootstrap.currentUser?.id || $setup.bootstrap.caps?.manageCases ? (openBlock(), createElementBlock("button", {
+								key: 2,
+								type: "button",
+								class: "qa-icon-button qa-icon-button--danger",
+								title: "Delete comment",
+								"aria-label": "Delete comment",
+								onClick: ($event) => $setup.deleteComment(comment)
+							}, [..._cache[29] || (_cache[29] = [createBaseVNode("span", {
+								class: "dashicons dashicons-trash",
+								"aria-hidden": "true"
+							}, null, -1)])], 8, _hoisted_78)) : createCommentVNode("", true)
+						])) : createCommentVNode("", true)
+					]),
+					$setup.editingCommentId === comment.id ? (openBlock(), createElementBlock("form", {
 						key: 0,
+						class: "qa-stack qa-stack--tight",
+						onSubmit: withModifiers($setup.saveCommentEdit, ["prevent"])
+					}, [createVNode($setup["RichTextEditor"], {
+						modelValue: $setup.editCommentDraft,
+						"onUpdate:modelValue": _cache[12] || (_cache[12] = ($event) => $setup.editCommentDraft = $event)
+					}, null, 8, ["modelValue"]), createBaseVNode("div", _hoisted_79, [createBaseVNode("button", {
+						type: "submit",
+						class: "qa-button qa-button--primary qa-button--small",
+						disabled: $setup.savingCommentEdit
+					}, toDisplayString($setup.savingCommentEdit ? "Saving…" : "Save"), 9, _hoisted_80), createBaseVNode("button", {
 						type: "button",
-						class: "qa-icon-button",
-						title: "Edit comment",
-						"aria-label": "Edit comment",
-						onClick: ($event) => $setup.startEditComment(comment)
-					}, [..._cache[26] || (_cache[26] = [createBaseVNode("span", {
-						class: "dashicons dashicons-edit",
-						"aria-hidden": "true"
-					}, null, -1)])], 8, _hoisted_76)) : createCommentVNode("", true), comment.author.id === $setup.bootstrap.currentUser?.id || $setup.bootstrap.caps?.manageCases ? (openBlock(), createElementBlock("button", {
+						class: "qa-button qa-button--small qa-button--quiet",
+						disabled: $setup.savingCommentEdit,
+						onClick: $setup.cancelEditComment
+					}, " Cancel ", 8, _hoisted_81)])], 32)) : (openBlock(), createElementBlock("div", {
 						key: 1,
+						class: "qa-comment__body qa-prose",
+						innerHTML: comment.content
+					}, null, 8, _hoisted_82)),
+					$setup.replyingToId === comment.id ? (openBlock(), createElementBlock("form", {
+						key: 2,
+						class: "qa-stack qa-stack--tight qa-comment__reply-form",
+						onSubmit: withModifiers($setup.postReply, ["prevent"])
+					}, [createVNode($setup["RichTextEditor"], {
+						modelValue: $setup.replyDraft,
+						"onUpdate:modelValue": _cache[13] || (_cache[13] = ($event) => $setup.replyDraft = $event),
+						placeholder: `Reply to ${comment.author.name}`
+					}, null, 8, ["modelValue", "placeholder"]), createBaseVNode("div", _hoisted_83, [createBaseVNode("button", {
+						type: "submit",
+						class: "qa-button qa-button--primary qa-button--small",
+						disabled: $setup.postingReply
+					}, toDisplayString($setup.postingReply ? "Replying…" : "Reply"), 9, _hoisted_84), createBaseVNode("button", {
 						type: "button",
-						class: "qa-icon-button qa-icon-button--danger",
-						title: "Delete comment",
-						"aria-label": "Delete comment",
-						onClick: ($event) => $setup.deleteComment(comment)
-					}, [..._cache[27] || (_cache[27] = [createBaseVNode("span", {
-						class: "dashicons dashicons-trash",
-						"aria-hidden": "true"
-					}, null, -1)])], 8, _hoisted_77)) : createCommentVNode("", true)])) : createCommentVNode("", true)
-				]), $setup.editingCommentId === comment.id ? (openBlock(), createElementBlock("form", {
-					key: 0,
-					class: "qa-stack qa-stack--tight",
-					onSubmit: withModifiers($setup.saveCommentEdit, ["prevent"])
-				}, [createVNode($setup["RichTextEditor"], {
-					modelValue: $setup.editCommentDraft,
-					"onUpdate:modelValue": _cache[12] || (_cache[12] = ($event) => $setup.editCommentDraft = $event)
-				}, null, 8, ["modelValue"]), createBaseVNode("div", _hoisted_78, [createBaseVNode("button", {
-					type: "submit",
-					class: "qa-button qa-button--primary qa-button--small",
-					disabled: $setup.savingCommentEdit
-				}, toDisplayString($setup.savingCommentEdit ? "Saving…" : "Save"), 9, _hoisted_79), createBaseVNode("button", {
-					type: "button",
-					class: "qa-button qa-button--small qa-button--quiet",
-					disabled: $setup.savingCommentEdit,
-					onClick: $setup.cancelEditComment
-				}, " Cancel ", 8, _hoisted_80)])], 32)) : (openBlock(), createElementBlock("div", {
-					key: 1,
-					class: "qa-comment__body qa-prose",
-					innerHTML: comment.content
-				}, null, 8, _hoisted_81))])]);
+						class: "qa-button qa-button--small qa-button--quiet",
+						disabled: $setup.postingReply,
+						onClick: $setup.cancelReply
+					}, " Cancel ", 8, _hoisted_85)])], 32)) : createCommentVNode("", true)
+				])], 6);
 			}), 128))])), $setup.canTest ? (openBlock(), createElementBlock("form", {
 				key: 2,
 				class: "qa-stack qa-stack--tight",
 				onSubmit: withModifiers($setup.postComment, ["prevent"])
 			}, [createVNode($setup["RichTextEditor"], {
 				modelValue: $setup.commentDraft,
-				"onUpdate:modelValue": _cache[13] || (_cache[13] = ($event) => $setup.commentDraft = $event),
+				"onUpdate:modelValue": _cache[14] || (_cache[14] = ($event) => $setup.commentDraft = $event),
 				placeholder: "Add a comment"
 			}, null, 8, ["modelValue"]), createBaseVNode("div", null, [createBaseVNode("button", {
 				type: "submit",
 				class: "qa-button qa-button--primary",
 				disabled: $setup.postingComment
-			}, toDisplayString($setup.postingComment ? "Adding…" : "Add comment"), 9, _hoisted_82)])], 32)) : createCommentVNode("", true)])])) : createCommentVNode("", true)
+			}, toDisplayString($setup.postingComment ? "Adding…" : "Add comment"), 9, _hoisted_86)])], 32)) : createCommentVNode("", true)])])) : createCommentVNode("", true)
 		], 64)) : (openBlock(), createBlock($setup["EmptyState"], {
 			key: 2,
 			title: "That case could not be found."
@@ -37236,7 +37365,7 @@ Use slot props instead:
 				class: "qa-button",
 				to: `/runs/${$setup.runId}`
 			}, {
-				default: withCtx(() => [..._cache[29] || (_cache[29] = [createTextVNode("Back to the run", -1)])]),
+				default: withCtx(() => [..._cache[31] || (_cache[31] = [createTextVNode("Back to the run", -1)])]),
 				_: 1
 			}, 8, ["to"])]),
 			_: 1

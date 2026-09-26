@@ -22,7 +22,7 @@ namespace QARunner;
 defined( 'ABSPATH' ) || exit;
 
 define( 'QA_RUNNER_VERSION', '1.1.0' );
-define( 'QA_RUNNER_DB_VERSION', 2 );
+define( 'QA_RUNNER_DB_VERSION', 3 );
 define( 'QA_RUNNER_FILE', __FILE__ );
 define( 'QA_RUNNER_PATH', plugin_dir_path( __FILE__ ) );
 define( 'QA_RUNNER_URL', plugin_dir_url( __FILE__ ) );

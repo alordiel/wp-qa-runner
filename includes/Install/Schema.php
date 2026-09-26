@@ -217,12 +217,14 @@ final class Schema {
 			"CREATE TABLE {$comments} (
 				id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 				result_id bigint(20) unsigned NOT NULL,
+				parent_id bigint(20) unsigned NULL,
 				user_id bigint(20) unsigned NOT NULL,
 				content longtext NOT NULL,
 				created_at datetime NOT NULL,
 				updated_at datetime NOT NULL,
 				PRIMARY KEY  (id),
-				KEY result_id (result_id)
+				KEY result_id (result_id),
+				KEY parent_id (parent_id)
 			) {$collate};",
 
 			"CREATE TABLE {$issues} (

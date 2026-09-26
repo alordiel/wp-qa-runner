@@ -207,8 +207,8 @@ export const api = {
     lock: (id) => request(`results/${id}/lock`, {method: 'PUT'}),
     unlock: (id) => request(`results/${id}/lock`, {method: 'DELETE'}),
     comments: (id) => request(`results/${id}/comments`),
-    addComment: (id, content) =>
-      request(`results/${id}/comments`, {method: 'POST', body: {content}})
+    addComment: (id, content, parentId = 0) =>
+      request(`results/${id}/comments`, {method: 'POST', body: {content, parent_id: parentId}})
   },
 
   comments: {

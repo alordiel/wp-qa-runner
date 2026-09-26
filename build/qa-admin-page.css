@@ -2026,6 +2026,17 @@
   font-size: 13px;
 }
 
+/* Replies step in by one avatar width (plus gap) per level, set via --qa-comment-depth. */
+.qa-comment--reply {
+  margin-left: calc(var(--qa-comment-depth, 0) * 38px);
+  padding-left: 10px;
+  border-left: 2px solid var(--qa-border);
+}
+
+.qa-comment__reply-form {
+  margin-top: 8px;
+}
+
 .qa-comment__actions {
   display: inline-flex;
   gap: 2px;

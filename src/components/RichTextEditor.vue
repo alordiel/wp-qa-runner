@@ -21,13 +21,16 @@ const editor = ref(null);
 
 // vue-quill ignores an empty `content` prop, so clearing the model from outside
 // (e.g. after posting a comment) would leave the old text in the editor.
-watch(() => props.modelValue, (value) => {
-  const quill = editor.value?.getQuill();
+watch(
+  () => props.modelValue,
+  (value) => {
+    const quill = editor.value?.getQuill();
 
-  if (!value && quill && quill.getLength() > 1) {
-    quill.setText('');
+    if (!value && quill && quill.getLength() > 1) {
+      quill.setText('');
+    }
   }
-});
+);
 
 const toolbar = [
   ['bold', 'italic'],
