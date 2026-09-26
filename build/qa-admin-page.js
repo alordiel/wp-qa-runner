@@ -35111,7 +35111,7 @@ Use slot props instead:
 		class: "qa-card"
 	};
 	var _hoisted_7$11 = { class: "qa-card__body qa-stack" };
-	var _hoisted_8$11 = {
+	var _hoisted_8$10 = {
 		class: "qa-row",
 		style: {
 			"align-items": "flex-start",
@@ -35162,7 +35162,7 @@ Use slot props instead:
 			class: "qa-button qa-button--primary",
 			disabled: !$setup.canSubmit
 		}, toDisplayString($setup.saving ? "Saving…" : "Save case"), 9, _hoisted_4$12)])]), $setup.loading ? (openBlock(), createElementBlock("p", _hoisted_5$11, "Loading…")) : (openBlock(), createElementBlock("div", _hoisted_6$11, [createBaseVNode("div", _hoisted_7$11, [
-			createBaseVNode("div", _hoisted_8$11, [
+			createBaseVNode("div", _hoisted_8$10, [
 				createBaseVNode("div", _hoisted_9$10, [_cache[8] || (_cache[8] = createBaseVNode("label", {
 					class: "qa-field__label",
 					for: "case-title"
@@ -35542,7 +35542,7 @@ Use slot props instead:
 	};
 	var _hoisted_6$10 = { class: "qa-row" };
 	var _hoisted_7$10 = ["value"];
-	var _hoisted_8$10 = { class: "qa-checkbox" };
+	var _hoisted_8$9 = { class: "qa-checkbox" };
 	var _hoisted_9$9 = {
 		key: 0,
 		class: "qa-skeleton"
@@ -35622,7 +35622,7 @@ Use slot props instead:
 					value: option.value
 				}, toDisplayString(option.label), 9, _hoisted_7$10);
 			}), 128))], 512), [[vModelSelect, $setup.priority]]),
-			createBaseVNode("label", _hoisted_8$10, [withDirectives(createBaseVNode("input", {
+			createBaseVNode("label", _hoisted_8$9, [withDirectives(createBaseVNode("input", {
 				"onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => $setup.showArchived = $event),
 				type: "checkbox"
 			}, null, 512), [[vModelCheckbox, $setup.showArchived]]), _cache[7] || (_cache[7] = createBaseVNode("span", null, "Show archived", -1))])
@@ -35831,7 +35831,7 @@ Use slot props instead:
 	};
 	var _hoisted_6$9 = { class: "qa-checkbox" };
 	var _hoisted_7$9 = ["value", "disabled"];
-	var _hoisted_8$9 = ["src"];
+	var _hoisted_8$8 = ["src"];
 	var _hoisted_9$8 = {
 		key: 2,
 		class: "qa-dialog__warning"
@@ -35867,7 +35867,7 @@ Use slot props instead:
 						width: "24",
 						height: "24",
 						loading: "lazy"
-					}, null, 8, _hoisted_8$9),
+					}, null, 8, _hoisted_8$8),
 					createBaseVNode("span", null, toDisplayString(person.name), 1)
 				])]);
 			}), 128))])), $props.removalWarning && $setup.removed.length ? (openBlock(), createElementBlock("p", _hoisted_9$8, toDisplayString($props.removalWarning.replace("%s", $setup.removed.map((person) => person.name).join(", "))), 1)) : createCommentVNode("", true)]),
@@ -36886,7 +36886,7 @@ Use slot props instead:
 	var _hoisted_5$8 = { class: "qa-row" };
 	var _hoisted_6$8 = { class: "qa-row" };
 	var _hoisted_7$8 = ["disabled"];
-	var _hoisted_8$8 = ["disabled"];
+	var _hoisted_8$7 = ["disabled"];
 	var _hoisted_9$7 = {
 		key: 0,
 		class: "qa-notice qa-notice--warning"
@@ -37027,7 +37027,7 @@ Use slot props instead:
 				class: "qa-button qa-button--quiet",
 				disabled: !$setup.nextCaseId,
 				onClick: _cache[1] || (_cache[1] = ($event) => $setup.go($setup.nextCaseId))
-			}, " Next → ", 8, _hoisted_8$8)])]),
+			}, " Next → ", 8, _hoisted_8$7)])]),
 			$setup.lockedByOther ? (openBlock(), createElementBlock("div", _hoisted_9$7, toDisplayString($setup.result.in_progress_by.name) + " is testing this. You can still record your own result. ", 1)) : createCommentVNode("", true),
 			!$setup.isOpen ? (openBlock(), createElementBlock("div", _hoisted_10$7, " This run is " + toDisplayString($setup.runStore.run?.status) + ". Results and comments are read-only. ", 1)) : createCommentVNode("", true),
 			createBaseVNode("div", _hoisted_11$7, [createBaseVNode("div", _hoisted_12$7, [_cache[16] || (_cache[16] = createBaseVNode("h3", null, "Result", -1)), $setup.result?.tested_by ? (openBlock(), createElementBlock("span", _hoisted_13$7, [createTextVNode(" Set by " + toDisplayString($setup.result.tested_by.name) + " ", 1), createBaseVNode("span", { title: $setup.absoluteTime($setup.result.tested_at) }, toDisplayString($setup.relativeTime($setup.result.tested_at)), 9, _hoisted_14$6)])) : createCommentVNode("", true)]), createBaseVNode("div", _hoisted_15$4, [$setup.canTest && $setup.result ? (openBlock(), createBlock($setup["StatusControl"], {
@@ -37579,7 +37579,7 @@ Use slot props instead:
 			"gap": "16px"
 		}
 	};
-	var _hoisted_8$7 = {
+	var _hoisted_8$6 = {
 		class: "qa-field",
 		style: {
 			"flex": "1",
@@ -37665,7 +37665,7 @@ Use slot props instead:
 					placeholder: "2.4.0 — Account changes",
 					required: ""
 				}, null, 512), [[vModelText, $setup.form.name]])]),
-				createBaseVNode("div", _hoisted_7$7, [createBaseVNode("div", _hoisted_8$7, [_cache[10] || (_cache[10] = createBaseVNode("label", {
+				createBaseVNode("div", _hoisted_7$7, [createBaseVNode("div", _hoisted_8$6, [_cache[10] || (_cache[10] = createBaseVNode("label", {
 					class: "qa-field__label",
 					for: "run-environment"
 				}, "Environment", -1)), withDirectives(createBaseVNode("select", {
@@ -37906,7 +37906,7 @@ Use slot props instead:
 		key: 0,
 		class: "qa-badge qa-badge--issue"
 	};
-	var _hoisted_8$6 = { class: "qa-count" };
+	var _hoisted_8$5 = { class: "qa-count" };
 	var _hoisted_9$5 = {
 		key: 1,
 		class: "qa-badge qa-badge--env"
@@ -37936,7 +37936,7 @@ Use slot props instead:
 				"qa-badge--issue": $setup.failCount > 0,
 				"qa-badge--env": $setup.failCount === 0
 			}, "qa-badge"]) }, [createBaseVNode("b", _hoisted_6$6, toDisplayString($setup.failCount), 1), _cache[1] || (_cache[1] = createTextVNode(" failed", -1))], 2),
-			$props.counts.blocked ? (openBlock(), createElementBlock("span", _hoisted_7$6, [createBaseVNode("b", _hoisted_8$6, toDisplayString($props.counts.blocked), 1), _cache[2] || (_cache[2] = createTextVNode(" blocked", -1))])) : createCommentVNode("", true),
+			$props.counts.blocked ? (openBlock(), createElementBlock("span", _hoisted_7$6, [createBaseVNode("b", _hoisted_8$5, toDisplayString($props.counts.blocked), 1), _cache[2] || (_cache[2] = createTextVNode(" blocked", -1))])) : createCommentVNode("", true),
 			$props.counts.skipped ? (openBlock(), createElementBlock("span", _hoisted_9$5, [createBaseVNode("b", _hoisted_10$5, toDisplayString($props.counts.skipped), 1), _cache[3] || (_cache[3] = createTextVNode(" skipped", -1))])) : createCommentVNode("", true),
 			createBaseVNode("span", _hoisted_11$5, [createBaseVNode("b", _hoisted_12$5, toDisplayString($setup.remaining), 1), _cache[4] || (_cache[4] = createTextVNode(" remaining", -1))]),
 			$props.issues > 0 ? (openBlock(), createElementBlock("span", _hoisted_13$5, [createBaseVNode("span", _hoisted_14$4, toDisplayString($props.issues + " " + $setup.plural($props.issues, "open issue", "open issues")), 1)])) : createCommentVNode("", true)
@@ -38139,7 +38139,7 @@ Use slot props instead:
 	};
 	var _hoisted_6$5 = { class: "qa-checkbox" };
 	var _hoisted_7$5 = ["value", "disabled"];
-	var _hoisted_8$5 = { class: "qa-dialog__case" };
+	var _hoisted_8$4 = { class: "qa-dialog__case" };
 	var _hoisted_9$4 = { class: "qa-case-row__meta" };
 	var _hoisted_10$4 = { class: "qa-stack qa-stack--tight" };
 	var _hoisted_11$4 = { class: "qa-row" };
@@ -38205,7 +38205,7 @@ Use slot props instead:
 								disabled: $props.saving
 							}, null, 8, _hoisted_7$5), [[vModelCheckbox, $setup.selected]]),
 							createVNode($setup["PriorityDot"], { priority: result.case.priority }, null, 8, ["priority"]),
-							createBaseVNode("span", _hoisted_8$5, [createBaseVNode("span", null, toDisplayString(result.case.title), 1), createBaseVNode("span", _hoisted_9$4, [
+							createBaseVNode("span", _hoisted_8$4, [createBaseVNode("span", null, toDisplayString(result.case.title), 1), createBaseVNode("span", _hoisted_9$4, [
 								createBaseVNode("span", null, toDisplayString(result.case.suite_name), 1),
 								createVNode($setup["StatusBadge"], { status: result.status }, null, 8, ["status"]),
 								(openBlock(true), createElementBlock(Fragment, null, renderList($setup.recorded(result), (part) => {
@@ -38420,7 +38420,7 @@ Use slot props instead:
 	};
 	var _hoisted_6$4 = ["disabled"];
 	var _hoisted_7$4 = ["value"];
-	var _hoisted_8$4 = {
+	var _hoisted_8$3 = {
 		class: "qa-field",
 		style: {
 			"flex": "1",
@@ -38471,7 +38471,7 @@ Use slot props instead:
 						key: environment,
 						value: environment
 					}, toDisplayString(environment), 9, _hoisted_7$4);
-				}), 128))], 8, _hoisted_6$4), [[vModelSelect, $setup.form.environment]])]), createBaseVNode("div", _hoisted_8$4, [_cache[7] || (_cache[7] = createBaseVNode("label", {
+				}), 128))], 8, _hoisted_6$4), [[vModelSelect, $setup.form.environment]])]), createBaseVNode("div", _hoisted_8$3, [_cache[7] || (_cache[7] = createBaseVNode("label", {
 					class: "qa-field__label",
 					for: "edit-run-version"
 				}, "Version", -1)), withDirectives(createBaseVNode("input", {
@@ -38877,7 +38877,7 @@ Use slot props instead:
 	var _hoisted_5$3 = { class: "qa-run-title" };
 	var _hoisted_6$3 = { class: "qa-subtitle" };
 	var _hoisted_7$3 = ["title"];
-	var _hoisted_8$3 = {
+	var _hoisted_8$2 = {
 		key: 0,
 		class: "qa-run-description"
 	};
@@ -38957,7 +38957,7 @@ Use slot props instead:
 						_cache[16] || (_cache[16] = createTextVNode(" \xA0 ", -1)),
 						createBaseVNode("strong", null, [createBaseVNode("span", { title: $setup.absoluteTime($setup.runStore.run.created_at) }, toDisplayString($setup.relativeTime($setup.runStore.run.created_at)), 9, _hoisted_7$3)])
 					]),
-					$setup.runStore.run.notes ? (openBlock(), createElementBlock("p", _hoisted_8$3, toDisplayString($setup.runStore.run.notes), 1)) : createCommentVNode("", true)
+					$setup.runStore.run.notes ? (openBlock(), createElementBlock("p", _hoisted_8$2, toDisplayString($setup.runStore.run.notes), 1)) : createCommentVNode("", true)
 				]),
 				createBaseVNode("div", _hoisted_9$2, [
 					$setup.bootstrap.caps?.runTests ? (openBlock(), createElementBlock("button", {
@@ -39291,7 +39291,7 @@ Use slot props instead:
 		key: 2,
 		class: "qa-table-scroll"
 	};
-	var _hoisted_8$2 = { class: "qa-table" };
+	var _hoisted_8$1 = { class: "qa-table" };
 	var _hoisted_9$1 = { class: "qa-run-cell" };
 	var _hoisted_10$1 = { class: "qa-badge qa-badge--env" };
 	var _hoisted_11$1 = { class: "qa-muted" };
@@ -39329,7 +39329,7 @@ Use slot props instead:
 					_: 1
 				})) : createCommentVNode("", true)]),
 				_: 1
-			}, 8, ["title"])) : (openBlock(), createElementBlock("div", _hoisted_7$2, [createBaseVNode("table", _hoisted_8$2, [_cache[3] || (_cache[3] = createBaseVNode("thead", null, [createBaseVNode("tr", null, [
+			}, 8, ["title"])) : (openBlock(), createElementBlock("div", _hoisted_7$2, [createBaseVNode("table", _hoisted_8$1, [_cache[3] || (_cache[3] = createBaseVNode("thead", null, [createBaseVNode("tr", null, [
 				createBaseVNode("th", { scope: "col" }, "Run"),
 				createBaseVNode("th", { scope: "col" }, "Version"),
 				createBaseVNode("th", {
@@ -39368,18 +39368,17 @@ Use slot props instead:
 		setup(__props, { expose: __expose }) {
 			__expose();
 			/**
-			* Settings: digest time, the notification pause and the uninstall opt-in.
+			* Settings: the notification pause and the uninstall opt-in.
 			*/
 			const ui = useUiStore();
 			const settings = /* @__PURE__ */ ref({
-				digestTime: "09:00",
 				notificationsPaused: false,
 				deleteDataOnUninstall: false
 			});
 			const loading = /* @__PURE__ */ ref(true);
 			const saving = /* @__PURE__ */ ref(false);
 			/**
-			* Saves the settings. Changing the digest time reschedules the cron server-side.
+			* Saves the settings.
 			*
 			* @returns {Promise<void>}
 			*/
@@ -39436,44 +39435,23 @@ Use slot props instead:
 		class: "qa-card"
 	};
 	var _hoisted_5$1 = { class: "qa-card__body qa-stack" };
-	var _hoisted_6$1 = {
-		class: "qa-field",
-		style: { "max-width": "220px" }
-	};
+	var _hoisted_6$1 = { class: "qa-checkbox" };
 	var _hoisted_7$1 = { class: "qa-checkbox" };
-	var _hoisted_8$1 = { class: "qa-checkbox" };
 	function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
 		return openBlock(), createElementBlock("form", {
 			class: "qa-stack",
 			onSubmit: withModifiers($setup.save, ["prevent"])
-		}, [createBaseVNode("div", _hoisted_1$1, [_cache[3] || (_cache[3] = createBaseVNode("div", { class: "qa-page-head__meta" }, [createBaseVNode("h2", null, "Settings")], -1)), createBaseVNode("button", {
+		}, [createBaseVNode("div", _hoisted_1$1, [_cache[2] || (_cache[2] = createBaseVNode("div", { class: "qa-page-head__meta" }, [createBaseVNode("h2", null, "Settings")], -1)), createBaseVNode("button", {
 			type: "submit",
 			class: "qa-button qa-button--primary",
 			disabled: $setup.saving || $setup.loading
-		}, toDisplayString($setup.saving ? "Saving…" : "Save settings"), 9, _hoisted_2$1)]), $setup.loading ? (openBlock(), createElementBlock("p", _hoisted_3$1, "Loading settings…")) : (openBlock(), createElementBlock("div", _hoisted_4$1, [createBaseVNode("div", _hoisted_5$1, [
-			createBaseVNode("div", _hoisted_6$1, [
-				_cache[4] || (_cache[4] = createBaseVNode("label", {
-					class: "qa-field__label",
-					for: "digest-time"
-				}, "Daily digest time", -1)),
-				withDirectives(createBaseVNode("input", {
-					id: "digest-time",
-					"onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.settings.digestTime = $event),
-					class: "qa-input",
-					type: "time",
-					required: ""
-				}, null, 512), [[vModelText, $setup.settings.digestTime]]),
-				_cache[5] || (_cache[5] = createBaseVNode("span", { class: "qa-field__hint" }, " In the site timezone. The digest only goes to people with cases still to test. ", -1))
-			]),
-			createBaseVNode("label", _hoisted_7$1, [withDirectives(createBaseVNode("input", {
-				"onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => $setup.settings.notificationsPaused = $event),
-				type: "checkbox"
-			}, null, 512), [[vModelCheckbox, $setup.settings.notificationsPaused]]), _cache[6] || (_cache[6] = createBaseVNode("span", null, [createTextVNode(" Pause notifications "), createBaseVNode("span", { class: "qa-field__hint" }, "Stops assignment emails and the daily digest.")], -1))]),
-			createBaseVNode("label", _hoisted_8$1, [withDirectives(createBaseVNode("input", {
-				"onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => $setup.settings.deleteDataOnUninstall = $event),
-				type: "checkbox"
-			}, null, 512), [[vModelCheckbox, $setup.settings.deleteDataOnUninstall]]), _cache[7] || (_cache[7] = createBaseVNode("span", null, [createTextVNode(" Delete all QA data when the plugin is uninstalled "), createBaseVNode("span", { class: "qa-field__hint" }, " Off by default. With this off, uninstalling removes the role and settings but leaves every run, result and issue in the database. ")], -1))])
-		])]))], 32);
+		}, toDisplayString($setup.saving ? "Saving…" : "Save settings"), 9, _hoisted_2$1)]), $setup.loading ? (openBlock(), createElementBlock("p", _hoisted_3$1, "Loading settings…")) : (openBlock(), createElementBlock("div", _hoisted_4$1, [createBaseVNode("div", _hoisted_5$1, [createBaseVNode("label", _hoisted_6$1, [withDirectives(createBaseVNode("input", {
+			"onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.settings.notificationsPaused = $event),
+			type: "checkbox"
+		}, null, 512), [[vModelCheckbox, $setup.settings.notificationsPaused]]), _cache[3] || (_cache[3] = createBaseVNode("span", null, [createTextVNode(" Pause notifications "), createBaseVNode("span", { class: "qa-field__hint" }, " Stops the emails sent when someone assigns another person to a run or a case. ")], -1))]), createBaseVNode("label", _hoisted_7$1, [withDirectives(createBaseVNode("input", {
+			"onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => $setup.settings.deleteDataOnUninstall = $event),
+			type: "checkbox"
+		}, null, 512), [[vModelCheckbox, $setup.settings.deleteDataOnUninstall]]), _cache[4] || (_cache[4] = createBaseVNode("span", null, [createTextVNode(" Delete all QA data when the plugin is uninstalled "), createBaseVNode("span", { class: "qa-field__hint" }, " Off by default. With this off, uninstalling removes the role and settings but leaves every run, result and issue in the database. ")], -1))])])]))], 32);
 	}
 	var SettingsView_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$1, [["render", _sfc_render$1], ["__file", "SettingsView.vue"]]);
 	//#endregion

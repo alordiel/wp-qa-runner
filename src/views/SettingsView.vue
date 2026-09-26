@@ -1,6 +1,6 @@
 <script setup>
 /**
- * Settings: digest time, the notification pause and the uninstall opt-in.
+ * Settings: the notification pause and the uninstall opt-in.
  */
 
 import {onMounted, ref} from 'vue';
@@ -11,7 +11,6 @@ import {useUiStore} from '../stores/ui.js';
 const ui = useUiStore();
 
 const settings = ref({
-  digestTime: '09:00',
   notificationsPaused: false,
   deleteDataOnUninstall: false
 });
@@ -19,7 +18,7 @@ const loading = ref(true);
 const saving = ref(false);
 
 /**
- * Saves the settings. Changing the digest time reschedules the cron server-side.
+ * Saves the settings.
  *
  * @returns {Promise<void>}
  */
@@ -62,25 +61,13 @@ onMounted(async () => {
 
     <div v-else class="qa-card">
       <div class="qa-card__body qa-stack">
-        <div class="qa-field" style="max-width: 220px">
-          <label class="qa-field__label" for="digest-time">Daily digest time</label>
-          <input
-            id="digest-time"
-            v-model="settings.digestTime"
-            class="qa-input"
-            type="time"
-            required
-          />
-          <span class="qa-field__hint">
-            In the site timezone. The digest only goes to people with cases still to test.
-          </span>
-        </div>
-
         <label class="qa-checkbox">
           <input v-model="settings.notificationsPaused" type="checkbox" />
           <span>
             Pause notifications
-            <span class="qa-field__hint">Stops assignment emails and the daily digest.</span>
+            <span class="qa-field__hint">
+              Stops the emails sent when someone assigns another person to a run or a case.
+            </span>
           </span>
         </label>
 

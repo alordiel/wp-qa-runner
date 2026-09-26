@@ -117,16 +117,4 @@ final class Sanitize {
 	public static function is_id_list( $value ): bool {
 		return is_array( $value ) || is_string( $value );
 	}
-
-	/**
-	 * Sanitises a 24-hour "HH:MM" time string.
-	 *
-	 * @param mixed $value Raw value.
-	 * @return string
-	 */
-	public static function time_of_day( $value ): string {
-		$value = is_string( $value ) ? trim( $value ) : '';
-
-		return preg_match( '/^([01][0-9]|2[0-3]):([0-5][0-9])$/', $value ) ? $value : '09:00';
-	}
 }

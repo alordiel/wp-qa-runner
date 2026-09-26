@@ -37,7 +37,7 @@ composer install                  # optional: dev tooling only, no runtime depen
 ```
 
 Activate the plugin. Activation creates the tables, registers the `qa_tester` role, writes
-the default options and schedules the daily digest.
+the default options.
 
 The runtime has **no Composer dependency** — classes autoload from `includes/` via a PSR-4
 autoloader in the main plugin file, so an rsync deploy needs no install step on the server.
@@ -109,19 +109,18 @@ composer lint    # phpcs, WordPress ruleset
 
 ## Notifications
 
-Two emails, both plain HTML tables:
+Two emails, both plain HTML tables, and both only when somebody assigns **another** person —
+assigning yourself sends nothing:
 
-- **Assignment**, sent when someone is added to a run. `notified_at` is stamped on success,
-  so re-saving a run never double-sends.
-- **Daily digest**, a WP-Cron event listing outstanding untested cases per assignee. Skipped
-  entirely for anyone with nothing outstanding — a digest that says "nothing to do" trains
-  people to filter you.
+- **Run assignment**, sent when someone is added to a run. `notified_at` is stamped on
+  success, so re-saving a run never double-sends.
+- **Case assignment**, sent when someone is given a case within a run. Re-assigning a person
+  already on the case does not re-send.
 
 Both are sent with the `wp_mail_content_type` filter attached immediately before the send
 and removed immediately after, so other plugins' mail is untouched.
 
-Changing the digest time in Settings reschedules the cron. Writing the option alone would do
-nothing: WP-Cron fires relative to the timestamp it was handed.
+"Pause notifications" in Settings stops both.
 
 ## Uninstall
 
@@ -141,9 +140,9 @@ includes/
   Admin/               Menu (mount point), Assets (enqueue + window.qaRunner)
   Repository/          one per table, every query via $wpdb->prepare()
   Rest/                Controller base + one controller per resource
-  Notification/        Mailer, DigestCron
+  Notification/        Mailer
   Support/             Enum, Sanitize, Dates, Settings
-templates/emails/      assignment.php, digest.php
+templates/emails/      assignment.php, case-assignment.php
 src/                   Vue 3 source
 build/                 Vite output — committed
 ```

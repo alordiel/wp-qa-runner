@@ -340,7 +340,7 @@ final class RunsController extends Controller {
 
 		if ( ! empty( $assignee_ids ) ) {
 			$this->runs->add_assignees( $run_id, $assignee_ids );
-			$this->mailer->send_assignments( $run_id );
+			$this->mailer->send_assignments( $run_id, get_current_user_id() );
 		}
 
 		return $this->runs->find_with_detail( $run_id );
@@ -469,7 +469,7 @@ final class RunsController extends Controller {
 		}
 
 		$this->runs->add_assignees( $id, $user_ids );
-		$sent = $this->mailer->send_assignments( $id );
+		$sent = $this->mailer->send_assignments( $id, get_current_user_id() );
 
 		$run         = $this->runs->find_with_detail( $id );
 		$run['sent'] = $sent;

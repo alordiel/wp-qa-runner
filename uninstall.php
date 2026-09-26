@@ -15,7 +15,6 @@ namespace QARunner;
 
 use QARunner\Install\Roles;
 use QARunner\Install\Schema;
-use QARunner\Notification\DigestCron;
 use QARunner\Support\Settings;
 
 defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
@@ -42,7 +41,7 @@ spl_autoload_register(
 
 $qa_runner_drop_tables = Settings::delete_data_on_uninstall();
 
-DigestCron::unschedule();
+Plugin::remove_legacy_digest();
 Roles::uninstall();
 
 if ( $qa_runner_drop_tables ) {

@@ -402,43 +402,6 @@ final class ResultRepository extends BaseRepository {
 	}
 
 	/**
-	 * Outstanding untested counts per user, for the daily digest.
-	 *
-	 * Only open runs the user is assigned to are considered.
-	 *
-	 * @return array<int, array<int, array<string, mixed>>> user_id => list of run summaries.
-	 */
-	public function outstanding_by_assignee(): array {
-		$results   = $this->table();
-		$runs      = Schema::table( 'runs' );
-		$assignees = Schema::table( 'run_assignees' );
-
-		$sql = "SELECT a.user_id, run.id AS run_id, run.name AS run_name, run.environment,
-					   COUNT(r.id) AS remaining
-				FROM {$assignees} a
-				INNER JOIN {$runs} run ON run.id = a.run_id AND run.status = 'open'
-				INNER JOIN {$results} r ON r.run_id = run.id AND r.status = 'untested'
-				GROUP BY a.user_id, run.id, run.name, run.environment
-				HAVING remaining > 0
-				ORDER BY a.user_id ASC, run.created_at DESC";
-
-		$rows = $this->db()->get_results( $sql, ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-
-		$out = array();
-
-		foreach ( $rows ?? array() as $row ) {
-			$out[ (int) $row['user_id'] ][] = array(
-				'run_id'      => (int) $row['run_id'],
-				'run_name'    => (string) $row['run_name'],
-				'environment' => (string) $row['environment'],
-				'remaining'   => (int) $row['remaining'],
-			);
-		}
-
-		return $out;
-	}
-
-	/**
 	 * Casts a raw joined row to the API shape.
 	 *
 	 * @param array<string, mixed>             $row       Raw row.

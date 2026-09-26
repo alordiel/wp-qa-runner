@@ -10,6 +10,7 @@ declare( strict_types=1 );
 namespace QARunner\Rest;
 
 use QARunner\Install\Roles;
+use QARunner\Notification\Mailer;
 use QARunner\Repository\ResultRepository;
 use QARunner\Repository\RunRepository;
 use QARunner\Support\Enum;
@@ -41,14 +42,23 @@ final class ResultsController extends Controller {
 	private RunRepository $runs;
 
 	/**
+	 * Mailer.
+	 *
+	 * @var Mailer
+	 */
+	private Mailer $mailer;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param ResultRepository $results Result repository.
 	 * @param RunRepository    $runs    Run repository.
+	 * @param Mailer           $mailer  Mailer.
 	 */
-	public function __construct( ResultRepository $results, RunRepository $runs ) {
+	public function __construct( ResultRepository $results, RunRepository $runs, Mailer $mailer ) {
 		$this->results = $results;
 		$this->runs    = $runs;
+		$this->mailer  = $mailer;
 	}
 
 	/**
@@ -195,7 +205,8 @@ final class ResultsController extends Controller {
 	 * POST /results/{id}/assignees
 	 *
 	 * Self-assignment is the normal path: a tester on the run claims a case so the rest of
-	 * the team can see it is spoken for. Assigning somebody else is a manager action.
+	 * the team can see it is spoken for. Assigning somebody else is a manager action, and
+	 * the only one that emails: the assignee did not make the decision, so they are told.
 	 *
 	 * @param WP_REST_Request $request Request.
 	 * @return array<string, mixed>|\WP_Error
@@ -217,8 +228,15 @@ final class ResultsController extends Controller {
 			return $denied;
 		}
 
+		// Checked before writing so re-assigning someone already on the case does not re-send.
+		$already_assigned = $this->results->is_assigned( $id, $user_id );
+
 		if ( ! $this->results->assign( $id, $user_id ) ) {
 			return $this->write_failed( __( 'That assignment could not be saved.', 'qa-runner' ) );
+		}
+
+		if ( ! $already_assigned ) {
+			$this->mailer->send_case_assignment( $id, $user_id, get_current_user_id() );
 		}
 
 		return $this->reload( $id );

@@ -16,7 +16,6 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Settings {
 
-	public const OPTION_DIGEST_TIME         = 'qa_runner_digest_time';
 	public const OPTION_PAUSED              = 'qa_runner_notifications_paused';
 	public const OPTION_DELETE_ON_UNINSTALL = 'qa_runner_delete_data_on_uninstall';
 
@@ -24,19 +23,9 @@ final class Settings {
 	 * Every option the plugin creates, with its default.
 	 */
 	public const DEFAULTS = array(
-		self::OPTION_DIGEST_TIME         => '09:00',
 		self::OPTION_PAUSED              => false,
 		self::OPTION_DELETE_ON_UNINSTALL => false,
 	);
-
-	/**
-	 * Time of day the daily digest is sent, in the site timezone.
-	 *
-	 * @return string 24-hour "HH:MM".
-	 */
-	public static function digest_time(): string {
-		return Sanitize::time_of_day( get_option( self::OPTION_DIGEST_TIME, self::DEFAULTS[ self::OPTION_DIGEST_TIME ] ) );
-	}
 
 	/**
 	 * Whether all outgoing notifications are paused.
@@ -65,7 +54,6 @@ final class Settings {
 	 */
 	public static function all(): array {
 		return array(
-			'digestTime'            => self::digest_time(),
 			'notificationsPaused'   => self::notifications_paused(),
 			'deleteDataOnUninstall' => self::delete_data_on_uninstall(),
 		);

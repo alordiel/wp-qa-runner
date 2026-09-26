@@ -14,7 +14,6 @@ use QARunner\Admin\Menu;
 use QARunner\Install\Roles;
 use QARunner\Install\Schema;
 use QARunner\Install\Seeder;
-use QARunner\Notification\DigestCron;
 use QARunner\Notification\Mailer;
 use QARunner\Repository\CaseRepository;
 use QARunner\Repository\CommentRepository;
@@ -56,13 +55,6 @@ final class Plugin {
 	private Menu $menu;
 
 	/**
-	 * The daily digest event.
-	 *
-	 * @var DigestCron
-	 */
-	private DigestCron $digest;
-
-	/**
 	 * Returns the singleton, booting it on first call.
 	 *
 	 * @return Plugin
@@ -80,11 +72,7 @@ final class Plugin {
 	 * Private constructor: use instance().
 	 */
 	private function __construct() {
-		$results = new ResultRepository();
-		$runs    = new RunRepository();
-
-		$this->menu   = new Menu();
-		$this->digest = new DigestCron( $results, new Mailer( $runs ) );
+		$this->menu = new Menu();
 	}
 
 	/**
@@ -99,14 +87,12 @@ final class Plugin {
 		// schedule would break is replayed here behind its own version or existence guard.
 		add_action( 'init', array( Schema::class, 'maybe_upgrade' ) );
 		add_action( 'init', array( Roles::class, 'maybe_install' ) );
-		add_action( 'init', array( DigestCron::class, 'maybe_schedule' ) );
+		add_action( 'init', array( self::class, 'remove_legacy_digest' ) );
 
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
 
 		add_action( 'admin_menu', array( $this->menu, 'register' ) );
 		add_action( 'admin_enqueue_scripts', array( new Assets( $this->menu ), 'enqueue' ) );
-
-		add_action( DigestCron::HOOK, array( $this->digest, 'run' ) );
 	}
 
 	/**
@@ -130,14 +116,14 @@ final class Plugin {
 		$results  = new ResultRepository();
 		$comments = new CommentRepository();
 		$issues   = new IssueRepository();
-		$mailer   = new Mailer( $runs );
+		$mailer   = new Mailer( $runs, $results );
 
 		$controllers = array(
 			new PingController(),
 			new SuitesController( $suites ),
 			new CasesController( $cases, $issues ),
 			new RunsController( $runs, $results, $cases, $comments, $issues, $mailer ),
-			new ResultsController( $results, $runs ),
+			new ResultsController( $results, $runs, $mailer ),
 			new CommentsController( $comments, $results, $runs ),
 			new IssuesController( $issues, $cases ),
 			new UsersController(),
@@ -156,7 +142,7 @@ final class Plugin {
 	}
 
 	/**
-	 * Activation: schema, roles, options and the digest schedule.
+	 * Activation: schema, roles and options.
 	 *
 	 * @return void
 	 */
@@ -164,7 +150,6 @@ final class Plugin {
 		Schema::install();
 		Roles::install();
 		Settings::install_defaults();
-		DigestCron::schedule();
 		Seeder::maybe_seed();
 	}
 
@@ -174,6 +159,22 @@ final class Plugin {
 	 * @return void
 	 */
 	public static function deactivate(): void {
-		DigestCron::unschedule();
+		self::remove_legacy_digest();
+	}
+
+	/**
+	 * Clears what the removed daily digest left behind on sites that ran an older version:
+	 * its WP-Cron event, which would otherwise keep firing with no callback, and its option.
+	 *
+	 * @return void
+	 */
+	public static function remove_legacy_digest(): void {
+		if ( false !== wp_next_scheduled( 'qa_runner_daily_digest' ) ) {
+			wp_clear_scheduled_hook( 'qa_runner_daily_digest' );
+		}
+
+		if ( false !== get_option( 'qa_runner_digest_time' ) ) {
+			delete_option( 'qa_runner_digest_time' );
+		}
 	}
 }

@@ -74,30 +74,4 @@ final class Dates {
 
 		return time() - $timestamp;
 	}
-
-	/**
-	 * Next occurrence of a wall-clock time in the site timezone, as a UTC timestamp.
-	 *
-	 * WP-Cron schedules relative to the timestamp it is given, so the digest time has to be
-	 * resolved in the site timezone and converted before wp_schedule_event() sees it.
-	 *
-	 * @param string $time_of_day 24-hour "HH:MM".
-	 * @return int Unix timestamp.
-	 */
-	public static function next_occurrence_utc( string $time_of_day ): int {
-		$timezone = wp_timezone();
-
-		if ( ! preg_match( '/^([01][0-9]|2[0-3]):([0-5][0-9])$/', $time_of_day, $matches ) ) {
-			$matches = array( '', '09', '00' );
-		}
-
-		$now  = new DateTimeImmutable( 'now', $timezone );
-		$next = $now->setTime( (int) $matches[1], (int) $matches[2], 0 );
-
-		if ( $next <= $now ) {
-			$next = $next->modify( '+1 day' );
-		}
-
-		return $next->getTimestamp();
-	}
 }
