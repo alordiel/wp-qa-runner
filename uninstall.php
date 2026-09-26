@@ -41,7 +41,6 @@ spl_autoload_register(
 
 $qa_runner_drop_tables = Settings::delete_data_on_uninstall();
 
-Plugin::remove_legacy_digest();
 Roles::uninstall();
 
 if ( $qa_runner_drop_tables ) {

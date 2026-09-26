@@ -82,11 +82,10 @@ final class Plugin {
 	 * @return void
 	 */
 	private function boot(): void {
-		// The activation hook is best-effort, so every install step that a missing role or
-		// schedule would break is replayed here behind its own version or existence guard.
+		// The activation hook is best-effort, so every install step that a missing table or
+		// role would break is replayed here behind its own version guard.
 		add_action( 'init', array( Schema::class, 'maybe_upgrade' ) );
 		add_action( 'init', array( Roles::class, 'maybe_install' ) );
-		add_action( 'init', array( self::class, 'remove_legacy_digest' ) );
 
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
 
@@ -142,30 +141,5 @@ final class Plugin {
 		Roles::install();
 		Settings::install_defaults();
 		Seeder::maybe_seed();
-	}
-
-	/**
-	 * Deactivation: clear scheduled events only. Nothing here touches QA data.
-	 *
-	 * @return void
-	 */
-	public static function deactivate(): void {
-		self::remove_legacy_digest();
-	}
-
-	/**
-	 * Clears what the removed daily digest left behind on sites that ran an older version:
-	 * its WP-Cron event, which would otherwise keep firing with no callback, and its option.
-	 *
-	 * @return void
-	 */
-	public static function remove_legacy_digest(): void {
-		if ( false !== wp_next_scheduled( 'qa_runner_daily_digest' ) ) {
-			wp_clear_scheduled_hook( 'qa_runner_daily_digest' );
-		}
-
-		if ( false !== get_option( 'qa_runner_digest_time' ) ) {
-			delete_option( 'qa_runner_digest_time' );
-		}
 	}
 }

@@ -55,6 +55,5 @@ function autoload( string $class_name ): void {
 spl_autoload_register( __NAMESPACE__ . '\\autoload' );
 
 register_activation_hook( __FILE__, array( Plugin::class, 'activate' ) );
-register_deactivation_hook( __FILE__, array( Plugin::class, 'deactivate' ) );
 
 add_action( 'plugins_loaded', array( Plugin::class, 'instance' ) );
