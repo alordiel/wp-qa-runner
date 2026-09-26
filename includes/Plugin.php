@@ -82,8 +82,6 @@ final class Plugin {
 	 * @return void
 	 */
 	private function boot(): void {
-		add_action( 'init', array( $this, 'load_textdomain' ) );
-
 		// The activation hook is best-effort, so every install step that a missing role or
 		// schedule would break is replayed here behind its own version or existence guard.
 		add_action( 'init', array( Schema::class, 'maybe_upgrade' ) );
@@ -94,15 +92,6 @@ final class Plugin {
 
 		add_action( 'admin_menu', array( $this->menu, 'register' ) );
 		add_action( 'admin_enqueue_scripts', array( new Assets( $this->menu ), 'enqueue' ) );
-	}
-
-	/**
-	 * Loads translations.
-	 *
-	 * @return void
-	 */
-	public function load_textdomain(): void {
-		load_plugin_textdomain( 'qa-runner', false, dirname( plugin_basename( QA_RUNNER_FILE ) ) . '/languages' );
 	}
 
 	/**

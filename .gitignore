@@ -3,5 +3,6 @@ vendor/
 .DS_Store
 *.log
 qa-runner-plugin-spec.md
+dist/
 
 # build/ is intentionally committed: deployment is rsync-based with no server build step.

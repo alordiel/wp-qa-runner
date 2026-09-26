@@ -94,7 +94,8 @@ final class Assets {
 			'before'
 		);
 
-		wp_set_script_translations( self::HANDLE, 'qa-runner', QA_RUNNER_PATH . 'languages' );
+		// No path: WordPress.org language packs are found in WP_LANG_DIR automatically.
+		wp_set_script_translations( self::HANDLE, 'qa-runner' );
 	}
 
 	/**

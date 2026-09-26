@@ -1,0 +1,24 @@
+# Everything listed here stays out of the WordPress.org release zip (see bin/build-release.sh).
+# The Vue source (src/, package.json, vite.config.js) is shipped on purpose: guideline 4
+# requires the human-readable source of the compiled bundle in build/.
+.git
+.gitignore
+.distignore
+.prettierignore
+.prettierrc.json
+.DS_Store
+*.log
+bin
+dist
+node_modules
+vendor
+composer.json
+composer.lock
+package-lock.json
+eslint.config.js
+phpcs.xml.dist
+index.html
+README.md
+qa-runner-plugin-spec.md
+languages/.gitkeep
+build/*.map

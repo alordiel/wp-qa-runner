@@ -1,16 +1,16 @@
 <?php
 /**
  * Plugin Name:       QA Runner
- * Plugin URI:        https://example.com/qa-runner
+ * Plugin URI:        https://github.com/alordiel/wp-qa-runner
  * Description:       Manual QA test runs for a small internal team: suites, cases, runs, results, comments and issues.
  * Version:           1.1.0
  * Requires at least: 6.4
  * Requires PHP:      8.2
- * Author:            Internal
+ * Author:            Alexander Vasilev
+ * Author URI:        https://profiles.wordpress.org/alordiel/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       qa-runner
- * Domain Path:       /languages
  *
  * @package QARunner
  */
@@ -31,8 +31,8 @@ define( 'QA_RUNNER_SLUG', 'qa-runner' );
 /**
  * PSR-4 autoloader for the QARunner namespace.
  *
- * Composer is optional here: the plugin ships without a vendor directory so an rsync
- * deploy needs no install step. If a vendor autoloader exists it is loaded as well.
+ * The plugin has no runtime Composer dependencies, so it ships without a vendor directory
+ * and needs no install step.
  *
  * @param string $class_name Fully qualified class name.
  * @return void
@@ -52,10 +52,6 @@ function autoload( string $class_name ): void {
 	}
 }
 spl_autoload_register( __NAMESPACE__ . '\\autoload' );
-
-if ( is_readable( QA_RUNNER_PATH . 'vendor/autoload.php' ) ) {
-	require_once QA_RUNNER_PATH . 'vendor/autoload.php';
-}
 
 register_activation_hook( __FILE__, array( Plugin::class, 'activate' ) );
 register_deactivation_hook( __FILE__, array( Plugin::class, 'deactivate' ) );
