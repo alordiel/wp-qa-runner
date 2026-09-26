@@ -224,6 +224,14 @@ export const api = {
     list: () => request('users')
   },
 
+  team: {
+    list: () => request('team'),
+    candidates: (search = '') => request('team/candidates', {params: {search}}),
+    add: (userId, role) => request('team', {method: 'POST', body: {user_id: userId, role}}),
+    update: (userId, role) => request(`team/${userId}`, {method: 'PUT', body: {role}}),
+    remove: (userId) => request(`team/${userId}`, {method: 'DELETE'})
+  },
+
   settings: {
     get: () => request('settings'),
     update: (data) => request('settings', {method: 'PUT', body: data})

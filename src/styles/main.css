@@ -1332,6 +1332,63 @@
   min-height: 110px;
 }
 
+/* ---------------------------------------------------------------- team */
+
+.qa-team-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.qa-team-user__avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.qa-team-user__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 12px;
+}
+
+.qa-team-user__name {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.qa-team-actions {
+  width: 1%;
+  text-align: right;
+}
+
+.qa-team-add {
+  border-top: 1px solid var(--qa-border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.qa-team-add__title {
+  margin: 0;
+  font-size: 13px;
+}
+
+.qa-team-add__fields {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.qa-team-add__fields .qa-field {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
 /* ---------------------------------------------------------------- misc */
 
 .qa-muted {

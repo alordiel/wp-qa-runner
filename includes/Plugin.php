@@ -30,6 +30,7 @@ use QARunner\Rest\ResultsController;
 use QARunner\Rest\RunsController;
 use QARunner\Rest\SettingsController;
 use QARunner\Rest\SuitesController;
+use QARunner\Rest\TeamController;
 use QARunner\Rest\UsersController;
 use QARunner\Support\Settings;
 
@@ -128,6 +129,7 @@ final class Plugin {
 			new IssuesController( $issues, $cases ),
 			new UsersController(),
 			new SettingsController(),
+			new TeamController(),
 		);
 
 		foreach ( $controllers as $controller ) {

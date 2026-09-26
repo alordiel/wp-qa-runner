@@ -21105,7 +21105,7 @@ Use slot props instead:
 	};
 	//#endregion
 	//#region src/components/ToastRegion.vue
-	var _sfc_main$19 = {
+	var _sfc_main$20 = {
 		__name: "ToastRegion",
 		setup(__props, { expose: __expose }) {
 			__expose();
@@ -21122,32 +21122,32 @@ Use slot props instead:
 			return __returned__;
 		}
 	};
-	var _hoisted_1$19 = {
+	var _hoisted_1$20 = {
 		class: "qa-toasts",
 		role: "region",
 		"aria-label": "Notifications"
 	};
-	var _hoisted_2$17 = {
+	var _hoisted_2$18 = {
 		"aria-live": "polite",
 		"aria-atomic": "false",
 		class: "qa-stack qa-stack--tight"
 	};
-	var _hoisted_3$16 = { class: "qa-toast__message" };
-	var _hoisted_4$13 = ["onClick"];
-	function _sfc_render$19(_ctx, _cache, $props, $setup, $data, $options) {
-		return openBlock(), createElementBlock("div", _hoisted_1$19, [createBaseVNode("div", _hoisted_2$17, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.ui.toasts, (toast) => {
+	var _hoisted_3$17 = { class: "qa-toast__message" };
+	var _hoisted_4$14 = ["onClick"];
+	function _sfc_render$20(_ctx, _cache, $props, $setup, $data, $options) {
+		return openBlock(), createElementBlock("div", _hoisted_1$20, [createBaseVNode("div", _hoisted_2$18, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.ui.toasts, (toast) => {
 			return openBlock(), createElementBlock("div", {
 				key: toast.id,
 				class: normalizeClass(["qa-toast", `qa-toast--${toast.tone}`])
-			}, [createBaseVNode("span", _hoisted_3$16, toDisplayString(toast.message), 1), createBaseVNode("button", {
+			}, [createBaseVNode("span", _hoisted_3$17, toDisplayString(toast.message), 1), createBaseVNode("button", {
 				type: "button",
 				class: "qa-toast__dismiss",
 				"aria-label": "Dismiss notification",
 				onClick: ($event) => $setup.ui.dismiss(toast.id)
-			}, " × ", 8, _hoisted_4$13)], 2);
+			}, " × ", 8, _hoisted_4$14)], 2);
 		}), 128))])]);
 	}
-	var ToastRegion_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$19, [["render", _sfc_render$19], ["__file", "ToastRegion.vue"]]);
+	var ToastRegion_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$20, [["render", _sfc_render$20], ["__file", "ToastRegion.vue"]]);
 	//#endregion
 	//#region src/api/client.js
 	/**
@@ -21370,6 +21370,22 @@ Use slot props instead:
 			body: data
 		}) },
 		users: { list: () => request("users") },
+		team: {
+			list: () => request("team"),
+			candidates: (search = "") => request("team/candidates", { params: { search } }),
+			add: (userId, role) => request("team", {
+				method: "POST",
+				body: {
+					user_id: userId,
+					role
+				}
+			}),
+			update: (userId, role) => request(`team/${userId}`, {
+				method: "PUT",
+				body: { role }
+			}),
+			remove: (userId) => request(`team/${userId}`, { method: "DELETE" })
+		},
 		settings: {
 			get: () => request("settings"),
 			update: (data) => request("settings", {
@@ -21380,7 +21396,7 @@ Use slot props instead:
 	};
 	//#endregion
 	//#region src/App.vue
-	var _sfc_main$18 = {
+	var _sfc_main$19 = {
 		__name: "App",
 		setup(__props, { expose: __expose }) {
 			__expose();
@@ -21433,20 +21449,20 @@ Use slot props instead:
 			return __returned__;
 		}
 	};
-	var _hoisted_1$18 = { class: "qa-shell" };
-	var _hoisted_2$16 = {
+	var _hoisted_1$19 = { class: "qa-shell" };
+	var _hoisted_2$17 = {
 		class: "qa-nav",
 		"aria-label": "QA Runner sections"
 	};
-	var _hoisted_3$15 = {
+	var _hoisted_3$16 = {
 		key: 0,
 		class: "qa-notice qa-notice--error",
 		role: "alert"
 	};
-	function _sfc_render$18(_ctx, _cache, $props, $setup, $data, $options) {
-		return openBlock(), createElementBlock("div", _hoisted_1$18, [
+	function _sfc_render$19(_ctx, _cache, $props, $setup, $data, $options) {
+		return openBlock(), createElementBlock("div", _hoisted_1$19, [
 			_cache[6] || (_cache[6] = createBaseVNode("h1", null, "QA Runner", -1)),
-			createBaseVNode("nav", _hoisted_2$16, [
+			createBaseVNode("nav", _hoisted_2$17, [
 				createVNode($setup["RouterLink"], {
 					class: "qa-nav__link",
 					"active-class": "is-active",
@@ -21484,7 +21500,7 @@ Use slot props instead:
 					_: 1
 				})) : createCommentVNode("", true)
 			]),
-			$setup.ui.sessionExpired ? (openBlock(), createElementBlock("div", _hoisted_3$15, [createBaseVNode("div", { class: "qa-row" }, [_cache[5] || (_cache[5] = createBaseVNode("span", null, "Your session expired. Reload the page to continue.", -1)), createBaseVNode("button", {
+			$setup.ui.sessionExpired ? (openBlock(), createElementBlock("div", _hoisted_3$16, [createBaseVNode("div", { class: "qa-row" }, [_cache[5] || (_cache[5] = createBaseVNode("span", null, "Your session expired. Reload the page to continue.", -1)), createBaseVNode("button", {
 				type: "button",
 				class: "qa-button qa-button--small",
 				onClick: $setup.reload
@@ -21493,7 +21509,7 @@ Use slot props instead:
 			createVNode($setup["ToastRegion"])
 		]);
 	}
-	var App_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$18, [["render", _sfc_render$18], ["__file", "App.vue"]]);
+	var App_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$19, [["render", _sfc_render$19], ["__file", "App.vue"]]);
 	//#endregion
 	//#region node_modules/@vueup/vue-quill/dist/vue-quill.esm-browser.js
 	/*!
@@ -34708,7 +34724,7 @@ Use slot props instead:
 	});
 	//#endregion
 	//#region src/components/RichTextEditor.vue
-	var _sfc_main$17 = {
+	var _sfc_main$18 = {
 		__name: "RichTextEditor",
 		props: {
 			modelValue: {
@@ -34757,9 +34773,9 @@ Use slot props instead:
 			return __returned__;
 		}
 	};
-	var _hoisted_1$17 = { class: "qa-editor" };
-	function _sfc_render$17(_ctx, _cache, $props, $setup, $data, $options) {
-		return openBlock(), createElementBlock("div", _hoisted_1$17, [createVNode($setup["QuillEditor"], {
+	var _hoisted_1$18 = { class: "qa-editor" };
+	function _sfc_render$18(_ctx, _cache, $props, $setup, $data, $options) {
+		return openBlock(), createElementBlock("div", _hoisted_1$18, [createVNode($setup["QuillEditor"], {
 			ref: "editor",
 			"content-type": "html",
 			theme: "snow",
@@ -34769,7 +34785,7 @@ Use slot props instead:
 			"onUpdate:content": _cache[0] || (_cache[0] = ($event) => _ctx.$emit("update:modelValue", $event))
 		}, null, 8, ["content", "placeholder"])]);
 	}
-	var RichTextEditor_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$17, [["render", _sfc_render$17], ["__file", "RichTextEditor.vue"]]);
+	var RichTextEditor_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$18, [["render", _sfc_render$18], ["__file", "RichTextEditor.vue"]]);
 	//#endregion
 	//#region src/utils/status.js
 	/**
@@ -34971,7 +34987,7 @@ Use slot props instead:
 	});
 	//#endregion
 	//#region src/views/CaseEditView.vue
-	var _sfc_main$16 = {
+	var _sfc_main$17 = {
 		__name: "CaseEditView",
 		props: { id: {
 			type: [String, Number],
@@ -35098,60 +35114,60 @@ Use slot props instead:
 			return __returned__;
 		}
 	};
-	var _hoisted_1$16 = { class: "qa-page-head" };
-	var _hoisted_2$15 = { class: "qa-page-head__meta" };
-	var _hoisted_3$14 = { class: "qa-row" };
-	var _hoisted_4$12 = ["disabled"];
-	var _hoisted_5$11 = {
+	var _hoisted_1$17 = { class: "qa-page-head" };
+	var _hoisted_2$16 = { class: "qa-page-head__meta" };
+	var _hoisted_3$15 = { class: "qa-row" };
+	var _hoisted_4$13 = ["disabled"];
+	var _hoisted_5$12 = {
 		key: 0,
 		class: "qa-skeleton"
 	};
-	var _hoisted_6$11 = {
+	var _hoisted_6$12 = {
 		key: 1,
 		class: "qa-card"
 	};
-	var _hoisted_7$11 = { class: "qa-card__body qa-stack" };
-	var _hoisted_8$10 = {
+	var _hoisted_7$12 = { class: "qa-card__body qa-stack" };
+	var _hoisted_8$12 = {
 		class: "qa-row",
 		style: {
 			"align-items": "flex-start",
 			"gap": "16px"
 		}
 	};
-	var _hoisted_9$10 = {
+	var _hoisted_9$11 = {
 		class: "qa-field",
 		style: {
 			"flex": "2",
 			"min-width": "220px"
 		}
 	};
-	var _hoisted_10$10 = {
+	var _hoisted_10$11 = {
 		class: "qa-field",
 		style: {
 			"flex": "1",
 			"min-width": "160px"
 		}
 	};
-	var _hoisted_11$10 = ["value"];
-	var _hoisted_12$10 = {
+	var _hoisted_11$11 = ["value"];
+	var _hoisted_12$11 = {
 		class: "qa-field",
 		style: {
 			"flex": "1",
 			"min-width": "140px"
 		}
 	};
-	var _hoisted_13$9 = ["value"];
-	var _hoisted_14$8 = { class: "qa-field" };
-	var _hoisted_15$6 = { class: "qa-field" };
-	var _hoisted_16$6 = {
+	var _hoisted_13$10 = ["value"];
+	var _hoisted_14$9 = { class: "qa-field" };
+	var _hoisted_15$7 = { class: "qa-field" };
+	var _hoisted_16$7 = {
 		key: 0,
 		class: "qa-checkbox"
 	};
-	function _sfc_render$16(_ctx, _cache, $props, $setup, $data, $options) {
+	function _sfc_render$17(_ctx, _cache, $props, $setup, $data, $options) {
 		return openBlock(), createElementBlock("form", {
 			class: "qa-stack",
 			onSubmit: withModifiers($setup.submit, ["prevent"])
-		}, [createBaseVNode("div", _hoisted_1$16, [createBaseVNode("div", _hoisted_2$15, [createBaseVNode("h2", null, toDisplayString($setup.isEdit ? "Edit case" : "New case"), 1), _cache[6] || (_cache[6] = createBaseVNode("p", null, " Cases are written once, edited rarely. They can be reused by many runs. If you would like to edit a case, make sure it is minor changes, for major one just create new test. ", -1))]), createBaseVNode("div", _hoisted_3$14, [createVNode($setup["RouterLink"], {
+		}, [createBaseVNode("div", _hoisted_1$17, [createBaseVNode("div", _hoisted_2$16, [createBaseVNode("h2", null, toDisplayString($setup.isEdit ? "Edit case" : "New case"), 1), _cache[6] || (_cache[6] = createBaseVNode("p", null, " Cases are written once, edited rarely. They can be reused by many runs. If you would like to edit a case, make sure it is minor changes, for major one just create new test. ", -1))]), createBaseVNode("div", _hoisted_3$15, [createVNode($setup["RouterLink"], {
 			class: "qa-button qa-button--quiet",
 			to: "/cases"
 		}, {
@@ -35161,9 +35177,9 @@ Use slot props instead:
 			type: "submit",
 			class: "qa-button qa-button--primary",
 			disabled: !$setup.canSubmit
-		}, toDisplayString($setup.saving ? "Saving…" : "Save case"), 9, _hoisted_4$12)])]), $setup.loading ? (openBlock(), createElementBlock("p", _hoisted_5$11, "Loading…")) : (openBlock(), createElementBlock("div", _hoisted_6$11, [createBaseVNode("div", _hoisted_7$11, [
-			createBaseVNode("div", _hoisted_8$10, [
-				createBaseVNode("div", _hoisted_9$10, [_cache[8] || (_cache[8] = createBaseVNode("label", {
+		}, toDisplayString($setup.saving ? "Saving…" : "Save case"), 9, _hoisted_4$13)])]), $setup.loading ? (openBlock(), createElementBlock("p", _hoisted_5$12, "Loading…")) : (openBlock(), createElementBlock("div", _hoisted_6$12, [createBaseVNode("div", _hoisted_7$12, [
+			createBaseVNode("div", _hoisted_8$12, [
+				createBaseVNode("div", _hoisted_9$11, [_cache[8] || (_cache[8] = createBaseVNode("label", {
 					class: "qa-field__label",
 					for: "case-title"
 				}, "Title", -1)), withDirectives(createBaseVNode("input", {
@@ -35174,7 +35190,7 @@ Use slot props instead:
 					placeholder: "Log in with a valid account",
 					required: ""
 				}, null, 512), [[vModelText, $setup.form.title]])]),
-				createBaseVNode("div", _hoisted_10$10, [_cache[10] || (_cache[10] = createBaseVNode("label", {
+				createBaseVNode("div", _hoisted_10$11, [_cache[10] || (_cache[10] = createBaseVNode("label", {
 					class: "qa-field__label",
 					for: "case-suite"
 				}, "Suite", -1)), withDirectives(createBaseVNode("select", {
@@ -35189,9 +35205,9 @@ Use slot props instead:
 					return openBlock(), createElementBlock("option", {
 						key: suite.id,
 						value: String(suite.id)
-					}, toDisplayString(suite.name), 9, _hoisted_11$10);
+					}, toDisplayString(suite.name), 9, _hoisted_11$11);
 				}), 128))], 512), [[vModelSelect, $setup.form.suite_id]])]),
-				createBaseVNode("div", _hoisted_12$10, [_cache[11] || (_cache[11] = createBaseVNode("label", {
+				createBaseVNode("div", _hoisted_12$11, [_cache[11] || (_cache[11] = createBaseVNode("label", {
 					class: "qa-field__label",
 					for: "case-priority"
 				}, "Priority", -1)), withDirectives(createBaseVNode("select", {
@@ -35202,29 +35218,29 @@ Use slot props instead:
 					return openBlock(), createElementBlock("option", {
 						key: option.value,
 						value: option.value
-					}, toDisplayString(option.label), 9, _hoisted_13$9);
+					}, toDisplayString(option.label), 9, _hoisted_13$10);
 				}), 128))], 512), [[vModelSelect, $setup.form.priority]])])
 			]),
-			createBaseVNode("div", _hoisted_14$8, [_cache[12] || (_cache[12] = createBaseVNode("span", { class: "qa-field__label" }, "Steps", -1)), createVNode($setup["RichTextEditor"], {
+			createBaseVNode("div", _hoisted_14$9, [_cache[12] || (_cache[12] = createBaseVNode("span", { class: "qa-field__label" }, "Steps", -1)), createVNode($setup["RichTextEditor"], {
 				modelValue: $setup.form.steps,
 				"onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => $setup.form.steps = $event),
 				placeholder: "What the tester should do, in order."
 			}, null, 8, ["modelValue"])]),
-			createBaseVNode("div", _hoisted_15$6, [_cache[13] || (_cache[13] = createBaseVNode("span", { class: "qa-field__label" }, "Expected result", -1)), createVNode($setup["RichTextEditor"], {
+			createBaseVNode("div", _hoisted_15$7, [_cache[13] || (_cache[13] = createBaseVNode("span", { class: "qa-field__label" }, "Expected result", -1)), createVNode($setup["RichTextEditor"], {
 				modelValue: $setup.form.expected,
 				"onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => $setup.form.expected = $event),
 				placeholder: "What should happen if the case passes."
 			}, null, 8, ["modelValue"])]),
-			$setup.isEdit ? (openBlock(), createElementBlock("label", _hoisted_16$6, [withDirectives(createBaseVNode("input", {
+			$setup.isEdit ? (openBlock(), createElementBlock("label", _hoisted_16$7, [withDirectives(createBaseVNode("input", {
 				"onUpdate:modelValue": _cache[5] || (_cache[5] = ($event) => $setup.form.is_active = $event),
 				type: "checkbox"
 			}, null, 512), [[vModelCheckbox, $setup.form.is_active]]), _cache[14] || (_cache[14] = createBaseVNode("span", null, [createTextVNode(" Active "), createBaseVNode("span", { class: "qa-field__hint" }, "Archived cases stay in past runs but cannot join new ones.")], -1))])) : createCommentVNode("", true)
 		])]))], 32);
 	}
-	var CaseEditView_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$16, [["render", _sfc_render$16], ["__file", "CaseEditView.vue"]]);
+	var CaseEditView_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$17, [["render", _sfc_render$17], ["__file", "CaseEditView.vue"]]);
 	//#endregion
 	//#region src/components/EmptyState.vue
-	var _sfc_main$15 = {
+	var _sfc_main$16 = {
 		__name: "EmptyState",
 		props: {
 			title: {
@@ -35249,20 +35265,20 @@ Use slot props instead:
 			return __returned__;
 		}
 	};
-	var _hoisted_1$15 = { class: "qa-empty" };
-	var _hoisted_2$14 = { class: "qa-empty__title" };
-	var _hoisted_3$13 = { key: 0 };
-	function _sfc_render$15(_ctx, _cache, $props, $setup, $data, $options) {
-		return openBlock(), createElementBlock("div", _hoisted_1$15, [
-			createBaseVNode("p", _hoisted_2$14, toDisplayString($props.title), 1),
-			$props.description ? (openBlock(), createElementBlock("p", _hoisted_3$13, toDisplayString($props.description), 1)) : createCommentVNode("", true),
+	var _hoisted_1$16 = { class: "qa-empty" };
+	var _hoisted_2$15 = { class: "qa-empty__title" };
+	var _hoisted_3$14 = { key: 0 };
+	function _sfc_render$16(_ctx, _cache, $props, $setup, $data, $options) {
+		return openBlock(), createElementBlock("div", _hoisted_1$16, [
+			createBaseVNode("p", _hoisted_2$15, toDisplayString($props.title), 1),
+			$props.description ? (openBlock(), createElementBlock("p", _hoisted_3$14, toDisplayString($props.description), 1)) : createCommentVNode("", true),
 			renderSlot(_ctx.$slots, "default")
 		]);
 	}
-	var EmptyState_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$15, [["render", _sfc_render$15], ["__file", "EmptyState.vue"]]);
+	var EmptyState_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$16, [["render", _sfc_render$16], ["__file", "EmptyState.vue"]]);
 	//#endregion
 	//#region src/components/PriorityDot.vue
-	var _sfc_main$14 = {
+	var _sfc_main$15 = {
 		__name: "PriorityDot",
 		props: { priority: {
 			type: String,
@@ -35289,18 +35305,18 @@ Use slot props instead:
 			return __returned__;
 		}
 	};
-	var _hoisted_1$14 = {
+	var _hoisted_1$15 = {
 		class: "qa-row",
 		style: { "gap": "5px" }
 	};
-	var _hoisted_2$13 = { class: "qa-sr-only" };
-	function _sfc_render$14(_ctx, _cache, $props, $setup, $data, $options) {
-		return openBlock(), createElementBlock("span", _hoisted_1$14, [createBaseVNode("span", {
+	var _hoisted_2$14 = { class: "qa-sr-only" };
+	function _sfc_render$15(_ctx, _cache, $props, $setup, $data, $options) {
+		return openBlock(), createElementBlock("span", _hoisted_1$15, [createBaseVNode("span", {
 			class: normalizeClass(["qa-priority", `qa-priority--${$props.priority}`]),
 			"aria-hidden": "true"
-		}, null, 2), createBaseVNode("span", _hoisted_2$13, toDisplayString($setup.label) + " priority", 1)]);
+		}, null, 2), createBaseVNode("span", _hoisted_2$14, toDisplayString($setup.label) + " priority", 1)]);
 	}
-	var PriorityDot_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$14, [["render", _sfc_render$14], ["__file", "PriorityDot.vue"]]);
+	var PriorityDot_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$15, [["render", _sfc_render$15], ["__file", "PriorityDot.vue"]]);
 	//#endregion
 	//#region src/utils/format.js
 	/**
@@ -35366,7 +35382,7 @@ Use slot props instead:
 	}
 	//#endregion
 	//#region src/views/CaseLibraryView.vue
-	var _sfc_main$13 = {
+	var _sfc_main$14 = {
 		__name: "CaseLibraryView",
 		setup(__props, { expose: __expose }) {
 			__expose();
@@ -35532,57 +35548,57 @@ Use slot props instead:
 			return __returned__;
 		}
 	};
-	var _hoisted_1$13 = { class: "qa-stack" };
-	var _hoisted_2$12 = { class: "qa-page-head" };
-	var _hoisted_3$12 = { class: "qa-row" };
-	var _hoisted_4$11 = { class: "qa-card" };
-	var _hoisted_5$10 = {
+	var _hoisted_1$14 = { class: "qa-stack" };
+	var _hoisted_2$13 = { class: "qa-page-head" };
+	var _hoisted_3$13 = { class: "qa-row" };
+	var _hoisted_4$12 = { class: "qa-card" };
+	var _hoisted_5$11 = {
 		class: "qa-card__head",
 		style: { "flex-wrap": "wrap" }
 	};
-	var _hoisted_6$10 = { class: "qa-row" };
-	var _hoisted_7$10 = ["value"];
-	var _hoisted_8$9 = { class: "qa-checkbox" };
-	var _hoisted_9$9 = {
+	var _hoisted_6$11 = { class: "qa-row" };
+	var _hoisted_7$11 = ["value"];
+	var _hoisted_8$11 = { class: "qa-checkbox" };
+	var _hoisted_9$10 = {
 		key: 0,
 		class: "qa-skeleton"
 	};
-	var _hoisted_10$9 = { class: "qa-card__head" };
-	var _hoisted_11$9 = { class: "qa-row" };
-	var _hoisted_12$9 = { class: "qa-muted qa-count" };
-	var _hoisted_13$8 = { class: "qa-case-row" };
-	var _hoisted_14$7 = { class: "qa-case-row__main" };
-	var _hoisted_15$5 = { class: "qa-case-row__title" };
-	var _hoisted_16$5 = {
+	var _hoisted_10$10 = { class: "qa-card__head" };
+	var _hoisted_11$10 = { class: "qa-row" };
+	var _hoisted_12$10 = { class: "qa-muted qa-count" };
+	var _hoisted_13$9 = { class: "qa-case-row" };
+	var _hoisted_14$8 = { class: "qa-case-row__main" };
+	var _hoisted_15$6 = { class: "qa-case-row__title" };
+	var _hoisted_16$6 = {
 		key: 0,
 		class: "qa-badge"
 	};
-	var _hoisted_17$5 = { class: "qa-case-row__meta" };
-	var _hoisted_18$5 = { class: "qa-case-row__controls" };
-	var _hoisted_19$5 = ["onClick"];
-	var _hoisted_20$5 = ["disabled", "onClick"];
-	var _hoisted_21$5 = ["onClick"];
-	var _hoisted_22$5 = {
+	var _hoisted_17$6 = { class: "qa-case-row__meta" };
+	var _hoisted_18$6 = { class: "qa-case-row__controls" };
+	var _hoisted_19$6 = ["onClick"];
+	var _hoisted_20$6 = ["disabled", "onClick"];
+	var _hoisted_21$6 = ["onClick"];
+	var _hoisted_22$6 = {
 		key: 0,
 		class: "qa-card__body qa-stack qa-stack--tight"
 	};
-	var _hoisted_23$5 = {
+	var _hoisted_23$6 = {
 		key: 0,
 		class: "qa-muted"
 	};
-	var _hoisted_24$5 = {
+	var _hoisted_24$6 = {
 		key: 1,
 		class: "qa-table"
 	};
-	var _hoisted_25$5 = { class: "qa-badge" };
-	var _hoisted_26$5 = { class: "qa-muted" };
+	var _hoisted_25$6 = { class: "qa-badge" };
+	var _hoisted_26$6 = { class: "qa-muted" };
 	var _hoisted_27$4 = ["href"];
 	var _hoisted_28$4 = {
 		key: 1,
 		class: "qa-muted"
 	};
-	function _sfc_render$13(_ctx, _cache, $props, $setup, $data, $options) {
-		return openBlock(), createElementBlock("div", _hoisted_1$13, [createBaseVNode("div", _hoisted_2$12, [_cache[5] || (_cache[5] = createBaseVNode("div", { class: "qa-page-head__meta" }, [createBaseVNode("h2", null, "Case library")], -1)), createBaseVNode("div", _hoisted_3$12, [createVNode($setup["RouterLink"], {
+	function _sfc_render$14(_ctx, _cache, $props, $setup, $data, $options) {
+		return openBlock(), createElementBlock("div", _hoisted_1$14, [createBaseVNode("div", _hoisted_2$13, [_cache[5] || (_cache[5] = createBaseVNode("div", { class: "qa-page-head__meta" }, [createBaseVNode("h2", null, "Case library")], -1)), createBaseVNode("div", _hoisted_3$13, [createVNode($setup["RouterLink"], {
 			class: "qa-button qa-button--quiet",
 			to: "/suites"
 		}, {
@@ -35594,7 +35610,7 @@ Use slot props instead:
 		}, {
 			default: withCtx(() => [..._cache[4] || (_cache[4] = [createTextVNode("New case", -1)])]),
 			_: 1
-		})])]), createBaseVNode("div", _hoisted_4$11, [createBaseVNode("div", _hoisted_5$10, [createBaseVNode("div", _hoisted_6$10, [
+		})])]), createBaseVNode("div", _hoisted_4$12, [createBaseVNode("div", _hoisted_5$11, [createBaseVNode("div", _hoisted_6$11, [
 			_cache[8] || (_cache[8] = createBaseVNode("label", {
 				class: "qa-sr-only",
 				for: "case-search"
@@ -35620,13 +35636,13 @@ Use slot props instead:
 				return openBlock(), createElementBlock("option", {
 					key: option.value,
 					value: option.value
-				}, toDisplayString(option.label), 9, _hoisted_7$10);
+				}, toDisplayString(option.label), 9, _hoisted_7$11);
 			}), 128))], 512), [[vModelSelect, $setup.priority]]),
-			createBaseVNode("label", _hoisted_8$9, [withDirectives(createBaseVNode("input", {
+			createBaseVNode("label", _hoisted_8$11, [withDirectives(createBaseVNode("input", {
 				"onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => $setup.showArchived = $event),
 				type: "checkbox"
 			}, null, 512), [[vModelCheckbox, $setup.showArchived]]), _cache[7] || (_cache[7] = createBaseVNode("span", null, "Show archived", -1))])
-		])]), $setup.loading ? (openBlock(), createElementBlock("p", _hoisted_9$9, "Loading cases…")) : !$setup.groups.length ? (openBlock(), createBlock($setup["EmptyState"], {
+		])]), $setup.loading ? (openBlock(), createElementBlock("p", _hoisted_9$10, "Loading cases…")) : !$setup.groups.length ? (openBlock(), createBlock($setup["EmptyState"], {
 			key: 1,
 			title: "No cases yet. Add one to start building the library.",
 			description: "Cases live in suites, so create a suite first if you have none."
@@ -35643,32 +35659,32 @@ Use slot props instead:
 			return openBlock(), createElementBlock("div", {
 				key: group.id,
 				class: "qa-suite-group"
-			}, [createBaseVNode("div", _hoisted_10$9, [createBaseVNode("h3", null, toDisplayString(group.name), 1), createBaseVNode("div", _hoisted_11$9, [createBaseVNode("span", _hoisted_12$9, toDisplayString(group.cases.length) + " " + toDisplayString($setup.plural(group.cases.length, "case")), 1), createVNode($setup["RouterLink"], {
+			}, [createBaseVNode("div", _hoisted_10$10, [createBaseVNode("h3", null, toDisplayString(group.name), 1), createBaseVNode("div", _hoisted_11$10, [createBaseVNode("span", _hoisted_12$10, toDisplayString(group.cases.length) + " " + toDisplayString($setup.plural(group.cases.length, "case")), 1), createVNode($setup["RouterLink"], {
 				class: "qa-button qa-button--small qa-button--quiet",
 				to: `/cases/new?suite=${group.id}`
 			}, {
 				default: withCtx(() => [..._cache[11] || (_cache[11] = [createTextVNode(" New case here ", -1)])]),
 				_: 1
 			}, 8, ["to"])])]), (openBlock(true), createElementBlock(Fragment, null, renderList(group.cases, (item) => {
-				return openBlock(), createElementBlock("div", { key: item.id }, [createBaseVNode("div", _hoisted_13$8, [createBaseVNode("div", _hoisted_14$7, [createBaseVNode("div", _hoisted_15$5, [
+				return openBlock(), createElementBlock("div", { key: item.id }, [createBaseVNode("div", _hoisted_13$9, [createBaseVNode("div", _hoisted_14$8, [createBaseVNode("div", _hoisted_15$6, [
 					createVNode($setup["PriorityDot"], { priority: item.priority }, null, 8, ["priority"]),
 					createVNode($setup["RouterLink"], { to: `/cases/${item.id}/edit` }, {
 						default: withCtx(() => [createTextVNode(toDisplayString(item.title), 1)]),
 						_: 2
 					}, 1032, ["to"]),
-					!item.is_active ? (openBlock(), createElementBlock("span", _hoisted_16$5, "Archived")) : createCommentVNode("", true)
-				]), createBaseVNode("div", _hoisted_17$5, [createBaseVNode("span", null, "Updated " + toDisplayString($setup.shortDate(item.updated_at)), 1)])]), createBaseVNode("div", _hoisted_18$5, [
+					!item.is_active ? (openBlock(), createElementBlock("span", _hoisted_16$6, "Archived")) : createCommentVNode("", true)
+				]), createBaseVNode("div", _hoisted_17$6, [createBaseVNode("span", null, "Updated " + toDisplayString($setup.shortDate(item.updated_at)), 1)])]), createBaseVNode("div", _hoisted_18$6, [
 					createBaseVNode("button", {
 						type: "button",
 						class: "qa-button qa-button--small qa-button--quiet",
 						onClick: ($event) => $setup.toggleHistory(item.id)
-					}, toDisplayString($setup.historyFor === item.id ? "Hide issues" : "Issue history"), 9, _hoisted_19$5),
+					}, toDisplayString($setup.historyFor === item.id ? "Hide issues" : "Issue history"), 9, _hoisted_19$6),
 					createBaseVNode("button", {
 						type: "button",
 						class: "qa-button qa-button--small qa-button--quiet",
 						disabled: $setup.cloning === item.id,
 						onClick: ($event) => $setup.clone(item)
-					}, toDisplayString($setup.cloning === item.id ? "Cloning…" : "Clone"), 9, _hoisted_20$5),
+					}, toDisplayString($setup.cloning === item.id ? "Cloning…" : "Clone"), 9, _hoisted_20$6),
 					createVNode($setup["RouterLink"], {
 						class: "qa-button qa-button--small",
 						to: `/cases/${item.id}/edit`
@@ -35681,8 +35697,8 @@ Use slot props instead:
 						type: "button",
 						class: "qa-button qa-button--small qa-button--danger",
 						onClick: ($event) => $setup.archive(item)
-					}, " Archive ", 8, _hoisted_21$5)) : createCommentVNode("", true)
-				])]), $setup.historyFor === item.id ? (openBlock(), createElementBlock("div", _hoisted_22$5, [!$setup.history.length ? (openBlock(), createElementBlock("p", _hoisted_23$5, " No issues have ever been raised on this case. ")) : (openBlock(), createElementBlock("table", _hoisted_24$5, [_cache[13] || (_cache[13] = createBaseVNode("thead", null, [createBaseVNode("tr", null, [
+					}, " Archive ", 8, _hoisted_21$6)) : createCommentVNode("", true)
+				])]), $setup.historyFor === item.id ? (openBlock(), createElementBlock("div", _hoisted_22$6, [!$setup.history.length ? (openBlock(), createElementBlock("p", _hoisted_23$6, " No issues have ever been raised on this case. ")) : (openBlock(), createElementBlock("table", _hoisted_24$6, [_cache[13] || (_cache[13] = createBaseVNode("thead", null, [createBaseVNode("tr", null, [
 					createBaseVNode("th", { scope: "col" }, "Issue"),
 					createBaseVNode("th", { scope: "col" }, "Status"),
 					createBaseVNode("th", { scope: "col" }, "Raised"),
@@ -35690,8 +35706,8 @@ Use slot props instead:
 				])], -1)), createBaseVNode("tbody", null, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.history, (issue) => {
 					return openBlock(), createElementBlock("tr", { key: issue.id }, [
 						createBaseVNode("td", null, toDisplayString(issue.title), 1),
-						createBaseVNode("td", null, [createBaseVNode("span", _hoisted_25$5, toDisplayString(issue.status), 1)]),
-						createBaseVNode("td", _hoisted_26$5, toDisplayString(issue.created_by.name) + ", " + toDisplayString($setup.shortDate(issue.created_at)), 1),
+						createBaseVNode("td", null, [createBaseVNode("span", _hoisted_25$6, toDisplayString(issue.status), 1)]),
+						createBaseVNode("td", _hoisted_26$6, toDisplayString(issue.created_by.name) + ", " + toDisplayString($setup.shortDate(issue.created_at)), 1),
 						createBaseVNode("td", null, [issue.github_url ? (openBlock(), createElementBlock("a", {
 							key: 0,
 							href: issue.github_url,
@@ -35703,10 +35719,10 @@ Use slot props instead:
 			}), 128))]);
 		}), 128))])]);
 	}
-	var CaseLibraryView_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$13, [["render", _sfc_render$13], ["__file", "CaseLibraryView.vue"]]);
+	var CaseLibraryView_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$14, [["render", _sfc_render$14], ["__file", "CaseLibraryView.vue"]]);
 	//#endregion
 	//#region src/components/AssigneeDialog.vue
-	var _sfc_main$12 = {
+	var _sfc_main$13 = {
 		__name: "AssigneeDialog",
 		props: {
 			open: {
@@ -35818,48 +35834,48 @@ Use slot props instead:
 			return __returned__;
 		}
 	};
-	var _hoisted_1$12 = { class: "qa-dialog__head" };
-	var _hoisted_2$11 = { class: "qa-dialog__title" };
-	var _hoisted_3$11 = { class: "qa-dialog__body" };
-	var _hoisted_4$10 = {
+	var _hoisted_1$13 = { class: "qa-dialog__head" };
+	var _hoisted_2$12 = { class: "qa-dialog__title" };
+	var _hoisted_3$12 = { class: "qa-dialog__body" };
+	var _hoisted_4$11 = {
 		key: 0,
 		class: "qa-muted"
 	};
-	var _hoisted_5$9 = {
+	var _hoisted_5$10 = {
 		key: 1,
 		class: "qa-dialog__list"
 	};
-	var _hoisted_6$9 = { class: "qa-checkbox" };
-	var _hoisted_7$9 = ["value", "disabled"];
-	var _hoisted_8$8 = ["src"];
-	var _hoisted_9$8 = {
+	var _hoisted_6$10 = { class: "qa-checkbox" };
+	var _hoisted_7$10 = ["value", "disabled"];
+	var _hoisted_8$10 = ["src"];
+	var _hoisted_9$9 = {
 		key: 2,
 		class: "qa-dialog__warning"
 	};
-	var _hoisted_10$8 = { class: "qa-dialog__foot" };
-	var _hoisted_11$8 = ["disabled"];
-	var _hoisted_12$8 = ["disabled"];
-	function _sfc_render$12(_ctx, _cache, $props, $setup, $data, $options) {
+	var _hoisted_10$9 = { class: "qa-dialog__foot" };
+	var _hoisted_11$9 = ["disabled"];
+	var _hoisted_12$9 = ["disabled"];
+	function _sfc_render$13(_ctx, _cache, $props, $setup, $data, $options) {
 		return openBlock(), createElementBlock("dialog", {
 			ref: "dialog",
 			class: "qa-dialog",
 			onClose: $setup.cancel,
 			onCancel: $setup.cancel
 		}, [
-			createBaseVNode("div", _hoisted_1$12, [createBaseVNode("h3", _hoisted_2$11, toDisplayString($props.title), 1), createBaseVNode("button", {
+			createBaseVNode("div", _hoisted_1$13, [createBaseVNode("h3", _hoisted_2$12, toDisplayString($props.title), 1), createBaseVNode("button", {
 				type: "button",
 				class: "qa-dialog__close",
 				"aria-label": "Close",
 				onClick: $setup.cancel
 			}, "×")]),
-			createBaseVNode("div", _hoisted_3$11, [!$props.candidates.length ? (openBlock(), createElementBlock("p", _hoisted_4$10, toDisplayString($props.emptyText), 1)) : (openBlock(), createElementBlock("ul", _hoisted_5$9, [(openBlock(true), createElementBlock(Fragment, null, renderList($props.candidates, (person) => {
-				return openBlock(), createElementBlock("li", { key: person.id }, [createBaseVNode("label", _hoisted_6$9, [
+			createBaseVNode("div", _hoisted_3$12, [!$props.candidates.length ? (openBlock(), createElementBlock("p", _hoisted_4$11, toDisplayString($props.emptyText), 1)) : (openBlock(), createElementBlock("ul", _hoisted_5$10, [(openBlock(true), createElementBlock(Fragment, null, renderList($props.candidates, (person) => {
+				return openBlock(), createElementBlock("li", { key: person.id }, [createBaseVNode("label", _hoisted_6$10, [
 					withDirectives(createBaseVNode("input", {
 						"onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.selected = $event),
 						type: "checkbox",
 						value: person.id,
 						disabled: $props.saving
-					}, null, 8, _hoisted_7$9), [[vModelCheckbox, $setup.selected]]),
+					}, null, 8, _hoisted_7$10), [[vModelCheckbox, $setup.selected]]),
 					createBaseVNode("img", {
 						class: "qa-avatars__item",
 						src: person.avatar,
@@ -35867,27 +35883,27 @@ Use slot props instead:
 						width: "24",
 						height: "24",
 						loading: "lazy"
-					}, null, 8, _hoisted_8$8),
+					}, null, 8, _hoisted_8$10),
 					createBaseVNode("span", null, toDisplayString(person.name), 1)
 				])]);
-			}), 128))])), $props.removalWarning && $setup.removed.length ? (openBlock(), createElementBlock("p", _hoisted_9$8, toDisplayString($props.removalWarning.replace("%s", $setup.removed.map((person) => person.name).join(", "))), 1)) : createCommentVNode("", true)]),
-			createBaseVNode("div", _hoisted_10$8, [createBaseVNode("button", {
+			}), 128))])), $props.removalWarning && $setup.removed.length ? (openBlock(), createElementBlock("p", _hoisted_9$9, toDisplayString($props.removalWarning.replace("%s", $setup.removed.map((person) => person.name).join(", "))), 1)) : createCommentVNode("", true)]),
+			createBaseVNode("div", _hoisted_10$9, [createBaseVNode("button", {
 				type: "button",
 				class: "qa-button qa-button--quiet",
 				disabled: $props.saving,
 				onClick: $setup.cancel
-			}, " Cancel ", 8, _hoisted_11$8), createBaseVNode("button", {
+			}, " Cancel ", 8, _hoisted_11$9), createBaseVNode("button", {
 				type: "button",
 				class: "qa-button qa-button--primary",
 				disabled: !$setup.dirty || $props.saving,
 				onClick: $setup.save
-			}, toDisplayString($props.saving ? "Saving…" : "Save"), 9, _hoisted_12$8)])
+			}, toDisplayString($props.saving ? "Saving…" : "Save"), 9, _hoisted_12$9)])
 		], 544);
 	}
-	var AssigneeDialog_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$12, [["render", _sfc_render$12], ["__file", "AssigneeDialog.vue"]]);
+	var AssigneeDialog_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$13, [["render", _sfc_render$13], ["__file", "AssigneeDialog.vue"]]);
 	//#endregion
 	//#region src/components/StatusBadge.vue
-	var _sfc_main$11 = {
+	var _sfc_main$12 = {
 		__name: "StatusBadge",
 		props: { status: {
 			type: String,
@@ -35918,17 +35934,17 @@ Use slot props instead:
 			return __returned__;
 		}
 	};
-	var _hoisted_1$11 = {
+	var _hoisted_1$12 = {
 		class: "qa-status__glyph",
 		"aria-hidden": "true"
 	};
-	function _sfc_render$11(_ctx, _cache, $props, $setup, $data, $options) {
-		return openBlock(), createElementBlock("span", { class: normalizeClass(["qa-status", `qa-status--${$setup.meta.tone}`]) }, [createBaseVNode("span", _hoisted_1$11, toDisplayString($setup.meta.glyph), 1), createBaseVNode("span", null, toDisplayString($setup.label), 1)], 2);
+	function _sfc_render$12(_ctx, _cache, $props, $setup, $data, $options) {
+		return openBlock(), createElementBlock("span", { class: normalizeClass(["qa-status", `qa-status--${$setup.meta.tone}`]) }, [createBaseVNode("span", _hoisted_1$12, toDisplayString($setup.meta.glyph), 1), createBaseVNode("span", null, toDisplayString($setup.label), 1)], 2);
 	}
-	var StatusBadge_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$11, [["render", _sfc_render$11], ["__file", "StatusBadge.vue"]]);
+	var StatusBadge_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$12, [["render", _sfc_render$12], ["__file", "StatusBadge.vue"]]);
 	//#endregion
 	//#region src/components/StatusControl.vue
-	var _sfc_main$10 = {
+	var _sfc_main$11 = {
 		__name: "StatusControl",
 		props: {
 			modelValue: {
@@ -35981,19 +35997,19 @@ Use slot props instead:
 			return __returned__;
 		}
 	};
-	var _hoisted_1$10 = ["aria-label"];
-	var _hoisted_2$10 = [
+	var _hoisted_1$11 = ["aria-label"];
+	var _hoisted_2$11 = [
 		"data-tone",
 		"disabled",
 		"aria-pressed",
 		"title",
 		"onClick"
 	];
-	var _hoisted_3$10 = {
+	var _hoisted_3$11 = {
 		class: "qa-segmented__glyph",
 		"aria-hidden": "true"
 	};
-	function _sfc_render$10(_ctx, _cache, $props, $setup, $data, $options) {
+	function _sfc_render$11(_ctx, _cache, $props, $setup, $data, $options) {
 		return openBlock(), createElementBlock("div", {
 			class: "qa-segmented",
 			role: "group",
@@ -36008,10 +36024,10 @@ Use slot props instead:
 				"aria-pressed": status.value === $props.modelValue,
 				title: status.value === "untested" ? "Clear this result" : `Mark as ${status.label.toLowerCase()}`,
 				onClick: ($event) => $setup.choose(status.value)
-			}, [createBaseVNode("span", _hoisted_3$10, toDisplayString(status.glyph), 1), createBaseVNode("span", null, toDisplayString(status.label), 1)], 10, _hoisted_2$10);
-		}), 128))], 8, _hoisted_1$10);
+			}, [createBaseVNode("span", _hoisted_3$11, toDisplayString(status.glyph), 1), createBaseVNode("span", null, toDisplayString(status.label), 1)], 10, _hoisted_2$11);
+		}), 128))], 8, _hoisted_1$11);
 	}
-	var StatusControl_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$10, [["render", _sfc_render$10], ["__file", "StatusControl.vue"]]);
+	var StatusControl_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$11, [["render", _sfc_render$11], ["__file", "StatusControl.vue"]]);
 	//#endregion
 	//#region src/stores/runs.js
 	/**
@@ -36339,7 +36355,7 @@ Use slot props instead:
 	//#endregion
 	//#region src/views/CaseTestView.vue
 	var MAX_COMMENT_DEPTH = 3;
-	var _sfc_main$9 = {
+	var _sfc_main$10 = {
 		__name: "CaseTestView",
 		props: {
 			id: {
@@ -36876,59 +36892,59 @@ Use slot props instead:
 			return __returned__;
 		}
 	};
-	var _hoisted_1$9 = { class: "qa-stack" };
-	var _hoisted_2$9 = {
+	var _hoisted_1$10 = { class: "qa-stack" };
+	var _hoisted_2$10 = {
 		key: 0,
 		class: "qa-skeleton"
 	};
-	var _hoisted_3$9 = { class: "qa-page-head" };
-	var _hoisted_4$9 = { class: "qa-page-head__meta" };
-	var _hoisted_5$8 = { class: "qa-row" };
-	var _hoisted_6$8 = { class: "qa-row" };
-	var _hoisted_7$8 = ["disabled"];
-	var _hoisted_8$7 = ["disabled"];
-	var _hoisted_9$7 = {
+	var _hoisted_3$10 = { class: "qa-page-head" };
+	var _hoisted_4$10 = { class: "qa-page-head__meta" };
+	var _hoisted_5$9 = { class: "qa-row" };
+	var _hoisted_6$9 = { class: "qa-row" };
+	var _hoisted_7$9 = ["disabled"];
+	var _hoisted_8$9 = ["disabled"];
+	var _hoisted_9$8 = {
 		key: 0,
 		class: "qa-notice qa-notice--warning"
 	};
-	var _hoisted_10$7 = {
+	var _hoisted_10$8 = {
 		key: 1,
 		class: "qa-notice qa-notice--warning"
 	};
-	var _hoisted_11$7 = { class: "qa-card" };
-	var _hoisted_12$7 = { class: "qa-card__head" };
-	var _hoisted_13$7 = {
+	var _hoisted_11$8 = { class: "qa-card" };
+	var _hoisted_12$8 = { class: "qa-card__head" };
+	var _hoisted_13$8 = {
 		key: 0,
 		class: "qa-muted"
 	};
-	var _hoisted_14$6 = ["title"];
-	var _hoisted_15$4 = { class: "qa-card__body" };
-	var _hoisted_16$4 = {
+	var _hoisted_14$7 = ["title"];
+	var _hoisted_15$5 = { class: "qa-card__body" };
+	var _hoisted_16$5 = {
 		key: 2,
 		class: "qa-muted"
 	};
-	var _hoisted_17$4 = {
+	var _hoisted_17$5 = {
 		key: 2,
 		class: "qa-card"
 	};
-	var _hoisted_18$4 = { class: "qa-card__head" };
-	var _hoisted_19$4 = {
+	var _hoisted_18$5 = { class: "qa-card__head" };
+	var _hoisted_19$5 = {
 		key: 0,
 		class: "qa-row"
 	};
-	var _hoisted_20$4 = ["disabled"];
-	var _hoisted_21$4 = { class: "qa-card__body" };
-	var _hoisted_22$4 = {
+	var _hoisted_20$5 = ["disabled"];
+	var _hoisted_21$5 = { class: "qa-card__body" };
+	var _hoisted_22$5 = {
 		key: 0,
 		class: "qa-chips"
 	};
-	var _hoisted_23$4 = ["src", "alt"];
-	var _hoisted_24$4 = ["aria-label", "onClick"];
-	var _hoisted_25$4 = {
+	var _hoisted_23$5 = ["src", "alt"];
+	var _hoisted_24$5 = ["aria-label", "onClick"];
+	var _hoisted_25$5 = {
 		key: 1,
 		class: "qa-muted"
 	};
-	var _hoisted_26$4 = { class: "qa-grid-2" };
+	var _hoisted_26$5 = { class: "qa-grid-2" };
 	var _hoisted_27$3 = { class: "qa-card" };
 	var _hoisted_28$3 = ["innerHTML"];
 	var _hoisted_29$3 = { class: "qa-card" };
@@ -37009,28 +37025,28 @@ Use slot props instead:
 	var _hoisted_83 = ["disabled"];
 	var _hoisted_84 = ["disabled"];
 	var _hoisted_85 = ["disabled"];
-	function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
-		return openBlock(), createElementBlock("div", _hoisted_1$9, [$setup.loading ? (openBlock(), createElementBlock("p", _hoisted_2$9, "Loading case…")) : $setup.testCase ? (openBlock(), createElementBlock(Fragment, { key: 1 }, [
-			createBaseVNode("div", _hoisted_3$9, [createBaseVNode("div", _hoisted_4$9, [createVNode($setup["RouterLink"], {
+	function _sfc_render$10(_ctx, _cache, $props, $setup, $data, $options) {
+		return openBlock(), createElementBlock("div", _hoisted_1$10, [$setup.loading ? (openBlock(), createElementBlock("p", _hoisted_2$10, "Loading case…")) : $setup.testCase ? (openBlock(), createElementBlock(Fragment, { key: 1 }, [
+			createBaseVNode("div", _hoisted_3$10, [createBaseVNode("div", _hoisted_4$10, [createVNode($setup["RouterLink"], {
 				to: `/runs/${$setup.runId}`,
 				class: "qa-subtitle"
 			}, {
 				default: withCtx(() => [..._cache[15] || (_cache[15] = [createTextVNode(" ← Back to run ", -1)])]),
 				_: 1
-			}, 8, ["to"]), createBaseVNode("h2", _hoisted_5$8, [createVNode($setup["PriorityDot"], { priority: $setup.testCase.priority }, null, 8, ["priority"]), createBaseVNode("span", null, toDisplayString($setup.testCase.suite_name) + " -> " + toDisplayString($setup.testCase.title), 1)])]), createBaseVNode("div", _hoisted_6$8, [createBaseVNode("button", {
+			}, 8, ["to"]), createBaseVNode("h2", _hoisted_5$9, [createVNode($setup["PriorityDot"], { priority: $setup.testCase.priority }, null, 8, ["priority"]), createBaseVNode("span", null, toDisplayString($setup.testCase.suite_name) + " -> " + toDisplayString($setup.testCase.title), 1)])]), createBaseVNode("div", _hoisted_6$9, [createBaseVNode("button", {
 				type: "button",
 				class: "qa-button qa-button--quiet",
 				disabled: !$setup.previousCaseId,
 				onClick: _cache[0] || (_cache[0] = ($event) => $setup.go($setup.previousCaseId))
-			}, " ← Previous ", 8, _hoisted_7$8), createBaseVNode("button", {
+			}, " ← Previous ", 8, _hoisted_7$9), createBaseVNode("button", {
 				type: "button",
 				class: "qa-button qa-button--quiet",
 				disabled: !$setup.nextCaseId,
 				onClick: _cache[1] || (_cache[1] = ($event) => $setup.go($setup.nextCaseId))
-			}, " Next → ", 8, _hoisted_8$7)])]),
-			$setup.lockedByOther ? (openBlock(), createElementBlock("div", _hoisted_9$7, toDisplayString($setup.result.in_progress_by.name) + " is testing this. You can still record your own result. ", 1)) : createCommentVNode("", true),
-			!$setup.isOpen ? (openBlock(), createElementBlock("div", _hoisted_10$7, " This run is " + toDisplayString($setup.runStore.run?.status) + ". Results and comments are read-only. ", 1)) : createCommentVNode("", true),
-			createBaseVNode("div", _hoisted_11$7, [createBaseVNode("div", _hoisted_12$7, [_cache[16] || (_cache[16] = createBaseVNode("h3", null, "Result", -1)), $setup.result?.tested_by ? (openBlock(), createElementBlock("span", _hoisted_13$7, [createTextVNode(" Set by " + toDisplayString($setup.result.tested_by.name) + " ", 1), createBaseVNode("span", { title: $setup.absoluteTime($setup.result.tested_at) }, toDisplayString($setup.relativeTime($setup.result.tested_at)), 9, _hoisted_14$6)])) : createCommentVNode("", true)]), createBaseVNode("div", _hoisted_15$4, [$setup.canTest && $setup.result ? (openBlock(), createBlock($setup["StatusControl"], {
+			}, " Next → ", 8, _hoisted_8$9)])]),
+			$setup.lockedByOther ? (openBlock(), createElementBlock("div", _hoisted_9$8, toDisplayString($setup.result.in_progress_by.name) + " is testing this. You can still record your own result. ", 1)) : createCommentVNode("", true),
+			!$setup.isOpen ? (openBlock(), createElementBlock("div", _hoisted_10$8, " This run is " + toDisplayString($setup.runStore.run?.status) + ". Results and comments are read-only. ", 1)) : createCommentVNode("", true),
+			createBaseVNode("div", _hoisted_11$8, [createBaseVNode("div", _hoisted_12$8, [_cache[16] || (_cache[16] = createBaseVNode("h3", null, "Result", -1)), $setup.result?.tested_by ? (openBlock(), createElementBlock("span", _hoisted_13$8, [createTextVNode(" Set by " + toDisplayString($setup.result.tested_by.name) + " ", 1), createBaseVNode("span", { title: $setup.absoluteTime($setup.result.tested_at) }, toDisplayString($setup.relativeTime($setup.result.tested_at)), 9, _hoisted_14$7)])) : createCommentVNode("", true)]), createBaseVNode("div", _hoisted_15$5, [$setup.canTest && $setup.result ? (openBlock(), createBlock($setup["StatusControl"], {
 				key: 0,
 				"model-value": $setup.result.status,
 				"case-title": $setup.testCase.title,
@@ -37038,19 +37054,19 @@ Use slot props instead:
 			}, null, 8, ["model-value", "case-title"])) : $setup.result ? (openBlock(), createBlock($setup["StatusBadge"], {
 				key: 1,
 				status: $setup.result.status
-			}, null, 8, ["status"])) : (openBlock(), createElementBlock("p", _hoisted_16$4, "This case is not part of this run."))])]),
-			$setup.result ? (openBlock(), createElementBlock("div", _hoisted_17$4, [
-				createBaseVNode("div", _hoisted_18$4, [_cache[17] || (_cache[17] = createBaseVNode("h3", null, "Assigned testers", -1)), $setup.canAssign ? (openBlock(), createElementBlock("div", _hoisted_19$4, [createBaseVNode("button", {
+			}, null, 8, ["status"])) : (openBlock(), createElementBlock("p", _hoisted_16$5, "This case is not part of this run."))])]),
+			$setup.result ? (openBlock(), createElementBlock("div", _hoisted_17$5, [
+				createBaseVNode("div", _hoisted_18$5, [_cache[17] || (_cache[17] = createBaseVNode("h3", null, "Assigned testers", -1)), $setup.canAssign ? (openBlock(), createElementBlock("div", _hoisted_19$5, [createBaseVNode("button", {
 					type: "button",
 					class: normalizeClass(["qa-button qa-button--small", { "qa-button--primary": !$setup.assignedToMe }]),
 					disabled: $setup.savingAssignment,
 					onClick: $setup.toggleSelf
-				}, toDisplayString($setup.assignedToMe ? "Unassign me" : "Assign me"), 11, _hoisted_20$4), createBaseVNode("button", {
+				}, toDisplayString($setup.assignedToMe ? "Unassign me" : "Assign me"), 11, _hoisted_20$5), createBaseVNode("button", {
 					type: "button",
 					class: "qa-button qa-button--small",
 					onClick: _cache[2] || (_cache[2] = ($event) => $setup.assignDialogOpen = true)
 				}, " Assign others… ")])) : createCommentVNode("", true)]),
-				createBaseVNode("div", _hoisted_21$4, [$setup.assignees.length ? (openBlock(), createElementBlock("div", _hoisted_22$4, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.assignees, (person) => {
+				createBaseVNode("div", _hoisted_21$5, [$setup.assignees.length ? (openBlock(), createElementBlock("div", _hoisted_22$5, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.assignees, (person) => {
 					return openBlock(), createElementBlock("span", {
 						key: person.id,
 						class: "qa-person-badge"
@@ -37062,7 +37078,7 @@ Use slot props instead:
 							width: "24",
 							height: "24",
 							loading: "lazy"
-						}, null, 8, _hoisted_23$4),
+						}, null, 8, _hoisted_23$5),
 						createBaseVNode("span", null, toDisplayString(person.name), 1),
 						$setup.canUnassign(person) ? (openBlock(), createElementBlock("button", {
 							key: 0,
@@ -37070,9 +37086,9 @@ Use slot props instead:
 							class: "qa-person-badge__remove",
 							"aria-label": `Unassign ${person.name}`,
 							onClick: ($event) => $setup.removeAssignee(person)
-						}, " × ", 8, _hoisted_24$4)) : createCommentVNode("", true)
+						}, " × ", 8, _hoisted_24$5)) : createCommentVNode("", true)
 					]);
-				}), 128))])) : (openBlock(), createElementBlock("p", _hoisted_25$4, [_cache[18] || (_cache[18] = createTextVNode(" Nobody is assigned to this case yet. ", -1)), $setup.canAssign ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [createTextVNode("Claim it so the rest of the team knows.")], 64)) : createCommentVNode("", true)]))]),
+				}), 128))])) : (openBlock(), createElementBlock("p", _hoisted_25$5, [_cache[18] || (_cache[18] = createTextVNode(" Nobody is assigned to this case yet. ", -1)), $setup.canAssign ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [createTextVNode("Claim it so the rest of the team knows.")], 64)) : createCommentVNode("", true)]))]),
 				createVNode($setup["AssigneeDialog"], {
 					open: $setup.assignDialogOpen,
 					title: "Assign this case",
@@ -37089,7 +37105,7 @@ Use slot props instead:
 					"saving"
 				])
 			])) : createCommentVNode("", true),
-			createBaseVNode("div", _hoisted_26$4, [createBaseVNode("div", _hoisted_27$3, [_cache[19] || (_cache[19] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "Steps")], -1)), createBaseVNode("div", {
+			createBaseVNode("div", _hoisted_26$5, [createBaseVNode("div", _hoisted_27$3, [_cache[19] || (_cache[19] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "Steps")], -1)), createBaseVNode("div", {
 				class: "qa-card__body qa-prose",
 				innerHTML: $setup.testCase.steps || "<p class='qa-muted'>No steps recorded.</p>"
 			}, null, 8, _hoisted_28$3)]), createBaseVNode("div", _hoisted_29$3, [_cache[20] || (_cache[20] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "Expected result")], -1)), createBaseVNode("div", {
@@ -37366,10 +37382,10 @@ Use slot props instead:
 			_: 1
 		}))]);
 	}
-	var CaseTestView_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$9, [["render", _sfc_render$9], ["__file", "CaseTestView.vue"]]);
+	var CaseTestView_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$10, [["render", _sfc_render$10], ["__file", "CaseTestView.vue"]]);
 	//#endregion
 	//#region src/views/RunCreateView.vue
-	var _sfc_main$8 = {
+	var _sfc_main$9 = {
 		__name: "RunCreateView",
 		setup(__props, { expose: __expose }) {
 			__expose();
@@ -37566,53 +37582,53 @@ Use slot props instead:
 			return __returned__;
 		}
 	};
-	var _hoisted_1$8 = { class: "qa-page-head" };
-	var _hoisted_2$8 = { class: "qa-row" };
-	var _hoisted_3$8 = ["disabled"];
-	var _hoisted_4$8 = { class: "qa-card" };
-	var _hoisted_5$7 = { class: "qa-card__body qa-stack" };
-	var _hoisted_6$7 = { class: "qa-field" };
-	var _hoisted_7$7 = {
+	var _hoisted_1$9 = { class: "qa-page-head" };
+	var _hoisted_2$9 = { class: "qa-row" };
+	var _hoisted_3$9 = ["disabled"];
+	var _hoisted_4$9 = { class: "qa-card" };
+	var _hoisted_5$8 = { class: "qa-card__body qa-stack" };
+	var _hoisted_6$8 = { class: "qa-field" };
+	var _hoisted_7$8 = {
 		class: "qa-row",
 		style: {
 			"align-items": "flex-start",
 			"gap": "16px"
 		}
 	};
-	var _hoisted_8$6 = {
+	var _hoisted_8$8 = {
 		class: "qa-field",
 		style: {
 			"flex": "1",
 			"min-width": "180px"
 		}
 	};
-	var _hoisted_9$6 = ["value"];
-	var _hoisted_10$6 = {
+	var _hoisted_9$7 = ["value"];
+	var _hoisted_10$7 = {
 		class: "qa-field",
 		style: {
 			"flex": "1",
 			"min-width": "180px"
 		}
 	};
-	var _hoisted_11$6 = { class: "qa-field" };
-	var _hoisted_12$6 = { class: "qa-field" };
-	var _hoisted_13$6 = { class: "qa-row" };
-	var _hoisted_14$5 = ["value"];
-	var _hoisted_15$3 = {
+	var _hoisted_11$7 = { class: "qa-field" };
+	var _hoisted_12$7 = { class: "qa-field" };
+	var _hoisted_13$7 = { class: "qa-row" };
+	var _hoisted_14$6 = ["value"];
+	var _hoisted_15$4 = {
 		key: 0,
 		class: "qa-muted"
 	};
-	var _hoisted_16$3 = { class: "qa-page-head" };
-	var _hoisted_17$3 = { class: "qa-page-head__meta" };
-	var _hoisted_18$3 = { class: "qa-subtitle" };
-	var _hoisted_19$3 = { class: "qa-count" };
-	var _hoisted_20$3 = { class: "qa-picker" };
-	var _hoisted_21$3 = { class: "qa-picker__filters" };
-	var _hoisted_22$3 = { class: "qa-filter-group" };
-	var _hoisted_23$3 = { class: "qa-filter-group" };
-	var _hoisted_24$3 = ["checked", "onChange"];
-	var _hoisted_25$3 = { class: "qa-muted" };
-	var _hoisted_26$3 = { class: "qa-filter-group" };
+	var _hoisted_16$4 = { class: "qa-page-head" };
+	var _hoisted_17$4 = { class: "qa-page-head__meta" };
+	var _hoisted_18$4 = { class: "qa-subtitle" };
+	var _hoisted_19$4 = { class: "qa-count" };
+	var _hoisted_20$4 = { class: "qa-picker" };
+	var _hoisted_21$4 = { class: "qa-picker__filters" };
+	var _hoisted_22$4 = { class: "qa-filter-group" };
+	var _hoisted_23$4 = { class: "qa-filter-group" };
+	var _hoisted_24$4 = ["checked", "onChange"];
+	var _hoisted_25$4 = { class: "qa-muted" };
+	var _hoisted_26$4 = { class: "qa-filter-group" };
 	var _hoisted_27$2 = ["checked", "onChange"];
 	var _hoisted_28$2 = { class: "qa-picker__results" };
 	var _hoisted_29$2 = { class: "qa-card__head" };
@@ -37637,12 +37653,12 @@ Use slot props instead:
 	var _hoisted_39$1 = { class: "qa-card__head" };
 	var _hoisted_40$1 = { class: "qa-card__body qa-chips" };
 	var _hoisted_41 = ["title", "onClick"];
-	function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
+	function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
 		return openBlock(), createElementBlock("form", {
 			class: "qa-stack",
 			onSubmit: withModifiers($setup.submit, ["prevent"])
 		}, [
-			createBaseVNode("div", _hoisted_1$8, [_cache[8] || (_cache[8] = createBaseVNode("div", { class: "qa-page-head__meta" }, [createBaseVNode("h2", null, "New run"), createBaseVNode("p", { class: "qa-subtitle" }, " Environment and version are required — a run without them cannot be audited later. ")], -1)), createBaseVNode("div", _hoisted_2$8, [createVNode($setup["RouterLink"], {
+			createBaseVNode("div", _hoisted_1$9, [_cache[8] || (_cache[8] = createBaseVNode("div", { class: "qa-page-head__meta" }, [createBaseVNode("h2", null, "New run"), createBaseVNode("p", { class: "qa-subtitle" }, " Environment and version are required — a run without them cannot be audited later. ")], -1)), createBaseVNode("div", _hoisted_2$9, [createVNode($setup["RouterLink"], {
 				class: "qa-button qa-button--quiet",
 				to: "/"
 			}, {
@@ -37652,9 +37668,9 @@ Use slot props instead:
 				type: "submit",
 				class: "qa-button qa-button--primary",
 				disabled: !$setup.canSubmit
-			}, toDisplayString($setup.saving ? "Creating…" : "Create run"), 9, _hoisted_3$8)])]),
-			createBaseVNode("div", _hoisted_4$8, [createBaseVNode("div", _hoisted_5$7, [
-				createBaseVNode("div", _hoisted_6$7, [_cache[9] || (_cache[9] = createBaseVNode("label", {
+			}, toDisplayString($setup.saving ? "Creating…" : "Create run"), 9, _hoisted_3$9)])]),
+			createBaseVNode("div", _hoisted_4$9, [createBaseVNode("div", _hoisted_5$8, [
+				createBaseVNode("div", _hoisted_6$8, [_cache[9] || (_cache[9] = createBaseVNode("label", {
 					class: "qa-field__label",
 					for: "run-name"
 				}, "Name", -1)), withDirectives(createBaseVNode("input", {
@@ -37665,7 +37681,7 @@ Use slot props instead:
 					placeholder: "2.4.0 — Account changes",
 					required: ""
 				}, null, 512), [[vModelText, $setup.form.name]])]),
-				createBaseVNode("div", _hoisted_7$7, [createBaseVNode("div", _hoisted_8$6, [_cache[10] || (_cache[10] = createBaseVNode("label", {
+				createBaseVNode("div", _hoisted_7$8, [createBaseVNode("div", _hoisted_8$8, [_cache[10] || (_cache[10] = createBaseVNode("label", {
 					class: "qa-field__label",
 					for: "run-environment"
 				}, "Environment", -1)), withDirectives(createBaseVNode("select", {
@@ -37676,8 +37692,8 @@ Use slot props instead:
 					return openBlock(), createElementBlock("option", {
 						key: environment,
 						value: environment
-					}, toDisplayString(environment), 9, _hoisted_9$6);
-				}), 128))], 512), [[vModelSelect, $setup.form.environment]])]), createBaseVNode("div", _hoisted_10$6, [_cache[11] || (_cache[11] = createBaseVNode("label", {
+					}, toDisplayString(environment), 9, _hoisted_9$7);
+				}), 128))], 512), [[vModelSelect, $setup.form.environment]])]), createBaseVNode("div", _hoisted_10$7, [_cache[11] || (_cache[11] = createBaseVNode("label", {
 					class: "qa-field__label",
 					for: "run-version"
 				}, "Version", -1)), withDirectives(createBaseVNode("input", {
@@ -37688,7 +37704,7 @@ Use slot props instead:
 					placeholder: "2.4.0 or a commit ref",
 					required: ""
 				}, null, 512), [[vModelText, $setup.form.version]])])]),
-				createBaseVNode("div", _hoisted_11$6, [_cache[12] || (_cache[12] = createBaseVNode("label", {
+				createBaseVNode("div", _hoisted_11$7, [_cache[12] || (_cache[12] = createBaseVNode("label", {
 					class: "qa-field__label",
 					for: "run-notes"
 				}, "Notes", -1)), withDirectives(createBaseVNode("textarea", {
@@ -37697,10 +37713,10 @@ Use slot props instead:
 					class: "qa-textarea",
 					placeholder: "What this run covers, and anything the testers should know."
 				}, null, 512), [[vModelText, $setup.form.notes]])]),
-				createBaseVNode("div", _hoisted_12$6, [
+				createBaseVNode("div", _hoisted_12$7, [
 					_cache[13] || (_cache[13] = createBaseVNode("span", { class: "qa-field__label" }, "Assignees", -1)),
 					_cache[14] || (_cache[14] = createBaseVNode("p", { class: "qa-field__hint" }, " Assignment is informational and sends one email. Anyone on the QA team can test any case in an open run. ", -1)),
-					createBaseVNode("div", _hoisted_13$6, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.caseStore.users, (user) => {
+					createBaseVNode("div", _hoisted_13$7, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.caseStore.users, (user) => {
 						return openBlock(), createElementBlock("label", {
 							key: user.id,
 							class: "qa-checkbox"
@@ -37708,23 +37724,23 @@ Use slot props instead:
 							"onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => $setup.assigneeIds = $event),
 							type: "checkbox",
 							value: user.id
-						}, null, 8, _hoisted_14$5), [[vModelCheckbox, $setup.assigneeIds]]), createBaseVNode("span", null, toDisplayString(user.name), 1)]);
-					}), 128)), !$setup.caseStore.users.length ? (openBlock(), createElementBlock("span", _hoisted_15$3, "No one else can run tests yet.")) : createCommentVNode("", true)])
+						}, null, 8, _hoisted_14$6), [[vModelCheckbox, $setup.assigneeIds]]), createBaseVNode("span", null, toDisplayString(user.name), 1)]);
+					}), 128)), !$setup.caseStore.users.length ? (openBlock(), createElementBlock("span", _hoisted_15$4, "No one else can run tests yet.")) : createCommentVNode("", true)])
 				])
 			])]),
-			createBaseVNode("div", _hoisted_16$3, [createBaseVNode("div", _hoisted_17$3, [_cache[15] || (_cache[15] = createBaseVNode("h2", null, "Cases", -1)), createBaseVNode("p", _hoisted_18$3, [createBaseVNode("span", _hoisted_19$3, toDisplayString($setup.selectedIds.length), 1), createTextVNode(" " + toDisplayString($setup.plural($setup.selectedIds.length, "case")) + " selected ", 1)])]), createBaseVNode("button", {
+			createBaseVNode("div", _hoisted_16$4, [createBaseVNode("div", _hoisted_17$4, [_cache[15] || (_cache[15] = createBaseVNode("h2", null, "Cases", -1)), createBaseVNode("p", _hoisted_18$4, [createBaseVNode("span", _hoisted_19$4, toDisplayString($setup.selectedIds.length), 1), createTextVNode(" " + toDisplayString($setup.plural($setup.selectedIds.length, "case")) + " selected ", 1)])]), createBaseVNode("button", {
 				type: "button",
 				class: "qa-button qa-button--quiet",
 				onClick: $setup.selectAllCritical
 			}, " Select all critical ")]),
-			createBaseVNode("div", _hoisted_20$3, [createBaseVNode("div", _hoisted_21$3, [
-				createBaseVNode("div", _hoisted_22$3, [_cache[16] || (_cache[16] = createBaseVNode("span", { class: "qa-filter-group__label" }, "Search case", -1)), withDirectives(createBaseVNode("input", {
+			createBaseVNode("div", _hoisted_20$4, [createBaseVNode("div", _hoisted_21$4, [
+				createBaseVNode("div", _hoisted_22$4, [_cache[16] || (_cache[16] = createBaseVNode("span", { class: "qa-filter-group__label" }, "Search case", -1)), withDirectives(createBaseVNode("input", {
 					"onUpdate:modelValue": _cache[5] || (_cache[5] = ($event) => $setup.search = $event),
 					class: "qa-input",
 					type: "search",
 					placeholder: "Case title"
 				}, null, 512), [[vModelText, $setup.search]])]),
-				createBaseVNode("div", _hoisted_23$3, [_cache[17] || (_cache[17] = createBaseVNode("span", { class: "qa-filter-group__label" }, "Suite", -1)), (openBlock(true), createElementBlock(Fragment, null, renderList($setup.caseStore.suites, (suite) => {
+				createBaseVNode("div", _hoisted_23$4, [_cache[17] || (_cache[17] = createBaseVNode("span", { class: "qa-filter-group__label" }, "Suite", -1)), (openBlock(true), createElementBlock(Fragment, null, renderList($setup.caseStore.suites, (suite) => {
 					return openBlock(), createElementBlock("label", {
 						key: suite.id,
 						class: "qa-checkbox"
@@ -37732,9 +37748,9 @@ Use slot props instead:
 						type: "checkbox",
 						checked: $setup.suiteFilter.includes(suite.id),
 						onChange: ($event) => $setup.toggleSuite(suite.id)
-					}, null, 40, _hoisted_24$3), createBaseVNode("span", null, [createTextVNode(toDisplayString(suite.name) + " ", 1), createBaseVNode("span", _hoisted_25$3, "(" + toDisplayString(suite.case_count) + ")", 1)])]);
+					}, null, 40, _hoisted_24$4), createBaseVNode("span", null, [createTextVNode(toDisplayString(suite.name) + " ", 1), createBaseVNode("span", _hoisted_25$4, "(" + toDisplayString(suite.case_count) + ")", 1)])]);
 				}), 128))]),
-				createBaseVNode("div", _hoisted_26$3, [_cache[18] || (_cache[18] = createBaseVNode("span", { class: "qa-filter-group__label" }, "Priority", -1)), (openBlock(true), createElementBlock(Fragment, null, renderList($setup.PRIORITIES, (priority) => {
+				createBaseVNode("div", _hoisted_26$4, [_cache[18] || (_cache[18] = createBaseVNode("span", { class: "qa-filter-group__label" }, "Priority", -1)), (openBlock(true), createElementBlock(Fragment, null, renderList($setup.PRIORITIES, (priority) => {
 					return openBlock(), createElementBlock("label", {
 						key: priority.value,
 						class: "qa-checkbox"
@@ -37782,10 +37798,10 @@ Use slot props instead:
 			}), 128))])])) : createCommentVNode("", true)
 		], 32);
 	}
-	var RunCreateView_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$8, [["render", _sfc_render$8], ["__file", "RunCreateView.vue"]]);
+	var RunCreateView_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$9, [["render", _sfc_render$9], ["__file", "RunCreateView.vue"]]);
 	//#endregion
 	//#region src/components/AvatarStack.vue
-	var _sfc_main$7 = {
+	var _sfc_main$8 = {
 		__name: "AvatarStack",
 		props: { people: {
 			type: Array,
@@ -37809,20 +37825,20 @@ Use slot props instead:
 			return __returned__;
 		}
 	};
-	var _hoisted_1$7 = ["title"];
-	var _hoisted_2$7 = { class: "qa-person-badge" };
-	var _hoisted_3$7 = ["src", "alt"];
-	var _hoisted_4$7 = {
+	var _hoisted_1$8 = ["title"];
+	var _hoisted_2$8 = { class: "qa-person-badge" };
+	var _hoisted_3$8 = ["src", "alt"];
+	var _hoisted_4$8 = {
 		key: 1,
 		class: "qa-muted"
 	};
-	function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
+	function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
 		return $props.people.length ? (openBlock(), createElementBlock("span", {
 			key: 0,
 			class: "qa-avatars",
 			title: $setup.names
 		}, [(openBlock(true), createElementBlock(Fragment, null, renderList($props.people, (person) => {
-			return openBlock(), createElementBlock("span", _hoisted_2$7, [(openBlock(), createElementBlock("img", {
+			return openBlock(), createElementBlock("span", _hoisted_2$8, [(openBlock(), createElementBlock("img", {
 				key: person.id,
 				class: "qa-avatars__item",
 				src: person.avatar,
@@ -37830,13 +37846,13 @@ Use slot props instead:
 				width: "24",
 				height: "24",
 				loading: "lazy"
-			}, null, 8, _hoisted_3$7)), createBaseVNode("span", null, toDisplayString(person.name), 1)]);
-		}), 256))], 8, _hoisted_1$7)) : (openBlock(), createElementBlock("span", _hoisted_4$7, "Nobody assigned"));
+			}, null, 8, _hoisted_3$8)), createBaseVNode("span", null, toDisplayString(person.name), 1)]);
+		}), 256))], 8, _hoisted_1$8)) : (openBlock(), createElementBlock("span", _hoisted_4$8, "Nobody assigned"));
 	}
-	var AvatarStack_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$7, [["render", _sfc_render$7], ["__file", "AvatarStack.vue"]]);
+	var AvatarStack_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$8, [["render", _sfc_render$8], ["__file", "AvatarStack.vue"]]);
 	//#endregion
 	//#region src/components/ProgressBar.vue
-	var _sfc_main$6 = {
+	var _sfc_main$7 = {
 		__name: "ProgressBar",
 		props: {
 			counts: {
@@ -37893,34 +37909,34 @@ Use slot props instead:
 			return __returned__;
 		}
 	};
-	var _hoisted_1$6 = { class: "qa-progress" };
-	var _hoisted_2$6 = ["aria-label"];
-	var _hoisted_3$6 = {
+	var _hoisted_1$7 = { class: "qa-progress" };
+	var _hoisted_2$7 = ["aria-label"];
+	var _hoisted_3$7 = {
 		key: 0,
 		class: "qa-progress__legend"
 	};
-	var _hoisted_4$6 = { class: "qa-badge qa-badge--success" };
-	var _hoisted_5$6 = { class: "qa-count" };
-	var _hoisted_6$6 = { class: "qa-count" };
-	var _hoisted_7$6 = {
+	var _hoisted_4$7 = { class: "qa-badge qa-badge--success" };
+	var _hoisted_5$7 = { class: "qa-count" };
+	var _hoisted_6$7 = { class: "qa-count" };
+	var _hoisted_7$7 = {
 		key: 0,
 		class: "qa-badge qa-badge--issue"
 	};
-	var _hoisted_8$5 = { class: "qa-count" };
-	var _hoisted_9$5 = {
+	var _hoisted_8$7 = { class: "qa-count" };
+	var _hoisted_9$6 = {
 		key: 1,
 		class: "qa-badge qa-badge--env"
 	};
-	var _hoisted_10$5 = { class: "qa-count" };
-	var _hoisted_11$5 = { class: "qa-badge qa-badge--lock" };
-	var _hoisted_12$5 = { class: "qa-count" };
-	var _hoisted_13$5 = {
+	var _hoisted_10$6 = { class: "qa-count" };
+	var _hoisted_11$6 = { class: "qa-badge qa-badge--lock" };
+	var _hoisted_12$6 = { class: "qa-count" };
+	var _hoisted_13$6 = {
 		key: 2,
 		class: "qa-badge qa-badge--issue"
 	};
-	var _hoisted_14$4 = { class: "qa-count" };
-	function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
-		return openBlock(), createElementBlock("div", _hoisted_1$6, [createBaseVNode("div", {
+	var _hoisted_14$5 = { class: "qa-count" };
+	function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
+		return openBlock(), createElementBlock("div", _hoisted_1$7, [createBaseVNode("div", {
 			class: "qa-progress__track",
 			role: "img",
 			"aria-label": `${$setup.tested} of ${$setup.total} cases tested, ${$setup.failCount} failing`
@@ -37930,22 +37946,22 @@ Use slot props instead:
 				class: normalizeClass(["qa-progress__segment", `qa-progress__segment--${segment.key}`]),
 				style: normalizeStyle({ width: `${segment.width}%` })
 			}, null, 6);
-		}), 128))], 8, _hoisted_2$6), !$props.compact ? (openBlock(), createElementBlock("div", _hoisted_3$6, [
-			createBaseVNode("span", _hoisted_4$6, [createBaseVNode("b", _hoisted_5$6, toDisplayString($props.counts.pass ?? 0), 1), _cache[0] || (_cache[0] = createTextVNode(" passed", -1))]),
+		}), 128))], 8, _hoisted_2$7), !$props.compact ? (openBlock(), createElementBlock("div", _hoisted_3$7, [
+			createBaseVNode("span", _hoisted_4$7, [createBaseVNode("b", _hoisted_5$7, toDisplayString($props.counts.pass ?? 0), 1), _cache[0] || (_cache[0] = createTextVNode(" passed", -1))]),
 			createBaseVNode("span", { class: normalizeClass([{
 				"qa-badge--issue": $setup.failCount > 0,
 				"qa-badge--env": $setup.failCount === 0
-			}, "qa-badge"]) }, [createBaseVNode("b", _hoisted_6$6, toDisplayString($setup.failCount), 1), _cache[1] || (_cache[1] = createTextVNode(" failed", -1))], 2),
-			$props.counts.blocked ? (openBlock(), createElementBlock("span", _hoisted_7$6, [createBaseVNode("b", _hoisted_8$5, toDisplayString($props.counts.blocked), 1), _cache[2] || (_cache[2] = createTextVNode(" blocked", -1))])) : createCommentVNode("", true),
-			$props.counts.skipped ? (openBlock(), createElementBlock("span", _hoisted_9$5, [createBaseVNode("b", _hoisted_10$5, toDisplayString($props.counts.skipped), 1), _cache[3] || (_cache[3] = createTextVNode(" skipped", -1))])) : createCommentVNode("", true),
-			createBaseVNode("span", _hoisted_11$5, [createBaseVNode("b", _hoisted_12$5, toDisplayString($setup.remaining), 1), _cache[4] || (_cache[4] = createTextVNode(" remaining", -1))]),
-			$props.issues > 0 ? (openBlock(), createElementBlock("span", _hoisted_13$5, [createBaseVNode("span", _hoisted_14$4, toDisplayString($props.issues + " " + $setup.plural($props.issues, "open issue", "open issues")), 1)])) : createCommentVNode("", true)
+			}, "qa-badge"]) }, [createBaseVNode("b", _hoisted_6$7, toDisplayString($setup.failCount), 1), _cache[1] || (_cache[1] = createTextVNode(" failed", -1))], 2),
+			$props.counts.blocked ? (openBlock(), createElementBlock("span", _hoisted_7$7, [createBaseVNode("b", _hoisted_8$7, toDisplayString($props.counts.blocked), 1), _cache[2] || (_cache[2] = createTextVNode(" blocked", -1))])) : createCommentVNode("", true),
+			$props.counts.skipped ? (openBlock(), createElementBlock("span", _hoisted_9$6, [createBaseVNode("b", _hoisted_10$6, toDisplayString($props.counts.skipped), 1), _cache[3] || (_cache[3] = createTextVNode(" skipped", -1))])) : createCommentVNode("", true),
+			createBaseVNode("span", _hoisted_11$6, [createBaseVNode("b", _hoisted_12$6, toDisplayString($setup.remaining), 1), _cache[4] || (_cache[4] = createTextVNode(" remaining", -1))]),
+			$props.issues > 0 ? (openBlock(), createElementBlock("span", _hoisted_13$6, [createBaseVNode("span", _hoisted_14$5, toDisplayString($props.issues + " " + $setup.plural($props.issues, "open issue", "open issues")), 1)])) : createCommentVNode("", true)
 		])) : createCommentVNode("", true)]);
 	}
-	var ProgressBar_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$6, [["render", _sfc_render$6], ["__file", "ProgressBar.vue"]]);
+	var ProgressBar_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$7, [["render", _sfc_render$7], ["__file", "ProgressBar.vue"]]);
 	//#endregion
 	//#region src/components/RunCasesDialog.vue
-	var _sfc_main$5 = {
+	var _sfc_main$6 = {
 		__name: "RunCasesDialog",
 		props: {
 			open: {
@@ -38123,63 +38139,63 @@ Use slot props instead:
 			return __returned__;
 		}
 	};
-	var _hoisted_1$5 = {
+	var _hoisted_1$6 = {
 		ref: "body",
 		class: "qa-dialog__body qa-stack"
 	};
-	var _hoisted_2$5 = { class: "qa-stack qa-stack--tight" };
-	var _hoisted_3$5 = { class: "qa-field__label" };
-	var _hoisted_4$5 = {
+	var _hoisted_2$6 = { class: "qa-stack qa-stack--tight" };
+	var _hoisted_3$6 = { class: "qa-field__label" };
+	var _hoisted_4$6 = {
 		key: 0,
 		class: "qa-muted"
 	};
-	var _hoisted_5$5 = {
+	var _hoisted_5$6 = {
 		key: 1,
 		class: "qa-dialog__list"
 	};
-	var _hoisted_6$5 = { class: "qa-checkbox" };
-	var _hoisted_7$5 = ["value", "disabled"];
-	var _hoisted_8$4 = { class: "qa-dialog__case" };
-	var _hoisted_9$4 = { class: "qa-case-row__meta" };
-	var _hoisted_10$4 = { class: "qa-stack qa-stack--tight" };
-	var _hoisted_11$4 = { class: "qa-row" };
-	var _hoisted_12$4 = ["disabled"];
-	var _hoisted_13$4 = ["disabled"];
-	var _hoisted_14$3 = ["value"];
-	var _hoisted_15$2 = {
+	var _hoisted_6$6 = { class: "qa-checkbox" };
+	var _hoisted_7$6 = ["value", "disabled"];
+	var _hoisted_8$6 = { class: "qa-dialog__case" };
+	var _hoisted_9$5 = { class: "qa-case-row__meta" };
+	var _hoisted_10$5 = { class: "qa-stack qa-stack--tight" };
+	var _hoisted_11$5 = { class: "qa-row" };
+	var _hoisted_12$5 = ["disabled"];
+	var _hoisted_13$5 = ["disabled"];
+	var _hoisted_14$4 = ["value"];
+	var _hoisted_15$3 = {
 		key: 0,
 		class: "qa-muted"
 	};
-	var _hoisted_16$2 = {
+	var _hoisted_16$3 = {
 		key: 1,
 		class: "qa-field__hint"
 	};
-	var _hoisted_17$2 = {
+	var _hoisted_17$3 = {
 		key: 2,
 		class: "qa-muted"
 	};
-	var _hoisted_18$2 = {
+	var _hoisted_18$3 = {
 		key: 3,
 		class: "qa-dialog__list"
 	};
-	var _hoisted_19$2 = { class: "qa-checkbox" };
-	var _hoisted_20$2 = ["value", "disabled"];
-	var _hoisted_21$2 = { class: "qa-dialog__case" };
-	var _hoisted_22$2 = { class: "qa-case-row__meta" };
-	var _hoisted_23$2 = {
+	var _hoisted_19$3 = { class: "qa-checkbox" };
+	var _hoisted_20$3 = ["value", "disabled"];
+	var _hoisted_21$3 = { class: "qa-dialog__case" };
+	var _hoisted_22$3 = { class: "qa-case-row__meta" };
+	var _hoisted_23$3 = {
 		key: 0,
 		class: "qa-dialog__warning"
 	};
-	var _hoisted_24$2 = ["innerHTML"];
-	var _hoisted_25$2 = {
+	var _hoisted_24$3 = ["innerHTML"];
+	var _hoisted_25$3 = {
 		class: "qa-checkbox",
 		style: { "margin-top": "8px" }
 	};
-	var _hoisted_26$2 = ["disabled"];
+	var _hoisted_26$3 = ["disabled"];
 	var _hoisted_27$1 = { class: "qa-dialog__foot" };
 	var _hoisted_28$1 = ["disabled"];
 	var _hoisted_29$1 = ["disabled"];
-	function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
+	function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
 		return openBlock(), createElementBlock("dialog", {
 			ref: "dialog",
 			class: "qa-dialog qa-dialog--wide",
@@ -38192,20 +38208,20 @@ Use slot props instead:
 				"aria-label": "Close",
 				onClick: $setup.cancel
 			}, "×")]),
-			createBaseVNode("div", _hoisted_1$5, [
-				createBaseVNode("div", _hoisted_2$5, [
-					createBaseVNode("span", _hoisted_3$5, " On the run (" + toDisplayString($props.results.length) + ") ", 1),
+			createBaseVNode("div", _hoisted_1$6, [
+				createBaseVNode("div", _hoisted_2$6, [
+					createBaseVNode("span", _hoisted_3$6, " On the run (" + toDisplayString($props.results.length) + ") ", 1),
 					_cache[6] || (_cache[6] = createBaseVNode("p", { class: "qa-field__hint" }, "Untick a case to take it off this run.", -1)),
-					!$props.results.length ? (openBlock(), createElementBlock("p", _hoisted_4$5, "This run has no cases yet.")) : (openBlock(), createElementBlock("ul", _hoisted_5$5, [(openBlock(true), createElementBlock(Fragment, null, renderList($props.results, (result) => {
-						return openBlock(), createElementBlock("li", { key: result.id }, [createBaseVNode("label", _hoisted_6$5, [
+					!$props.results.length ? (openBlock(), createElementBlock("p", _hoisted_4$6, "This run has no cases yet.")) : (openBlock(), createElementBlock("ul", _hoisted_5$6, [(openBlock(true), createElementBlock(Fragment, null, renderList($props.results, (result) => {
+						return openBlock(), createElementBlock("li", { key: result.id }, [createBaseVNode("label", _hoisted_6$6, [
 							withDirectives(createBaseVNode("input", {
 								"onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.selected = $event),
 								type: "checkbox",
 								value: result.case.id,
 								disabled: $props.saving
-							}, null, 8, _hoisted_7$5), [[vModelCheckbox, $setup.selected]]),
+							}, null, 8, _hoisted_7$6), [[vModelCheckbox, $setup.selected]]),
 							createVNode($setup["PriorityDot"], { priority: result.case.priority }, null, 8, ["priority"]),
-							createBaseVNode("span", _hoisted_8$4, [createBaseVNode("span", null, toDisplayString(result.case.title), 1), createBaseVNode("span", _hoisted_9$4, [
+							createBaseVNode("span", _hoisted_8$6, [createBaseVNode("span", null, toDisplayString(result.case.title), 1), createBaseVNode("span", _hoisted_9$5, [
 								createBaseVNode("span", null, toDisplayString(result.case.suite_name), 1),
 								createVNode($setup["StatusBadge"], { status: result.status }, null, 8, ["status"]),
 								(openBlock(true), createElementBlock(Fragment, null, renderList($setup.recorded(result), (part) => {
@@ -38215,9 +38231,9 @@ Use slot props instead:
 						])]);
 					}), 128))]))
 				]),
-				createBaseVNode("div", _hoisted_10$4, [
+				createBaseVNode("div", _hoisted_10$5, [
 					_cache[10] || (_cache[10] = createBaseVNode("span", { class: "qa-field__label" }, "Add from the library", -1)),
-					createBaseVNode("div", _hoisted_11$4, [
+					createBaseVNode("div", _hoisted_11$5, [
 						_cache[8] || (_cache[8] = createBaseVNode("label", {
 							class: "qa-sr-only",
 							for: "run-cases-search"
@@ -38233,7 +38249,7 @@ Use slot props instead:
 								"flex": "1",
 								"min-width": "140px"
 							}
-						}, null, 8, _hoisted_12$4), [[vModelText, $setup.search]]),
+						}, null, 8, _hoisted_12$5), [[vModelText, $setup.search]]),
 						_cache[9] || (_cache[9] = createBaseVNode("label", {
 							class: "qa-sr-only",
 							for: "run-cases-suite"
@@ -38248,30 +38264,30 @@ Use slot props instead:
 							return openBlock(), createElementBlock("option", {
 								key: suite.id,
 								value: String(suite.id)
-							}, toDisplayString(suite.name), 9, _hoisted_14$3);
-						}), 128))], 8, _hoisted_13$4), [[vModelSelect, $setup.suiteFilter]])
+							}, toDisplayString(suite.name), 9, _hoisted_14$4);
+						}), 128))], 8, _hoisted_13$5), [[vModelSelect, $setup.suiteFilter]])
 					]),
-					$props.loading ? (openBlock(), createElementBlock("p", _hoisted_15$2, "Loading the case library…")) : !$setup.hasFilter ? (openBlock(), createElementBlock("p", _hoisted_16$2, " Search or pick a suite to see the cases you can add. ")) : !$setup.candidates.length ? (openBlock(), createElementBlock("p", _hoisted_17$2, " No cases match, or they are all on this run already. ")) : (openBlock(), createElementBlock("ul", _hoisted_18$2, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.candidates, (item) => {
-						return openBlock(), createElementBlock("li", { key: item.id }, [createBaseVNode("label", _hoisted_19$2, [
+					$props.loading ? (openBlock(), createElementBlock("p", _hoisted_15$3, "Loading the case library…")) : !$setup.hasFilter ? (openBlock(), createElementBlock("p", _hoisted_16$3, " Search or pick a suite to see the cases you can add. ")) : !$setup.candidates.length ? (openBlock(), createElementBlock("p", _hoisted_17$3, " No cases match, or they are all on this run already. ")) : (openBlock(), createElementBlock("ul", _hoisted_18$3, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.candidates, (item) => {
+						return openBlock(), createElementBlock("li", { key: item.id }, [createBaseVNode("label", _hoisted_19$3, [
 							withDirectives(createBaseVNode("input", {
 								"onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => $setup.selected = $event),
 								type: "checkbox",
 								value: item.id,
 								disabled: $props.saving
-							}, null, 8, _hoisted_20$2), [[vModelCheckbox, $setup.selected]]),
+							}, null, 8, _hoisted_20$3), [[vModelCheckbox, $setup.selected]]),
 							createVNode($setup["PriorityDot"], { priority: item.priority }, null, 8, ["priority"]),
-							createBaseVNode("span", _hoisted_21$2, [createBaseVNode("span", null, toDisplayString(item.title), 1), createBaseVNode("span", _hoisted_22$2, toDisplayString(item.suite_name), 1)])
+							createBaseVNode("span", _hoisted_21$3, [createBaseVNode("span", null, toDisplayString(item.title), 1), createBaseVNode("span", _hoisted_22$3, toDisplayString(item.suite_name), 1)])
 						])]);
 					}), 128))]))
 				]),
-				$setup.removed.length ? (openBlock(), createElementBlock("div", _hoisted_23$2, [createBaseVNode("p", {
+				$setup.removed.length ? (openBlock(), createElementBlock("div", _hoisted_23$3, [createBaseVNode("p", {
 					style: { "margin": "0" },
 					innerHTML: $setup.removalWarning
-				}, null, 8, _hoisted_24$2), createBaseVNode("label", _hoisted_25$2, [withDirectives(createBaseVNode("input", {
+				}, null, 8, _hoisted_24$3), createBaseVNode("label", _hoisted_25$3, [withDirectives(createBaseVNode("input", {
 					"onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => $setup.confirmed = $event),
 					type: "checkbox",
 					disabled: $props.saving
-				}, null, 8, _hoisted_26$2), [[vModelCheckbox, $setup.confirmed]]), createBaseVNode("span", null, " Yes, remove " + toDisplayString($setup.removed.length) + " " + toDisplayString($setup.plural($setup.removed.length, "case")) + " and delete what this run recorded against " + toDisplayString($setup.plural($setup.removed.length, "it", "them")) + ". ", 1)])])) : createCommentVNode("", true)
+				}, null, 8, _hoisted_26$3), [[vModelCheckbox, $setup.confirmed]]), createBaseVNode("span", null, " Yes, remove " + toDisplayString($setup.removed.length) + " " + toDisplayString($setup.plural($setup.removed.length, "case")) + " and delete what this run recorded against " + toDisplayString($setup.plural($setup.removed.length, "it", "them")) + ". ", 1)])])) : createCommentVNode("", true)
 			], 512),
 			createBaseVNode("div", _hoisted_27$1, [createBaseVNode("button", {
 				type: "button",
@@ -38286,10 +38302,10 @@ Use slot props instead:
 			}, toDisplayString($props.saving ? "Saving…" : "Save"), 9, _hoisted_29$1)])
 		], 544);
 	}
-	var RunCasesDialog_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$5, [["render", _sfc_render$5], ["__file", "RunCasesDialog.vue"]]);
+	var RunCasesDialog_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$6, [["render", _sfc_render$6], ["__file", "RunCasesDialog.vue"]]);
 	//#endregion
 	//#region src/components/RunDetailsDialog.vue
-	var _sfc_main$4 = {
+	var _sfc_main$5 = {
 		__name: "RunDetailsDialog",
 		props: {
 			open: {
@@ -38401,39 +38417,39 @@ Use slot props instead:
 			return __returned__;
 		}
 	};
-	var _hoisted_1$4 = { class: "qa-dialog__body qa-stack" };
-	var _hoisted_2$4 = { class: "qa-field" };
-	var _hoisted_3$4 = ["disabled"];
-	var _hoisted_4$4 = {
+	var _hoisted_1$5 = { class: "qa-dialog__body qa-stack" };
+	var _hoisted_2$5 = { class: "qa-field" };
+	var _hoisted_3$5 = ["disabled"];
+	var _hoisted_4$5 = {
 		class: "qa-row",
 		style: {
 			"align-items": "flex-start",
 			"gap": "16px"
 		}
 	};
-	var _hoisted_5$4 = {
+	var _hoisted_5$5 = {
 		class: "qa-field",
 		style: {
 			"flex": "1",
 			"min-width": "140px"
 		}
 	};
-	var _hoisted_6$4 = ["disabled"];
-	var _hoisted_7$4 = ["value"];
-	var _hoisted_8$3 = {
+	var _hoisted_6$5 = ["disabled"];
+	var _hoisted_7$5 = ["value"];
+	var _hoisted_8$5 = {
 		class: "qa-field",
 		style: {
 			"flex": "1",
 			"min-width": "140px"
 		}
 	};
-	var _hoisted_9$3 = ["disabled"];
-	var _hoisted_10$3 = { class: "qa-field" };
-	var _hoisted_11$3 = ["disabled"];
-	var _hoisted_12$3 = { class: "qa-dialog__foot" };
-	var _hoisted_13$3 = ["disabled"];
-	var _hoisted_14$2 = ["disabled"];
-	function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+	var _hoisted_9$4 = ["disabled"];
+	var _hoisted_10$4 = { class: "qa-field" };
+	var _hoisted_11$4 = ["disabled"];
+	var _hoisted_12$4 = { class: "qa-dialog__foot" };
+	var _hoisted_13$4 = ["disabled"];
+	var _hoisted_14$3 = ["disabled"];
+	function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
 		return openBlock(), createElementBlock("dialog", {
 			ref: "dialog",
 			class: "qa-dialog qa-dialog--wide",
@@ -38446,8 +38462,8 @@ Use slot props instead:
 				"aria-label": "Close",
 				onClick: $setup.cancel
 			}, "×")]),
-			createBaseVNode("div", _hoisted_1$4, [
-				createBaseVNode("div", _hoisted_2$4, [_cache[5] || (_cache[5] = createBaseVNode("label", {
+			createBaseVNode("div", _hoisted_1$5, [
+				createBaseVNode("div", _hoisted_2$5, [_cache[5] || (_cache[5] = createBaseVNode("label", {
 					class: "qa-field__label",
 					for: "edit-run-name"
 				}, "Name", -1)), withDirectives(createBaseVNode("input", {
@@ -38457,8 +38473,8 @@ Use slot props instead:
 					type: "text",
 					disabled: $props.saving,
 					required: ""
-				}, null, 8, _hoisted_3$4), [[vModelText, $setup.form.name]])]),
-				createBaseVNode("div", _hoisted_4$4, [createBaseVNode("div", _hoisted_5$4, [_cache[6] || (_cache[6] = createBaseVNode("label", {
+				}, null, 8, _hoisted_3$5), [[vModelText, $setup.form.name]])]),
+				createBaseVNode("div", _hoisted_4$5, [createBaseVNode("div", _hoisted_5$5, [_cache[6] || (_cache[6] = createBaseVNode("label", {
 					class: "qa-field__label",
 					for: "edit-run-environment"
 				}, "Environment", -1)), withDirectives(createBaseVNode("select", {
@@ -38470,8 +38486,8 @@ Use slot props instead:
 					return openBlock(), createElementBlock("option", {
 						key: environment,
 						value: environment
-					}, toDisplayString(environment), 9, _hoisted_7$4);
-				}), 128))], 8, _hoisted_6$4), [[vModelSelect, $setup.form.environment]])]), createBaseVNode("div", _hoisted_8$3, [_cache[7] || (_cache[7] = createBaseVNode("label", {
+					}, toDisplayString(environment), 9, _hoisted_7$5);
+				}), 128))], 8, _hoisted_6$5), [[vModelSelect, $setup.form.environment]])]), createBaseVNode("div", _hoisted_8$5, [_cache[7] || (_cache[7] = createBaseVNode("label", {
 					class: "qa-field__label",
 					for: "edit-run-version"
 				}, "Version", -1)), withDirectives(createBaseVNode("input", {
@@ -38482,8 +38498,8 @@ Use slot props instead:
 					placeholder: "2.4.0 or a commit ref",
 					disabled: $props.saving,
 					required: ""
-				}, null, 8, _hoisted_9$3), [[vModelText, $setup.form.version]])])]),
-				createBaseVNode("div", _hoisted_10$3, [_cache[8] || (_cache[8] = createBaseVNode("label", {
+				}, null, 8, _hoisted_9$4), [[vModelText, $setup.form.version]])])]),
+				createBaseVNode("div", _hoisted_10$4, [_cache[8] || (_cache[8] = createBaseVNode("label", {
 					class: "qa-field__label",
 					for: "edit-run-notes"
 				}, "Notes", -1)), withDirectives(createBaseVNode("textarea", {
@@ -38492,24 +38508,24 @@ Use slot props instead:
 					class: "qa-textarea",
 					placeholder: "What this run covers, and anything the testers should know.",
 					disabled: $props.saving
-				}, null, 8, _hoisted_11$3), [[vModelText, $setup.form.notes]])])
+				}, null, 8, _hoisted_11$4), [[vModelText, $setup.form.notes]])])
 			]),
-			createBaseVNode("div", _hoisted_12$3, [createBaseVNode("button", {
+			createBaseVNode("div", _hoisted_12$4, [createBaseVNode("button", {
 				type: "button",
 				class: "qa-button qa-button--quiet",
 				disabled: $props.saving,
 				onClick: $setup.cancel
-			}, " Cancel ", 8, _hoisted_13$3), createBaseVNode("button", {
+			}, " Cancel ", 8, _hoisted_13$4), createBaseVNode("button", {
 				type: "submit",
 				class: "qa-button qa-button--primary",
 				disabled: !$setup.dirty || !$setup.valid || $props.saving
-			}, toDisplayString($props.saving ? "Saving…" : "Save"), 9, _hoisted_14$2)])
+			}, toDisplayString($props.saving ? "Saving…" : "Save"), 9, _hoisted_14$3)])
 		], 32)], 544);
 	}
-	var RunDetailsDialog_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$4, [["render", _sfc_render$4], ["__file", "RunDetailsDialog.vue"]]);
+	var RunDetailsDialog_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$5, [["render", _sfc_render$5], ["__file", "RunDetailsDialog.vue"]]);
 	//#endregion
 	//#region src/views/RunDetailView.vue
-	var _sfc_main$3 = {
+	var _sfc_main$4 = {
 		__name: "RunDetailView",
 		props: { id: {
 			type: [String, Number],
@@ -38867,56 +38883,56 @@ Use slot props instead:
 			return __returned__;
 		}
 	};
-	var _hoisted_1$3 = { class: "qa-stack" };
-	var _hoisted_2$3 = {
+	var _hoisted_1$4 = { class: "qa-stack" };
+	var _hoisted_2$4 = {
 		key: 0,
 		class: "qa-skeleton"
 	};
-	var _hoisted_3$3 = { class: "qa-page-head" };
-	var _hoisted_4$3 = { class: "qa-page-head__meta" };
-	var _hoisted_5$3 = { class: "qa-run-title" };
-	var _hoisted_6$3 = { class: "qa-subtitle" };
-	var _hoisted_7$3 = ["title"];
-	var _hoisted_8$2 = {
+	var _hoisted_3$4 = { class: "qa-page-head" };
+	var _hoisted_4$4 = { class: "qa-page-head__meta" };
+	var _hoisted_5$4 = { class: "qa-run-title" };
+	var _hoisted_6$4 = { class: "qa-subtitle" };
+	var _hoisted_7$4 = ["title"];
+	var _hoisted_8$4 = {
 		key: 0,
 		class: "qa-run-description"
 	};
-	var _hoisted_9$2 = { class: "qa-row" };
-	var _hoisted_10$2 = ["disabled"];
-	var _hoisted_11$2 = { class: "qa-card" };
-	var _hoisted_12$2 = {
+	var _hoisted_9$3 = { class: "qa-row" };
+	var _hoisted_10$3 = ["disabled"];
+	var _hoisted_11$3 = { class: "qa-card" };
+	var _hoisted_12$3 = {
 		class: "qa-card__body qa-row",
 		style: {
 			"justify-content": "space-between",
 			"gap": "24px"
 		}
 	};
-	var _hoisted_13$2 = {
+	var _hoisted_13$3 = {
 		class: "qa-row",
 		style: { "gap": "16px" }
 	};
-	var _hoisted_14$1 = { class: "qa-badge" };
-	var _hoisted_15$1 = {
+	var _hoisted_14$2 = { class: "qa-badge" };
+	var _hoisted_15$2 = {
 		key: 0,
 		class: "qa-notice qa-notice--warning"
 	};
-	var _hoisted_16$1 = {
+	var _hoisted_16$2 = {
 		key: 1,
 		class: "qa-notice qa-notice--error"
 	};
-	var _hoisted_17$1 = { class: "qa-card" };
-	var _hoisted_18$1 = {
+	var _hoisted_17$2 = { class: "qa-card" };
+	var _hoisted_18$2 = {
 		class: "qa-card__head",
 		style: { "flex-wrap": "wrap" }
 	};
-	var _hoisted_19$1 = { class: "qa-row" };
-	var _hoisted_20$1 = ["value"];
-	var _hoisted_21$1 = ["value"];
-	var _hoisted_22$1 = ["value"];
-	var _hoisted_23$1 = { class: "qa-checkbox" };
-	var _hoisted_24$1 = { class: "qa-checkbox" };
-	var _hoisted_25$1 = { class: "qa-checkbox" };
-	var _hoisted_26$1 = { class: "qa-row" };
+	var _hoisted_19$2 = { class: "qa-row" };
+	var _hoisted_20$2 = ["value"];
+	var _hoisted_21$2 = ["value"];
+	var _hoisted_22$2 = ["value"];
+	var _hoisted_23$2 = { class: "qa-checkbox" };
+	var _hoisted_24$2 = { class: "qa-checkbox" };
+	var _hoisted_25$2 = { class: "qa-checkbox" };
+	var _hoisted_26$2 = { class: "qa-row" };
 	var _hoisted_27 = { class: "qa-card__head" };
 	var _hoisted_28 = { class: "qa-muted qa-count" };
 	var _hoisted_29 = { class: "qa-case-row__main" };
@@ -38940,12 +38956,12 @@ Use slot props instead:
 	var _hoisted_38 = ["title"];
 	var _hoisted_39 = { class: "qa-case-row__controls" };
 	var _hoisted_40 = ["title", "onClick"];
-	function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
-		return openBlock(), createElementBlock("div", _hoisted_1$3, [$setup.loading ? (openBlock(), createElementBlock("p", _hoisted_2$3, "Loading run…")) : $setup.runStore.run ? (openBlock(), createElementBlock(Fragment, { key: 1 }, [
-			createBaseVNode("div", _hoisted_3$3, [
-				createBaseVNode("div", _hoisted_4$3, [
-					createBaseVNode("h2", _hoisted_5$3, toDisplayString($setup.runStore.run.name), 1),
-					createBaseVNode("p", _hoisted_6$3, [
+	function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+		return openBlock(), createElementBlock("div", _hoisted_1$4, [$setup.loading ? (openBlock(), createElementBlock("p", _hoisted_2$4, "Loading run…")) : $setup.runStore.run ? (openBlock(), createElementBlock(Fragment, { key: 1 }, [
+			createBaseVNode("div", _hoisted_3$4, [
+				createBaseVNode("div", _hoisted_4$4, [
+					createBaseVNode("h2", _hoisted_5$4, toDisplayString($setup.runStore.run.name), 1),
+					createBaseVNode("p", _hoisted_6$4, [
 						_cache[11] || (_cache[11] = createTextVNode(" environment: ", -1)),
 						createBaseVNode("strong", null, toDisplayString($setup.runStore.run.environment), 1),
 						_cache[12] || (_cache[12] = createTextVNode(" · version: ", -1)),
@@ -38955,11 +38971,11 @@ Use slot props instead:
 						_cache[15] || (_cache[15] = createTextVNode(" created by ", -1)),
 						createBaseVNode("strong", null, toDisplayString($setup.runStore.run.created_by.name), 1),
 						_cache[16] || (_cache[16] = createTextVNode(" \xA0 ", -1)),
-						createBaseVNode("strong", null, [createBaseVNode("span", { title: $setup.absoluteTime($setup.runStore.run.created_at) }, toDisplayString($setup.relativeTime($setup.runStore.run.created_at)), 9, _hoisted_7$3)])
+						createBaseVNode("strong", null, [createBaseVNode("span", { title: $setup.absoluteTime($setup.runStore.run.created_at) }, toDisplayString($setup.relativeTime($setup.runStore.run.created_at)), 9, _hoisted_7$4)])
 					]),
-					$setup.runStore.run.notes ? (openBlock(), createElementBlock("p", _hoisted_8$2, toDisplayString($setup.runStore.run.notes), 1)) : createCommentVNode("", true)
+					$setup.runStore.run.notes ? (openBlock(), createElementBlock("p", _hoisted_8$4, toDisplayString($setup.runStore.run.notes), 1)) : createCommentVNode("", true)
 				]),
-				createBaseVNode("div", _hoisted_9$2, [
+				createBaseVNode("div", _hoisted_9$3, [
 					$setup.bootstrap.caps?.runTests ? (openBlock(), createElementBlock("button", {
 						key: 0,
 						type: "button",
@@ -38972,7 +38988,7 @@ Use slot props instead:
 						class: "qa-button qa-button--quiet",
 						disabled: $setup.cloning,
 						onClick: $setup.cloneRun
-					}, toDisplayString($setup.cloning ? "Cloning…" : "Clone run"), 9, _hoisted_10$2)) : createCommentVNode("", true),
+					}, toDisplayString($setup.cloning ? "Cloning…" : "Clone run"), 9, _hoisted_10$3)) : createCommentVNode("", true),
 					$setup.bootstrap.caps?.runTests && $setup.isOpen ? (openBlock(), createElementBlock("button", {
 						key: 2,
 						type: "button",
@@ -38997,8 +39013,8 @@ Use slot props instead:
 					"saving"
 				])
 			]),
-			createBaseVNode("div", _hoisted_11$2, [createBaseVNode("div", _hoisted_12$2, [createVNode($setup["ProgressBar"], { counts: $setup.runStore.run.counts }, null, 8, ["counts"]), createBaseVNode("div", _hoisted_13$2, [
-				createBaseVNode("span", _hoisted_14$1, toDisplayString($setup.runStore.run.status), 1),
+			createBaseVNode("div", _hoisted_11$3, [createBaseVNode("div", _hoisted_12$3, [createVNode($setup["ProgressBar"], { counts: $setup.runStore.run.counts }, null, 8, ["counts"]), createBaseVNode("div", _hoisted_13$3, [
+				createBaseVNode("span", _hoisted_14$2, toDisplayString($setup.runStore.run.status), 1),
 				createVNode($setup["AvatarStack"], { people: $setup.runStore.run.assignees }, null, 8, ["people"]),
 				$setup.bootstrap.caps?.runTests ? (openBlock(), createElementBlock("button", {
 					key: 0,
@@ -39022,10 +39038,10 @@ Use slot props instead:
 				"assigned",
 				"saving"
 			])]),
-			!$setup.isOpen ? (openBlock(), createElementBlock("div", _hoisted_15$1, " This run is " + toDisplayString($setup.runStore.run.status) + ". Results, comments and locks are read-only. ", 1)) : createCommentVNode("", true),
-			$setup.regressions.length ? (openBlock(), createElementBlock("div", _hoisted_16$1, [createBaseVNode("strong", null, toDisplayString($setup.regressions.length) + " " + toDisplayString($setup.plural($setup.regressions.length, "regression")) + ".", 1), createTextVNode(" " + toDisplayString($setup.plural($setup.regressions.length, "This case passed", "These cases passed")) + " in the previous run and " + toDisplayString($setup.plural($setup.regressions.length, "fails", "fail")) + " now: " + toDisplayString($setup.regressions.map((result) => result.case.title).join(", ")), 1)])) : createCommentVNode("", true),
-			createBaseVNode("div", _hoisted_17$1, [
-				createBaseVNode("div", _hoisted_18$1, [createBaseVNode("div", _hoisted_19$1, [
+			!$setup.isOpen ? (openBlock(), createElementBlock("div", _hoisted_15$2, " This run is " + toDisplayString($setup.runStore.run.status) + ". Results, comments and locks are read-only. ", 1)) : createCommentVNode("", true),
+			$setup.regressions.length ? (openBlock(), createElementBlock("div", _hoisted_16$2, [createBaseVNode("strong", null, toDisplayString($setup.regressions.length) + " " + toDisplayString($setup.plural($setup.regressions.length, "regression")) + ".", 1), createTextVNode(" " + toDisplayString($setup.plural($setup.regressions.length, "This case passed", "These cases passed")) + " in the previous run and " + toDisplayString($setup.plural($setup.regressions.length, "fails", "fail")) + " now: " + toDisplayString($setup.regressions.map((result) => result.case.title).join(", ")), 1)])) : createCommentVNode("", true),
+			createBaseVNode("div", _hoisted_17$2, [
+				createBaseVNode("div", _hoisted_18$2, [createBaseVNode("div", _hoisted_19$2, [
 					_cache[23] || (_cache[23] = createBaseVNode("label", {
 						class: "qa-sr-only",
 						for: "filter-status"
@@ -39039,7 +39055,7 @@ Use slot props instead:
 						return openBlock(), createElementBlock("option", {
 							key: status.value,
 							value: status.value
-						}, toDisplayString($setup.statusLabel(status.value)), 9, _hoisted_20$1);
+						}, toDisplayString($setup.statusLabel(status.value)), 9, _hoisted_20$2);
 					}), 128))], 512), [[vModelSelect, $setup.filters.status]]),
 					_cache[24] || (_cache[24] = createBaseVNode("label", {
 						class: "qa-sr-only",
@@ -39054,7 +39070,7 @@ Use slot props instead:
 						return openBlock(), createElementBlock("option", {
 							key: suite.id,
 							value: String(suite.id)
-						}, toDisplayString(suite.name), 9, _hoisted_21$1);
+						}, toDisplayString(suite.name), 9, _hoisted_21$2);
 					}), 128))], 512), [[vModelSelect, $setup.filters.suite]]),
 					_cache[25] || (_cache[25] = createBaseVNode("label", {
 						class: "qa-sr-only",
@@ -39069,21 +39085,21 @@ Use slot props instead:
 						return openBlock(), createElementBlock("option", {
 							key: priority.value,
 							value: priority.value
-						}, toDisplayString(priority.label), 9, _hoisted_22$1);
+						}, toDisplayString(priority.label), 9, _hoisted_22$2);
 					}), 128))], 512), [[vModelSelect, $setup.filters.priority]]),
-					createBaseVNode("label", _hoisted_23$1, [withDirectives(createBaseVNode("input", {
+					createBaseVNode("label", _hoisted_23$2, [withDirectives(createBaseVNode("input", {
 						"onUpdate:modelValue": _cache[7] || (_cache[7] = ($event) => $setup.filters.onlyMine = $event),
 						type: "checkbox"
 					}, null, 512), [[vModelCheckbox, $setup.filters.onlyMine]]), _cache[20] || (_cache[20] = createBaseVNode("span", null, "Only mine", -1))]),
-					createBaseVNode("label", _hoisted_24$1, [withDirectives(createBaseVNode("input", {
+					createBaseVNode("label", _hoisted_24$2, [withDirectives(createBaseVNode("input", {
 						"onUpdate:modelValue": _cache[8] || (_cache[8] = ($event) => $setup.filters.onlyUnassigned = $event),
 						type: "checkbox"
 					}, null, 512), [[vModelCheckbox, $setup.filters.onlyUnassigned]]), _cache[21] || (_cache[21] = createBaseVNode("span", null, "Unassigned only", -1))]),
-					createBaseVNode("label", _hoisted_25$1, [withDirectives(createBaseVNode("input", {
+					createBaseVNode("label", _hoisted_25$2, [withDirectives(createBaseVNode("input", {
 						"onUpdate:modelValue": _cache[9] || (_cache[9] = ($event) => $setup.filters.onlyFailedLastRun = $event),
 						type: "checkbox"
 					}, null, 512), [[vModelCheckbox, $setup.filters.onlyFailedLastRun]]), _cache[22] || (_cache[22] = createBaseVNode("span", null, "Only failed last run", -1))])
-				]), createBaseVNode("div", _hoisted_26$1, [$setup.hasFilters ? (openBlock(), createElementBlock("button", {
+				]), createBaseVNode("div", _hoisted_26$2, [$setup.hasFilters ? (openBlock(), createElementBlock("button", {
 					key: 0,
 					type: "button",
 					class: "qa-button qa-button--small qa-button--quiet",
@@ -39178,10 +39194,10 @@ Use slot props instead:
 			_: 1
 		}))]);
 	}
-	var RunDetailView_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$3, [["render", _sfc_render$3], ["__file", "RunDetailView.vue"]]);
+	var RunDetailView_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$4, [["render", _sfc_render$4], ["__file", "RunDetailView.vue"]]);
 	//#endregion
 	//#region src/views/RunListView.vue
-	var _sfc_main$2 = {
+	var _sfc_main$3 = {
 		__name: "RunListView",
 		setup(__props, { expose: __expose }) {
 			__expose();
@@ -39274,32 +39290,32 @@ Use slot props instead:
 			return __returned__;
 		}
 	};
-	var _hoisted_1$2 = { class: "qa-stack" };
-	var _hoisted_2$2 = { class: "qa-page-head" };
-	var _hoisted_3$2 = {
+	var _hoisted_1$3 = { class: "qa-stack" };
+	var _hoisted_2$3 = { class: "qa-page-head" };
+	var _hoisted_3$3 = {
 		class: "qa-chips",
 		role: "group",
 		"aria-label": "Filter runs by status"
 	};
-	var _hoisted_4$2 = ["aria-pressed", "onClick"];
-	var _hoisted_5$2 = { class: "qa-card" };
-	var _hoisted_6$2 = {
+	var _hoisted_4$3 = ["aria-pressed", "onClick"];
+	var _hoisted_5$3 = { class: "qa-card" };
+	var _hoisted_6$3 = {
 		key: 0,
 		class: "qa-skeleton"
 	};
-	var _hoisted_7$2 = {
+	var _hoisted_7$3 = {
 		key: 2,
 		class: "qa-table-scroll"
 	};
-	var _hoisted_8$1 = { class: "qa-table" };
-	var _hoisted_9$1 = { class: "qa-run-cell" };
-	var _hoisted_10$1 = { class: "qa-badge qa-badge--env" };
-	var _hoisted_11$1 = { class: "qa-muted" };
-	var _hoisted_12$1 = { class: "qa-muted" };
-	var _hoisted_13$1 = { class: "qa-badge" };
-	function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
-		return openBlock(), createElementBlock("div", _hoisted_1$2, [
-			createBaseVNode("div", _hoisted_2$2, [_cache[1] || (_cache[1] = createBaseVNode("div", { class: "qa-page-head__meta" }, [createBaseVNode("h2", null, "Test runs")], -1)), $setup.bootstrap.caps?.runTests ? (openBlock(), createBlock($setup["RouterLink"], {
+	var _hoisted_8$3 = { class: "qa-table" };
+	var _hoisted_9$2 = { class: "qa-run-cell" };
+	var _hoisted_10$2 = { class: "qa-badge qa-badge--env" };
+	var _hoisted_11$2 = { class: "qa-muted" };
+	var _hoisted_12$2 = { class: "qa-muted" };
+	var _hoisted_13$2 = { class: "qa-badge" };
+	function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
+		return openBlock(), createElementBlock("div", _hoisted_1$3, [
+			createBaseVNode("div", _hoisted_2$3, [_cache[1] || (_cache[1] = createBaseVNode("div", { class: "qa-page-head__meta" }, [createBaseVNode("h2", null, "Test runs")], -1)), $setup.bootstrap.caps?.runTests ? (openBlock(), createBlock($setup["RouterLink"], {
 				key: 0,
 				class: "qa-button qa-button--primary",
 				to: "/runs/new"
@@ -39307,16 +39323,16 @@ Use slot props instead:
 				default: withCtx(() => [..._cache[0] || (_cache[0] = [createTextVNode(" New run ", -1)])]),
 				_: 1
 			})) : createCommentVNode("", true)]),
-			createBaseVNode("div", _hoisted_3$2, [(openBlock(), createElementBlock(Fragment, null, renderList($setup.FILTERS, (option) => {
+			createBaseVNode("div", _hoisted_3$3, [(openBlock(), createElementBlock(Fragment, null, renderList($setup.FILTERS, (option) => {
 				return createBaseVNode("button", {
 					key: option.label,
 					type: "button",
 					class: normalizeClass(["qa-chip", { "is-active": $setup.filter === option.value }]),
 					"aria-pressed": $setup.filter === option.value,
 					onClick: ($event) => $setup.setFilter(option.value)
-				}, toDisplayString(option.label), 11, _hoisted_4$2);
+				}, toDisplayString(option.label), 11, _hoisted_4$3);
 			}), 64))]),
-			createBaseVNode("div", _hoisted_5$2, [$setup.loading ? (openBlock(), createElementBlock("p", _hoisted_6$2, "Loading runs…")) : !$setup.runStore.runs.length ? (openBlock(), createBlock($setup["EmptyState"], {
+			createBaseVNode("div", _hoisted_5$3, [$setup.loading ? (openBlock(), createElementBlock("p", _hoisted_6$3, "Loading runs…")) : !$setup.runStore.runs.length ? (openBlock(), createBlock($setup["EmptyState"], {
 				key: 1,
 				title: $setup.filter === "open" ? "No open runs. Create one to start testing." : "No runs match this filter."
 			}, {
@@ -39329,7 +39345,7 @@ Use slot props instead:
 					_: 1
 				})) : createCommentVNode("", true)]),
 				_: 1
-			}, 8, ["title"])) : (openBlock(), createElementBlock("div", _hoisted_7$2, [createBaseVNode("table", _hoisted_8$1, [_cache[3] || (_cache[3] = createBaseVNode("thead", null, [createBaseVNode("tr", null, [
+			}, 8, ["title"])) : (openBlock(), createElementBlock("div", _hoisted_7$3, [createBaseVNode("table", _hoisted_8$3, [_cache[3] || (_cache[3] = createBaseVNode("thead", null, [createBaseVNode("tr", null, [
 				createBaseVNode("th", { scope: "col" }, "Run"),
 				createBaseVNode("th", { scope: "col" }, "Version"),
 				createBaseVNode("th", {
@@ -39344,23 +39360,378 @@ Use slot props instead:
 					key: run.id,
 					class: normalizeClass({ "is-completed": run.status === "completed" })
 				}, [
-					createBaseVNode("td", null, [createBaseVNode("div", _hoisted_9$1, [createVNode($setup["RouterLink"], { to: `/runs/${run.id}` }, {
+					createBaseVNode("td", null, [createBaseVNode("div", _hoisted_9$2, [createVNode($setup["RouterLink"], { to: `/runs/${run.id}` }, {
 						default: withCtx(() => [createTextVNode(toDisplayString(run.name), 1)]),
 						_: 2
-					}, 1032, ["to"]), createBaseVNode("span", _hoisted_10$1, toDisplayString(run.environment), 1)])]),
-					createBaseVNode("td", _hoisted_11$1, toDisplayString(run.version), 1),
+					}, 1032, ["to"]), createBaseVNode("span", _hoisted_10$2, toDisplayString(run.environment), 1)])]),
+					createBaseVNode("td", _hoisted_11$2, toDisplayString(run.version), 1),
 					createBaseVNode("td", null, [createVNode($setup["ProgressBar"], {
 						counts: run.counts,
 						issues: run?.open_issue_count
 					}, null, 8, ["counts", "issues"])]),
 					createBaseVNode("td", null, [createVNode($setup["AvatarStack"], { people: run.assignees }, null, 8, ["people"])]),
-					createBaseVNode("td", _hoisted_12$1, toDisplayString($setup.shortDate(run.created_at)), 1),
-					createBaseVNode("td", null, [createBaseVNode("span", _hoisted_13$1, toDisplayString(run.status), 1)])
+					createBaseVNode("td", _hoisted_12$2, toDisplayString($setup.shortDate(run.created_at)), 1),
+					createBaseVNode("td", null, [createBaseVNode("span", _hoisted_13$2, toDisplayString(run.status), 1)])
 				], 2);
 			}), 128))])])]))])
 		]);
 	}
-	var RunListView_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$2, [["render", _sfc_render$2], ["__file", "RunListView.vue"]]);
+	var RunListView_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$3, [["render", _sfc_render$3], ["__file", "RunListView.vue"]]);
+	//#endregion
+	//#region src/components/TeamPanel.vue
+	var _sfc_main$2 = {
+		__name: "TeamPanel",
+		setup(__props, { expose: __expose }) {
+			__expose();
+			/**
+			* The QA team: who has access and with which role, plus granting a role to an existing
+			* WordPress user. Never creates users. Site administrators only — the server checks
+			* promote_users on every route.
+			*
+			* Changes save immediately rather than through the Settings form's Save button: a role is
+			* a per-person action, not a preference to batch.
+			*/
+			const ui = useUiStore();
+			const ROLE_OPTIONS = [{
+				value: "qa_tester",
+				label: "QA Tester"
+			}, {
+				value: "qa_admin",
+				label: "QA Admin"
+			}];
+			const ROLE_HINTS = {
+				qa_tester: "Runs tests: creates runs, records results, comments and raises issues.",
+				qa_admin: "Everything a tester can do, plus the case library, suites and settings."
+			};
+			const members = /* @__PURE__ */ ref([]);
+			const loading = /* @__PURE__ */ ref(true);
+			const savingId = /* @__PURE__ */ ref(0);
+			const search = /* @__PURE__ */ ref("");
+			const candidates = /* @__PURE__ */ ref([]);
+			const loadingCandidates = /* @__PURE__ */ ref(false);
+			const newUserId = /* @__PURE__ */ ref(0);
+			const newRole = /* @__PURE__ */ ref("qa_tester");
+			const adding = /* @__PURE__ */ ref(false);
+			const selectedCandidate = computed(() => candidates.value.find((user) => user.id === newUserId.value));
+			/**
+			* Loads the current team.
+			*
+			* @returns {Promise<void>}
+			*/
+			async function loadMembers() {
+				try {
+					members.value = await api.team.list();
+				} catch (error) {
+					ui.toastError(error, "The QA team could not be loaded.");
+				} finally {
+					loading.value = false;
+				}
+			}
+			/**
+			* Loads users without QA access, narrowed by the search box.
+			*
+			* @returns {Promise<void>}
+			*/
+			async function loadCandidates() {
+				loadingCandidates.value = true;
+				try {
+					candidates.value = await api.team.candidates(search.value.trim());
+					if (!candidates.value.some((user) => user.id === newUserId.value)) newUserId.value = candidates.value[0]?.id ?? 0;
+				} catch (error) {
+					ui.toastError(error, "The user list could not be loaded.");
+				} finally {
+					loadingCandidates.value = false;
+				}
+			}
+			let searchTimer = 0;
+			watch(search, () => {
+				window.clearTimeout(searchTimer);
+				searchTimer = window.setTimeout(loadCandidates, 250);
+			});
+			/**
+			* Grants the chosen role to the chosen user.
+			*
+			* @returns {Promise<void>}
+			*/
+			async function addMember() {
+				if (!newUserId.value) return;
+				adding.value = true;
+				try {
+					const member = await api.team.add(newUserId.value, newRole.value);
+					members.value = [...members.value, member];
+					ui.toast(`${member.name} added to the QA team.`);
+					search.value = "";
+					await loadCandidates();
+				} catch (error) {
+					ui.toastError(error, "That person could not be added.");
+				} finally {
+					adding.value = false;
+				}
+			}
+			/**
+			* Switches a member between QA Tester and QA Admin.
+			*
+			* @param {Object} member Team member.
+			* @param {string} role New QA role.
+			* @returns {Promise<void>}
+			*/
+			async function changeRole(member, role) {
+				savingId.value = member.id;
+				try {
+					const updated = await api.team.update(member.id, role);
+					members.value = members.value.map((item) => item.id === updated.id ? updated : item);
+					ui.toast(`${updated.name} is now a ${roleLabel(updated.qa_role)}.`);
+				} catch (error) {
+					ui.toastError(error, "The role could not be changed.");
+				} finally {
+					savingId.value = 0;
+				}
+			}
+			/**
+			* Takes a member's QA role away. Their WordPress role is untouched.
+			*
+			* @param {Object} member Team member.
+			* @returns {Promise<void>}
+			*/
+			async function removeMember(member) {
+				const keeps = member.wp_roles.length ? `They keep their WordPress role (${member.wp_roles.join(", ")})` : "They have no other WordPress role, so they become a Subscriber";
+				if (!window.confirm(`Remove ${member.name} from the QA team? ${keeps}, but lose access to QA Runner.`)) return;
+				savingId.value = member.id;
+				try {
+					await api.team.remove(member.id);
+					members.value = members.value.filter((item) => item.id !== member.id);
+					ui.toast(`${member.name} removed from the QA team.`);
+					await loadCandidates();
+				} catch (error) {
+					ui.toastError(error, "That person could not be removed.");
+				} finally {
+					savingId.value = 0;
+				}
+			}
+			/**
+			* Display label for a QA role.
+			*
+			* @param {string} role Role slug.
+			* @returns {string}
+			*/
+			function roleLabel(role) {
+				return ROLE_OPTIONS.find((option) => option.value === role)?.label ?? "Administrator";
+			}
+			/**
+			* Whether this row's role may be changed here.
+			*
+			* @param {Object} member Team member.
+			* @returns {boolean}
+			*/
+			function isEditable(member) {
+				return member.qa_role !== "administrator" && member.id !== bootstrap.currentUser?.id;
+			}
+			onMounted(() => {
+				loadMembers();
+				loadCandidates();
+			});
+			const __returned__ = {
+				ui,
+				ROLE_OPTIONS,
+				ROLE_HINTS,
+				members,
+				loading,
+				savingId,
+				search,
+				candidates,
+				loadingCandidates,
+				newUserId,
+				newRole,
+				adding,
+				selectedCandidate,
+				loadMembers,
+				loadCandidates,
+				get searchTimer() {
+					return searchTimer;
+				},
+				set searchTimer(v) {
+					searchTimer = v;
+				},
+				addMember,
+				changeRole,
+				removeMember,
+				roleLabel,
+				isEditable,
+				computed,
+				onMounted,
+				ref,
+				watch,
+				get api() {
+					return api;
+				},
+				get bootstrap() {
+					return bootstrap;
+				},
+				get useUiStore() {
+					return useUiStore;
+				}
+			};
+			Object.defineProperty(__returned__, "__isScriptSetup", {
+				enumerable: false,
+				value: true
+			});
+			return __returned__;
+		}
+	};
+	var _hoisted_1$2 = { class: "qa-card" };
+	var _hoisted_2$2 = {
+		key: 0,
+		class: "qa-card__body qa-skeleton"
+	};
+	var _hoisted_3$2 = {
+		key: 1,
+		class: "qa-table-scroll"
+	};
+	var _hoisted_4$2 = { class: "qa-table" };
+	var _hoisted_5$2 = { class: "qa-team-user" };
+	var _hoisted_6$2 = ["src"];
+	var _hoisted_7$2 = { class: "qa-team-user__text" };
+	var _hoisted_8$2 = { class: "qa-team-user__name" };
+	var _hoisted_9$1 = { class: "qa-muted" };
+	var _hoisted_10$1 = { class: "qa-muted" };
+	var _hoisted_11$1 = [
+		"value",
+		"disabled",
+		"aria-label",
+		"onChange"
+	];
+	var _hoisted_12$1 = ["value"];
+	var _hoisted_13$1 = {
+		key: 1,
+		class: "qa-muted"
+	};
+	var _hoisted_14$1 = { key: 2 };
+	var _hoisted_15$1 = { class: "qa-team-actions" };
+	var _hoisted_16$1 = [
+		"title",
+		"aria-label",
+		"disabled",
+		"onClick"
+	];
+	var _hoisted_17$1 = { class: "qa-team-add__fields" };
+	var _hoisted_18$1 = { class: "qa-field" };
+	var _hoisted_19$1 = { class: "qa-field" };
+	var _hoisted_20$1 = ["disabled"];
+	var _hoisted_21$1 = {
+		key: 0,
+		value: 0
+	};
+	var _hoisted_22$1 = ["value"];
+	var _hoisted_23$1 = { class: "qa-field" };
+	var _hoisted_24$1 = ["value"];
+	var _hoisted_25$1 = ["disabled"];
+	var _hoisted_26$1 = { class: "qa-field__hint" };
+	function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+		return openBlock(), createElementBlock("div", _hoisted_1$2, [
+			_cache[10] || (_cache[10] = createBaseVNode("div", { class: "qa-card__head" }, [createBaseVNode("h3", null, "QA team")], -1)),
+			$setup.loading ? (openBlock(), createElementBlock("p", _hoisted_2$2, "Loading the QA team…")) : (openBlock(), createElementBlock("div", _hoisted_3$2, [createBaseVNode("table", _hoisted_4$2, [_cache[5] || (_cache[5] = createBaseVNode("thead", null, [createBaseVNode("tr", null, [
+				createBaseVNode("th", { scope: "col" }, "User"),
+				createBaseVNode("th", { scope: "col" }, "WordPress role"),
+				createBaseVNode("th", { scope: "col" }, "QA role"),
+				createBaseVNode("th", { scope: "col" }, [createBaseVNode("span", { class: "screen-reader-text" }, "Actions")])
+			])], -1)), createBaseVNode("tbody", null, [(openBlock(true), createElementBlock(Fragment, null, renderList($setup.members, (member) => {
+				return openBlock(), createElementBlock("tr", { key: member.id }, [
+					createBaseVNode("td", null, [createBaseVNode("div", _hoisted_5$2, [createBaseVNode("img", {
+						class: "qa-team-user__avatar",
+						src: member.avatar,
+						alt: "",
+						width: "28",
+						height: "28",
+						loading: "lazy"
+					}, null, 8, _hoisted_6$2), createBaseVNode("div", _hoisted_7$2, [createBaseVNode("span", _hoisted_8$2, toDisplayString(member.name), 1), createBaseVNode("span", _hoisted_9$1, toDisplayString(member.email), 1)])])]),
+					createBaseVNode("td", _hoisted_10$1, toDisplayString(member.wp_roles.join(", ") || "—"), 1),
+					createBaseVNode("td", null, [$setup.isEditable(member) ? (openBlock(), createElementBlock("select", {
+						key: 0,
+						class: "qa-select",
+						value: member.qa_role,
+						disabled: $setup.savingId === member.id,
+						"aria-label": `QA role for ${member.name}`,
+						onChange: ($event) => $setup.changeRole(member, $event.target.value)
+					}, [(openBlock(), createElementBlock(Fragment, null, renderList($setup.ROLE_OPTIONS, (option) => {
+						return createBaseVNode("option", {
+							key: option.value,
+							value: option.value
+						}, toDisplayString(option.label), 9, _hoisted_12$1);
+					}), 64))], 40, _hoisted_11$1)) : member.qa_role === "administrator" ? (openBlock(), createElementBlock("span", _hoisted_13$1, " Full access (site administrator) ")) : (openBlock(), createElementBlock("span", _hoisted_14$1, [createTextVNode(toDisplayString($setup.roleLabel(member.qa_role)) + " ", 1), _cache[3] || (_cache[3] = createBaseVNode("span", { class: "qa-muted" }, "(you)", -1))]))]),
+					createBaseVNode("td", _hoisted_15$1, [$setup.isEditable(member) ? (openBlock(), createElementBlock("button", {
+						key: 0,
+						type: "button",
+						class: "qa-icon-button qa-icon-button--danger",
+						title: `Remove ${member.name} from the QA team`,
+						"aria-label": `Remove ${member.name} from the QA team`,
+						disabled: $setup.savingId === member.id,
+						onClick: ($event) => $setup.removeMember(member)
+					}, [..._cache[4] || (_cache[4] = [createBaseVNode("span", {
+						class: "dashicons dashicons-trash",
+						"aria-hidden": "true"
+					}, null, -1)])], 8, _hoisted_16$1)) : createCommentVNode("", true)])
+				]);
+			}), 128))])])])),
+			createBaseVNode("form", {
+				class: "qa-card__body qa-team-add",
+				onSubmit: withModifiers($setup.addMember, ["prevent"])
+			}, [
+				_cache[9] || (_cache[9] = createBaseVNode("h4", { class: "qa-team-add__title" }, "Add an existing user", -1)),
+				createBaseVNode("div", _hoisted_17$1, [
+					createBaseVNode("div", _hoisted_18$1, [_cache[6] || (_cache[6] = createBaseVNode("label", {
+						class: "qa-field__label",
+						for: "team-search"
+					}, "Search users", -1)), withDirectives(createBaseVNode("input", {
+						id: "team-search",
+						"onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.search = $event),
+						class: "qa-input",
+						type: "search",
+						placeholder: "Name, username or email",
+						autocomplete: "off"
+					}, null, 512), [[vModelText, $setup.search]])]),
+					createBaseVNode("div", _hoisted_19$1, [_cache[7] || (_cache[7] = createBaseVNode("label", {
+						class: "qa-field__label",
+						for: "team-user"
+					}, "User", -1)), withDirectives(createBaseVNode("select", {
+						id: "team-user",
+						"onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => $setup.newUserId = $event),
+						class: "qa-select",
+						disabled: $setup.loadingCandidates || !$setup.candidates.length
+					}, [!$setup.candidates.length ? (openBlock(), createElementBlock("option", _hoisted_21$1, toDisplayString($setup.loadingCandidates ? "Loading…" : "No matching users without QA access"), 1)) : createCommentVNode("", true), (openBlock(true), createElementBlock(Fragment, null, renderList($setup.candidates, (user) => {
+						return openBlock(), createElementBlock("option", {
+							key: user.id,
+							value: user.id
+						}, toDisplayString(user.name) + " (" + toDisplayString(user.email) + ") ", 9, _hoisted_22$1);
+					}), 128))], 8, _hoisted_20$1), [[
+						vModelSelect,
+						$setup.newUserId,
+						void 0,
+						{ number: true }
+					]])]),
+					createBaseVNode("div", _hoisted_23$1, [_cache[8] || (_cache[8] = createBaseVNode("label", {
+						class: "qa-field__label",
+						for: "team-role"
+					}, "QA role", -1)), withDirectives(createBaseVNode("select", {
+						id: "team-role",
+						"onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => $setup.newRole = $event),
+						class: "qa-select"
+					}, [(openBlock(), createElementBlock(Fragment, null, renderList($setup.ROLE_OPTIONS, (option) => {
+						return createBaseVNode("option", {
+							key: option.value,
+							value: option.value
+						}, toDisplayString(option.label), 9, _hoisted_24$1);
+					}), 64))], 512), [[vModelSelect, $setup.newRole]])]),
+					createBaseVNode("button", {
+						type: "submit",
+						class: "qa-button qa-button--primary",
+						disabled: $setup.adding || !$setup.selectedCandidate
+					}, toDisplayString($setup.adding ? "Adding…" : "Add to team"), 9, _hoisted_25$1)
+				]),
+				createBaseVNode("p", _hoisted_26$1, toDisplayString($setup.ROLE_HINTS[$setup.newRole]) + " The QA role is added alongside their current WordPress role. Site administrators always have full access. ", 1)
+			], 32)
+		]);
+	}
+	var TeamPanel_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$2, [["render", _sfc_render$2], ["__file", "TeamPanel.vue"]]);
 	//#endregion
 	//#region src/views/SettingsView.vue
 	var _sfc_main$1 = {
@@ -39368,7 +39739,8 @@ Use slot props instead:
 		setup(__props, { expose: __expose }) {
 			__expose();
 			/**
-			* Settings: the notification pause and the uninstall opt-in.
+			* Settings: the notification pause and the uninstall opt-in, plus — for site
+			* administrators only — the QA team.
 			*/
 			const ui = useUiStore();
 			const settings = /* @__PURE__ */ ref({
@@ -39410,8 +39782,12 @@ Use slot props instead:
 				save,
 				onMounted,
 				ref,
+				TeamPanel: TeamPanel_default,
 				get api() {
 					return api;
+				},
+				get bootstrap() {
+					return bootstrap;
 				},
 				get useUiStore() {
 					return useUiStore;
@@ -39424,34 +39800,35 @@ Use slot props instead:
 			return __returned__;
 		}
 	};
-	var _hoisted_1$1 = { class: "qa-page-head" };
-	var _hoisted_2$1 = ["disabled"];
-	var _hoisted_3$1 = {
+	var _hoisted_1$1 = { class: "qa-stack" };
+	var _hoisted_2$1 = { class: "qa-page-head" };
+	var _hoisted_3$1 = ["disabled"];
+	var _hoisted_4$1 = {
 		key: 0,
 		class: "qa-skeleton"
 	};
-	var _hoisted_4$1 = {
+	var _hoisted_5$1 = {
 		key: 1,
 		class: "qa-card"
 	};
-	var _hoisted_5$1 = { class: "qa-card__body qa-stack" };
-	var _hoisted_6$1 = { class: "qa-checkbox" };
+	var _hoisted_6$1 = { class: "qa-card__body qa-stack" };
 	var _hoisted_7$1 = { class: "qa-checkbox" };
+	var _hoisted_8$1 = { class: "qa-checkbox" };
 	function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
-		return openBlock(), createElementBlock("form", {
+		return openBlock(), createElementBlock("div", _hoisted_1$1, [createBaseVNode("form", {
 			class: "qa-stack",
 			onSubmit: withModifiers($setup.save, ["prevent"])
-		}, [createBaseVNode("div", _hoisted_1$1, [_cache[2] || (_cache[2] = createBaseVNode("div", { class: "qa-page-head__meta" }, [createBaseVNode("h2", null, "Settings")], -1)), createBaseVNode("button", {
+		}, [createBaseVNode("div", _hoisted_2$1, [_cache[2] || (_cache[2] = createBaseVNode("div", { class: "qa-page-head__meta" }, [createBaseVNode("h2", null, "Settings")], -1)), createBaseVNode("button", {
 			type: "submit",
 			class: "qa-button qa-button--primary",
 			disabled: $setup.saving || $setup.loading
-		}, toDisplayString($setup.saving ? "Saving…" : "Save settings"), 9, _hoisted_2$1)]), $setup.loading ? (openBlock(), createElementBlock("p", _hoisted_3$1, "Loading settings…")) : (openBlock(), createElementBlock("div", _hoisted_4$1, [createBaseVNode("div", _hoisted_5$1, [createBaseVNode("label", _hoisted_6$1, [withDirectives(createBaseVNode("input", {
+		}, toDisplayString($setup.saving ? "Saving…" : "Save settings"), 9, _hoisted_3$1)]), $setup.loading ? (openBlock(), createElementBlock("p", _hoisted_4$1, "Loading settings…")) : (openBlock(), createElementBlock("div", _hoisted_5$1, [createBaseVNode("div", _hoisted_6$1, [createBaseVNode("label", _hoisted_7$1, [withDirectives(createBaseVNode("input", {
 			"onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.settings.notificationsPaused = $event),
 			type: "checkbox"
-		}, null, 512), [[vModelCheckbox, $setup.settings.notificationsPaused]]), _cache[3] || (_cache[3] = createBaseVNode("span", null, [createTextVNode(" Pause notifications "), createBaseVNode("span", { class: "qa-field__hint" }, " Stops the emails sent when someone assigns another person to a run or a case. ")], -1))]), createBaseVNode("label", _hoisted_7$1, [withDirectives(createBaseVNode("input", {
+		}, null, 512), [[vModelCheckbox, $setup.settings.notificationsPaused]]), _cache[3] || (_cache[3] = createBaseVNode("span", null, [createTextVNode(" Pause notifications "), createBaseVNode("span", { class: "qa-field__hint" }, " Stops the emails sent when someone assigns another person to a run or a case. ")], -1))]), createBaseVNode("label", _hoisted_8$1, [withDirectives(createBaseVNode("input", {
 			"onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => $setup.settings.deleteDataOnUninstall = $event),
 			type: "checkbox"
-		}, null, 512), [[vModelCheckbox, $setup.settings.deleteDataOnUninstall]]), _cache[4] || (_cache[4] = createBaseVNode("span", null, [createTextVNode(" Delete all QA data when the plugin is uninstalled "), createBaseVNode("span", { class: "qa-field__hint" }, " Off by default. With this off, uninstalling removes the role and settings but leaves every run, result and issue in the database. ")], -1))])])]))], 32);
+		}, null, 512), [[vModelCheckbox, $setup.settings.deleteDataOnUninstall]]), _cache[4] || (_cache[4] = createBaseVNode("span", null, [createTextVNode(" Delete all QA data when the plugin is uninstalled "), createBaseVNode("span", { class: "qa-field__hint" }, " Off by default. With this off, uninstalling removes the role and settings but leaves every run, result and issue in the database. ")], -1))])])]))], 32), $setup.bootstrap.caps?.manageTeam ? (openBlock(), createBlock($setup["TeamPanel"], { key: 0 })) : createCommentVNode("", true)]);
 	}
 	var SettingsView_default = /*#__PURE__*/ _plugin_vue_export_helper_default(_sfc_main$1, [["render", _sfc_render$1], ["__file", "SettingsView.vue"]]);
 	//#endregion

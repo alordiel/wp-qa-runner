@@ -57,7 +57,7 @@ final class Assets {
 		}
 
 		$script = QA_RUNNER_PATH . self::SCRIPT;
-        error_log($this->asset_version( $script ));
+
 		if ( ! is_readable( $script ) ) {
 			add_action( 'admin_notices', array( $this, 'render_missing_build_notice' ) );
 
@@ -136,6 +136,7 @@ final class Assets {
 			'caps'         => array(
 				'manageCases' => current_user_can( Roles::CAP_MANAGE ),
 				'runTests'    => current_user_can( Roles::CAP_TEST ),
+				'manageTeam'  => current_user_can( 'promote_users' ),
 			),
 			'adminUrl'     => admin_url( 'admin.php?page=' . QA_RUNNER_SLUG ),
 			'environments' => \QARunner\Support\Enum::ENVIRONMENTS,
