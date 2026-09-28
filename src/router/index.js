@@ -1,7 +1,7 @@
 /**
  * Routing.
  *
- * Hash mode: history mode fights admin.php?page=qa-runner and would need rewrite rules for
+ * Hash mode: history mode fights admin.php?page=mandragora-qa-test-manager and would need rewrite rules for
  * no benefit inside wp-admin.
  */
 

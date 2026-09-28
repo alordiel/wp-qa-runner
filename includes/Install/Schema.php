@@ -2,12 +2,12 @@
 /**
  * Table definitions and version migrations.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Install;
+namespace MandragoraQAManager\Install;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -16,11 +16,11 @@ defined( 'ABSPATH' ) || exit;
  *
  * Every status and priority column is VARCHAR(20) rather than ENUM: dbDelta rewrites ENUM
  * definitions on each run, producing a permanent phantom diff. The allowed values live in
- * QARunner\Support\Enum instead.
+ * MandragoraQAManager\Support\Enum instead.
  */
 final class Schema {
 
-	public const VERSION_OPTION = 'qa_runner_db_version';
+	public const VERSION_OPTION = 'mqatm_db_version';
 
 	/**
 	 * Table base names, without the WordPress prefix.
@@ -53,7 +53,7 @@ final class Schema {
 			return '';
 		}
 
-		return $wpdb->prefix . 'qa_' . $name;
+		return $wpdb->prefix . 'mqatm_' . $name;
 	}
 
 	/**
@@ -68,7 +68,7 @@ final class Schema {
 			dbDelta( $sql );
 		}
 
-		update_option( self::VERSION_OPTION, QA_RUNNER_DB_VERSION, false );
+		update_option( self::VERSION_OPTION, MQATM_DB_VERSION, false );
 	}
 
 	/**
@@ -79,7 +79,7 @@ final class Schema {
 	public static function maybe_upgrade(): void {
 		$installed = (int) get_option( self::VERSION_OPTION, 0 );
 
-		if ( $installed >= QA_RUNNER_DB_VERSION ) {
+		if ( $installed >= MQATM_DB_VERSION ) {
 			return;
 		}
 

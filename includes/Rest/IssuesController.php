@@ -2,17 +2,17 @@
 /**
  * Issue routes.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Rest;
+namespace MandragoraQAManager\Rest;
 
-use QARunner\Repository\CaseRepository;
-use QARunner\Repository\IssueRepository;
-use QARunner\Support\Enum;
-use QARunner\Support\Sanitize;
+use MandragoraQAManager\Repository\CaseRepository;
+use MandragoraQAManager\Repository\IssueRepository;
+use MandragoraQAManager\Support\Enum;
+use MandragoraQAManager\Support\Sanitize;
 use WP_REST_Request;
 
 defined( 'ABSPATH' ) || exit;
@@ -134,7 +134,7 @@ final class IssuesController extends Controller {
 		$case_id = (int) $request->get_param( 'id' );
 
 		if ( null === $this->cases->find( $case_id ) ) {
-			return $this->not_found( __( 'That case no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That case no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		$status = (string) $request->get_param( 'status' );
@@ -152,7 +152,7 @@ final class IssuesController extends Controller {
 		$case_id = (int) $request->get_param( 'id' );
 
 		if ( null === $this->cases->find( $case_id ) ) {
-			return $this->not_found( __( 'That case no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That case no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		$issue_id = $this->issues->create(
@@ -167,7 +167,7 @@ final class IssuesController extends Controller {
 		);
 
 		if ( 0 === $issue_id ) {
-			return $this->write_failed( __( 'The issue could not be saved.', 'qa-runner' ) );
+			return $this->write_failed( __( 'The issue could not be saved.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return $this->issues->find( $issue_id );
@@ -183,7 +183,7 @@ final class IssuesController extends Controller {
 		$id = (int) $request->get_param( 'id' );
 
 		if ( null === $this->issues->find( $id ) ) {
-			return $this->not_found( __( 'That issue no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That issue no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		$data = array();
@@ -195,7 +195,7 @@ final class IssuesController extends Controller {
 		}
 
 		if ( ! $this->issues->update( $id, $data, get_current_user_id() ) ) {
-			return $this->write_failed( __( 'The issue could not be saved.', 'qa-runner' ) );
+			return $this->write_failed( __( 'The issue could not be saved.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return $this->issues->find( $id );

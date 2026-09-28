@@ -168,10 +168,10 @@ async function saveAssignees({add, remove}) {
     }
 
     assignDialogOpen.value = false;
-    ui.toast(wp.i18n.__('Assignees updated.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Assignees updated.', 'mandragora-qa-test-manager'));
   } catch (error) {
     // The dialog stays open on failure, so the draft is still there to retry or cancel.
-    ui.toastError(error, wp.i18n.__('Those assignments could not be saved.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('Those assignments could not be saved.', 'mandragora-qa-test-manager'));
   } finally {
     savingAssignees.value = false;
   }
@@ -199,11 +199,11 @@ async function toggleSelf() {
     await runStore.setAssignment(result.value.id, bootstrap.currentUser, !assignedToMe.value);
     ui.toast(
       assignedToMe.value
-        ? wp.i18n.__('Assigned to you.', 'qa-runner')
-        : wp.i18n.__('You are off this case.', 'qa-runner')
+        ? wp.i18n.__('Assigned to you.', 'mandragora-qa-test-manager')
+        : wp.i18n.__('You are off this case.', 'mandragora-qa-test-manager')
     );
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('That assignment could not be saved.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('That assignment could not be saved.', 'mandragora-qa-test-manager'));
   } finally {
     savingAssignment.value = false;
   }
@@ -219,7 +219,7 @@ async function removeAssignee(person) {
   try {
     await runStore.setAssignment(result.value.id, person, false);
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('That assignment could not be removed.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('That assignment could not be removed.', 'mandragora-qa-test-manager'));
   }
 }
 
@@ -257,7 +257,7 @@ async function loadCase() {
       }
     }
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('This case could not be loaded.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('This case could not be loaded.', 'mandragora-qa-test-manager'));
   } finally {
     loading.value = false;
   }
@@ -284,7 +284,7 @@ async function setStatus(status) {
   try {
     await runStore.setStatus(result.value.id, status);
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('That result could not be saved.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('That result could not be saved.', 'mandragora-qa-test-manager'));
   }
 }
 
@@ -308,9 +308,9 @@ async function postComment() {
     comments.value = [...comments.value, comment];
     commentDraft.value = '';
     runStore.replaceResult({...result.value, comment_count: result.value.comment_count + 1});
-    ui.toast(wp.i18n.__('Comment added.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Comment added.', 'mandragora-qa-test-manager'));
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The comment could not be added.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The comment could not be added.', 'mandragora-qa-test-manager'));
   } finally {
     postingComment.value = false;
   }
@@ -358,9 +358,9 @@ async function postReply() {
     comments.value = [...comments.value, comment];
     cancelReply();
     runStore.replaceResult({...result.value, comment_count: result.value.comment_count + 1});
-    ui.toast(wp.i18n.__('Reply added.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Reply added.', 'mandragora-qa-test-manager'));
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The reply could not be added.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The reply could not be added.', 'mandragora-qa-test-manager'));
   } finally {
     postingReply.value = false;
   }
@@ -407,9 +407,9 @@ async function saveCommentEdit() {
 
     comments.value = comments.value.map((item) => (item.id === updated.id ? updated : item));
     cancelEditComment();
-    ui.toast(wp.i18n.__('Comment updated.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Comment updated.', 'mandragora-qa-test-manager'));
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The comment could not be updated.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The comment could not be updated.', 'mandragora-qa-test-manager'));
   } finally {
     savingCommentEdit.value = false;
   }
@@ -424,8 +424,8 @@ async function saveCommentEdit() {
 async function deleteComment(comment) {
   const hasReplies = comments.value.some((item) => item.parent_id === comment.id);
   const question = hasReplies
-    ? wp.i18n.__('Delete this comment and all of its replies?', 'qa-runner')
-    : wp.i18n.__('Delete this comment?', 'qa-runner');
+    ? wp.i18n.__('Delete this comment and all of its replies?', 'mandragora-qa-test-manager')
+    : wp.i18n.__('Delete this comment?', 'mandragora-qa-test-manager');
 
   if (!window.confirm(question)) {
     return;
@@ -449,9 +449,9 @@ async function deleteComment(comment) {
       ...result.value,
       comment_count: Math.max(0, result.value.comment_count - deletedIds.size)
     });
-    ui.toast(wp.i18n.__('Comment deleted.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Comment deleted.', 'mandragora-qa-test-manager'));
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The comment could not be deleted.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The comment could not be deleted.', 'mandragora-qa-test-manager'));
   }
 }
 
@@ -486,9 +486,9 @@ async function raiseIssue() {
       });
     }
 
-    ui.toast(wp.i18n.__('Issue raised.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Issue raised.', 'mandragora-qa-test-manager'));
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The issue could not be raised.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The issue could not be raised.', 'mandragora-qa-test-manager'));
   } finally {
     savingIssue.value = false;
   }
@@ -525,11 +525,11 @@ async function resolveIssue(issue, status) {
 
     ui.toast(
       status === 'resolved'
-        ? wp.i18n.__('Issue resolved.', 'qa-runner')
-        : wp.i18n.__('Issue closed as won’t fix.', 'qa-runner')
+        ? wp.i18n.__('Issue resolved.', 'mandragora-qa-test-manager')
+        : wp.i18n.__('Issue closed as won’t fix.', 'mandragora-qa-test-manager')
     );
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The issue could not be updated.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The issue could not be updated.', 'mandragora-qa-test-manager'));
   }
 }
 
@@ -541,8 +541,8 @@ async function resolveIssue(issue, status) {
  */
 function closureLabel(issue) {
   return issue.status === 'wontfix'
-    ? wp.i18n.__('Won’t fix', 'qa-runner')
-    : wp.i18n.__('Resolved', 'qa-runner');
+    ? wp.i18n.__('Won’t fix', 'mandragora-qa-test-manager')
+    : wp.i18n.__('Resolved', 'mandragora-qa-test-manager');
 }
 
 /**
@@ -577,19 +577,19 @@ onBeforeUnmount(releaseLock);
 
 <template>
   <div class="qa-stack">
-    <p v-if="loading" class="qa-skeleton">{{ __('Loading case…', 'qa-runner') }}</p>
+    <p v-if="loading" class="qa-skeleton">{{ __('Loading case…', 'mandragora-qa-test-manager') }}</p>
 
     <template v-else-if="testCase">
       <div class="qa-page-head">
         <div class="qa-page-head__meta">
           <RouterLink :to="`/runs/${runId}`" class="qa-subtitle">
-            {{ __('← Back to run', 'qa-runner') }}
+            {{ __('← Back to run', 'mandragora-qa-test-manager') }}
           </RouterLink>
           <h2 class="qa-row">
             <PriorityDot :priority="testCase.priority" />
             <span>{{
               sprintf(
-                _x('%1$s → %2$s', 'suite name → case title', 'qa-runner'),
+                _x('%1$s → %2$s', 'suite name → case title', 'mandragora-qa-test-manager'),
                 testCase.suite_name,
                 testCase.title
               )
@@ -604,7 +604,7 @@ onBeforeUnmount(releaseLock);
             :disabled="!previousCaseId"
             @click="go(previousCaseId)"
           >
-            {{ __('← Previous', 'qa-runner') }}
+            {{ __('← Previous', 'mandragora-qa-test-manager') }}
           </button>
           <button
             type="button"
@@ -612,7 +612,7 @@ onBeforeUnmount(releaseLock);
             :disabled="!nextCaseId"
             @click="go(nextCaseId)"
           >
-            {{ __('Next →', 'qa-runner') }}
+            {{ __('Next →', 'mandragora-qa-test-manager') }}
           </button>
         </div>
       </div>
@@ -620,7 +620,7 @@ onBeforeUnmount(releaseLock);
       <div v-if="lockedByOther" class="qa-notice qa-notice--warning">
         {{
           sprintf(
-            __('%s is testing this. You can still record your own result.', 'qa-runner'),
+            __('%s is testing this. You can still record your own result.', 'mandragora-qa-test-manager'),
             result.in_progress_by.name
           )
         }}
@@ -629,7 +629,7 @@ onBeforeUnmount(releaseLock);
       <div v-if="!isOpen" class="qa-notice qa-notice--warning">
         {{
           sprintf(
-            __('This run is %s. Results and comments are read-only.', 'qa-runner'),
+            __('This run is %s. Results and comments are read-only.', 'mandragora-qa-test-manager'),
             runStatusLabel(runStore.run?.status).toLowerCase()
           )
         }}
@@ -637,9 +637,9 @@ onBeforeUnmount(releaseLock);
 
       <div class="qa-card">
         <div class="qa-card__head">
-          <h3>{{ __('Result', 'qa-runner') }}</h3>
+          <h3>{{ __('Result', 'mandragora-qa-test-manager') }}</h3>
           <span v-if="result?.tested_by" class="qa-muted">
-            {{ sprintf(__('Set by %s', 'qa-runner'), result.tested_by.name) }}
+            {{ sprintf(__('Set by %s', 'mandragora-qa-test-manager'), result.tested_by.name) }}
             <span :title="absoluteTime(result.tested_at)">{{
               relativeTime(result.tested_at)
             }}</span>
@@ -653,13 +653,13 @@ onBeforeUnmount(releaseLock);
             @update:model-value="setStatus"
           />
           <StatusBadge v-else-if="result" :status="result.status" />
-          <p v-else class="qa-muted">{{ __('This case is not part of this run.', 'qa-runner') }}</p>
+          <p v-else class="qa-muted">{{ __('This case is not part of this run.', 'mandragora-qa-test-manager') }}</p>
         </div>
       </div>
 
       <div v-if="result" class="qa-card">
         <div class="qa-card__head">
-          <h3>{{ __('Assigned testers', 'qa-runner') }}</h3>
+          <h3>{{ __('Assigned testers', 'mandragora-qa-test-manager') }}</h3>
           <div v-if="canAssign" class="qa-row">
             <button
               type="button"
@@ -668,14 +668,14 @@ onBeforeUnmount(releaseLock);
               :disabled="savingAssignment"
               @click="toggleSelf"
             >
-              {{ assignedToMe ? __('Unassign me', 'qa-runner') : __('Assign me', 'qa-runner') }}
+              {{ assignedToMe ? __('Unassign me', 'mandragora-qa-test-manager') : __('Assign me', 'mandragora-qa-test-manager') }}
             </button>
             <button
               type="button"
               class="qa-button qa-button--small"
               @click="assignDialogOpen = true"
             >
-              {{ __('Assign others…', 'qa-runner') }}
+              {{ __('Assign others…', 'mandragora-qa-test-manager') }}
             </button>
           </div>
         </div>
@@ -695,7 +695,7 @@ onBeforeUnmount(releaseLock);
                 v-if="canUnassign(person)"
                 type="button"
                 class="qa-person-badge__remove"
-                :aria-label="sprintf(__('Unassign %s', 'qa-runner'), person.name)"
+                :aria-label="sprintf(__('Unassign %s', 'mandragora-qa-test-manager'), person.name)"
                 @click="removeAssignee(person)"
               >
                 ×
@@ -703,20 +703,20 @@ onBeforeUnmount(releaseLock);
             </span>
           </div>
           <p v-else class="qa-muted">
-            {{ __('Nobody is assigned to this case yet.', 'qa-runner') }}
+            {{ __('Nobody is assigned to this case yet.', 'mandragora-qa-test-manager') }}
             <template v-if="canAssign">{{
-              __('Claim it so the rest of the team knows.', 'qa-runner')
+              __('Claim it so the rest of the team knows.', 'mandragora-qa-test-manager')
             }}</template>
           </p>
         </div>
 
         <AssigneeDialog
           :open="assignDialogOpen"
-          :title="__('Assign this case', 'qa-runner')"
+          :title="__('Assign this case', 'mandragora-qa-test-manager')"
           :empty-text="
             __(
               'Nobody is assigned to this run yet, so there is no one to hand this case to.',
-              'qa-runner'
+              'mandragora-qa-test-manager'
             )
           "
           :candidates="candidates"
@@ -730,25 +730,25 @@ onBeforeUnmount(releaseLock);
       <div class="qa-grid-2">
         <div class="qa-card">
           <div class="qa-card__head">
-            <h3>{{ __('Steps', 'qa-runner') }}</h3>
+            <h3>{{ __('Steps', 'mandragora-qa-test-manager') }}</h3>
           </div>
           <div
             class="qa-card__body qa-prose"
             v-html="
-              testCase.steps || `<p class='qa-muted'>${__('No steps recorded.', 'qa-runner')}</p>`
+              testCase.steps || `<p class='qa-muted'>${__('No steps recorded.', 'mandragora-qa-test-manager')}</p>`
             "
           />
         </div>
 
         <div class="qa-card">
           <div class="qa-card__head">
-            <h3>{{ __('Expected result', 'qa-runner') }}</h3>
+            <h3>{{ __('Expected result', 'mandragora-qa-test-manager') }}</h3>
           </div>
           <div
             class="qa-card__body qa-prose"
             v-html="
               testCase.expected ||
-              `<p class='qa-muted'>${__('No expected result recorded.', 'qa-runner')}</p>`
+              `<p class='qa-muted'>${__('No expected result recorded.', 'mandragora-qa-test-manager')}</p>`
             "
           />
         </div>
@@ -767,13 +767,13 @@ onBeforeUnmount(releaseLock);
                 '%d open issue on this case',
                 '%d open issues on this case',
                 issues.length,
-                'qa-runner'
+                'mandragora-qa-test-manager'
               ),
               issues.length
             )
           }}
         </h3>
-        <p class="qa-subtitle">{{ __('Raised in any run, still unresolved.', 'qa-runner') }}</p>
+        <p class="qa-subtitle">{{ __('Raised in any run, still unresolved.', 'mandragora-qa-test-manager') }}</p>
 
         <div v-for="issue in issues" :key="issue.id" class="qa-issue">
           <div class="qa-issue__head">
@@ -786,7 +786,7 @@ onBeforeUnmount(releaseLock);
                 }}</span>
                 <template v-if="issue.origin_run_id">
                   ·
-                  {{ sprintf(__('raised in run #%d', 'qa-runner'), issue.origin_run_id) }}</template
+                  {{ sprintf(__('raised in run #%d', 'mandragora-qa-test-manager'), issue.origin_run_id) }}</template
                 >
               </p>
             </div>
@@ -797,7 +797,7 @@ onBeforeUnmount(releaseLock);
               target="_blank"
               rel="noopener noreferrer"
             >
-              {{ __('GitHub ↗', 'qa-runner') }}
+              {{ __('GitHub ↗', 'mandragora-qa-test-manager') }}
             </a>
           </div>
 
@@ -810,13 +810,13 @@ onBeforeUnmount(releaseLock);
           <div v-if="bootstrap.caps?.runTests">
             <div v-if="resolvingId === issue.id" class="qa-stack qa-stack--tight">
               <label class="qa-sr-only" :for="`note-${issue.id}`">{{
-                __('Resolution note', 'qa-runner')
+                __('Resolution note', 'mandragora-qa-test-manager')
               }}</label>
               <textarea
                 :id="`note-${issue.id}`"
                 v-model="resolutionNote"
                 class="qa-textarea"
-                :placeholder="__('What fixed it, or why it will not be fixed.', 'qa-runner')"
+                :placeholder="__('What fixed it, or why it will not be fixed.', 'mandragora-qa-test-manager')"
               />
               <div class="qa-row">
                 <button
@@ -824,21 +824,21 @@ onBeforeUnmount(releaseLock);
                   class="qa-button qa-button--primary qa-button--small"
                   @click="resolveIssue(issue, 'resolved')"
                 >
-                  {{ __('Resolve issue', 'qa-runner') }}
+                  {{ __('Resolve issue', 'mandragora-qa-test-manager') }}
                 </button>
                 <button
                   type="button"
                   class="qa-button qa-button--small"
                   @click="resolveIssue(issue, 'wontfix')"
                 >
-                  {{ __('Won’t fix', 'qa-runner') }}
+                  {{ __('Won’t fix', 'mandragora-qa-test-manager') }}
                 </button>
                 <button
                   type="button"
                   class="qa-button qa-button--quiet qa-button--small"
                   @click="resolvingId = 0"
                 >
-                  {{ __('Cancel', 'qa-runner') }}
+                  {{ __('Cancel', 'mandragora-qa-test-manager') }}
                 </button>
               </div>
             </div>
@@ -851,7 +851,7 @@ onBeforeUnmount(releaseLock);
                 resolutionNote = '';
               "
             >
-              {{ __('Resolve issue', 'qa-runner') }}
+              {{ __('Resolve issue', 'mandragora-qa-test-manager') }}
             </button>
           </div>
         </div>
@@ -876,7 +876,7 @@ onBeforeUnmount(releaseLock);
                       'Hide %d closed issue',
                       'Hide %d closed issues',
                       resolvedIssues.length,
-                      'qa-runner'
+                      'mandragora-qa-test-manager'
                     ),
                     resolvedIssues.length
                   )
@@ -885,7 +885,7 @@ onBeforeUnmount(releaseLock);
                       'Show %d closed issue',
                       'Show %d closed issues',
                       resolvedIssues.length,
-                      'qa-runner'
+                      'mandragora-qa-test-manager'
                     ),
                     resolvedIssues.length
                   )
@@ -902,23 +902,23 @@ onBeforeUnmount(releaseLock);
                   <span class="qa-badge">{{ closureLabel(issue) }}</span>
                 </p>
                 <p class="qa-issue__meta">
-                  {{ sprintf(__('Raised by %s', 'qa-runner'), issue.created_by.name) }} ·
+                  {{ sprintf(__('Raised by %s', 'mandragora-qa-test-manager'), issue.created_by.name) }} ·
                   <span :title="absoluteTime(issue.created_at)">{{
                     relativeTime(issue.created_at)
                   }}</span>
                   <template v-if="issue.origin_run_id">
                     ·
                     {{
-                      sprintf(__('raised in run #%d', 'qa-runner'), issue.origin_run_id)
+                      sprintf(__('raised in run #%d', 'mandragora-qa-test-manager'), issue.origin_run_id)
                     }}</template
                   >
                 </p>
                 <p class="qa-issue__meta">
                   {{
                     sprintf(
-                      _x('%1$s by %2$s', 'closure label, e.g. Resolved, by person', 'qa-runner'),
+                      _x('%1$s by %2$s', 'closure label, e.g. Resolved, by person', 'mandragora-qa-test-manager'),
                       closureLabel(issue),
-                      issue.resolved_by?.name ?? __('somebody', 'qa-runner')
+                      issue.resolved_by?.name ?? __('somebody', 'mandragora-qa-test-manager')
                     )
                   }}
                   <template v-if="issue.resolved_at">
@@ -936,7 +936,7 @@ onBeforeUnmount(releaseLock);
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {{ __('GitHub ↗', 'qa-runner') }}
+                {{ __('GitHub ↗', 'mandragora-qa-test-manager') }}
               </a>
             </div>
 
@@ -960,39 +960,39 @@ onBeforeUnmount(releaseLock);
           class="qa-button qa-button--danger"
           @click="issueFormOpen = true"
         >
-          {{ __('Raise an issue', 'qa-runner') }}
+          {{ __('Raise an issue', 'mandragora-qa-test-manager') }}
         </button>
 
         <form v-else class="qa-card" @submit.prevent="raiseIssue">
           <div class="qa-card__head">
-            <h3>{{ __('Raise an issue', 'qa-runner') }}</h3>
+            <h3>{{ __('Raise an issue', 'mandragora-qa-test-manager') }}</h3>
           </div>
           <div class="qa-card__body qa-stack">
             <div class="qa-field">
               <label class="qa-field__label" for="issue-title">{{
-                __('Title', 'qa-runner')
+                __('Title', 'mandragora-qa-test-manager')
               }}</label>
               <input
                 id="issue-title"
                 v-model="issueDraft.title"
                 class="qa-input"
                 type="text"
-                :placeholder="__('What is broken', 'qa-runner')"
+                :placeholder="__('What is broken', 'mandragora-qa-test-manager')"
                 required
               />
             </div>
 
             <div class="qa-field">
-              <span class="qa-field__label">{{ __('Description', 'qa-runner') }}</span>
+              <span class="qa-field__label">{{ __('Description', 'mandragora-qa-test-manager') }}</span>
               <RichTextEditor
                 v-model="issueDraft.description"
-                :placeholder="__('What you saw, and what you expected.', 'qa-runner')"
+                :placeholder="__('What you saw, and what you expected.', 'mandragora-qa-test-manager')"
               />
             </div>
 
             <div class="qa-field">
               <label class="qa-field__label" for="issue-url">{{
-                __('GitHub issue', 'qa-runner')
+                __('GitHub issue', 'mandragora-qa-test-manager')
               }}</label>
               <input
                 id="issue-url"
@@ -1004,21 +1004,21 @@ onBeforeUnmount(releaseLock);
               <span class="qa-field__hint">{{
                 __(
                   'Must be a github.com link. Leave blank if you have not filed it yet.',
-                  'qa-runner'
+                  'mandragora-qa-test-manager'
                 )
               }}</span>
             </div>
 
             <div class="qa-row">
               <button type="submit" class="qa-button qa-button--primary" :disabled="savingIssue">
-                {{ savingIssue ? __('Saving…', 'qa-runner') : __('Raise issue', 'qa-runner') }}
+                {{ savingIssue ? __('Saving…', 'mandragora-qa-test-manager') : __('Raise issue', 'mandragora-qa-test-manager') }}
               </button>
               <button
                 type="button"
                 class="qa-button qa-button--quiet"
                 @click="issueFormOpen = false"
               >
-                {{ __('Cancel', 'qa-runner') }}
+                {{ __('Cancel', 'mandragora-qa-test-manager') }}
               </button>
             </div>
           </div>
@@ -1027,15 +1027,15 @@ onBeforeUnmount(releaseLock);
 
       <div v-if="result" class="qa-card">
         <div class="qa-card__head">
-          <h3>{{ __('Comments', 'qa-runner') }}</h3>
-          <span class="qa-muted">{{ __('Scoped to this run', 'qa-runner') }}</span>
+          <h3>{{ __('Comments', 'mandragora-qa-test-manager') }}</h3>
+          <span class="qa-muted">{{ __('Scoped to this run', 'mandragora-qa-test-manager') }}</span>
         </div>
 
         <div class="qa-card__body qa-stack">
           <EmptyState
             v-if="!comments.length"
-            :title="__('No comments on this case yet.', 'qa-runner')"
-            :description="__('Add one when a result needs explaining.', 'qa-runner')"
+            :title="__('No comments on this case yet.', 'mandragora-qa-test-manager')"
+            :description="__('Add one when a result needs explaining.', 'mandragora-qa-test-manager')"
           />
 
           <div v-else>
@@ -1068,8 +1068,8 @@ onBeforeUnmount(releaseLock);
                       v-if="canTest && depth < MAX_COMMENT_DEPTH"
                       type="button"
                       class="qa-icon-button"
-                      :title="__('Reply', 'qa-runner')"
-                      :aria-label="__('Reply to comment', 'qa-runner')"
+                      :title="__('Reply', 'mandragora-qa-test-manager')"
+                      :aria-label="__('Reply to comment', 'mandragora-qa-test-manager')"
                       @click="startReply(comment)"
                     >
                       <span class="dashicons dashicons-undo" aria-hidden="true" />
@@ -1078,8 +1078,8 @@ onBeforeUnmount(releaseLock);
                       v-if="comment.author.id === bootstrap.currentUser?.id"
                       type="button"
                       class="qa-icon-button"
-                      :title="__('Edit comment', 'qa-runner')"
-                      :aria-label="__('Edit comment', 'qa-runner')"
+                      :title="__('Edit comment', 'mandragora-qa-test-manager')"
+                      :aria-label="__('Edit comment', 'mandragora-qa-test-manager')"
                       @click="startEditComment(comment)"
                     >
                       <span class="dashicons dashicons-edit" aria-hidden="true" />
@@ -1091,8 +1091,8 @@ onBeforeUnmount(releaseLock);
                       "
                       type="button"
                       class="qa-icon-button qa-icon-button--danger"
-                      :title="__('Delete comment', 'qa-runner')"
-                      :aria-label="__('Delete comment', 'qa-runner')"
+                      :title="__('Delete comment', 'mandragora-qa-test-manager')"
+                      :aria-label="__('Delete comment', 'mandragora-qa-test-manager')"
                       @click="deleteComment(comment)"
                     >
                       <span class="dashicons dashicons-trash" aria-hidden="true" />
@@ -1111,7 +1111,7 @@ onBeforeUnmount(releaseLock);
                       class="qa-button qa-button--primary qa-button--small"
                       :disabled="savingCommentEdit"
                     >
-                      {{ savingCommentEdit ? __('Saving…', 'qa-runner') : __('Save', 'qa-runner') }}
+                      {{ savingCommentEdit ? __('Saving…', 'mandragora-qa-test-manager') : __('Save', 'mandragora-qa-test-manager') }}
                     </button>
                     <button
                       type="button"
@@ -1119,7 +1119,7 @@ onBeforeUnmount(releaseLock);
                       :disabled="savingCommentEdit"
                       @click="cancelEditComment"
                     >
-                      {{ __('Cancel', 'qa-runner') }}
+                      {{ __('Cancel', 'mandragora-qa-test-manager') }}
                     </button>
                   </div>
                 </form>
@@ -1131,7 +1131,7 @@ onBeforeUnmount(releaseLock);
                 >
                   <RichTextEditor
                     v-model="replyDraft"
-                    :placeholder="sprintf(__('Reply to %s', 'qa-runner'), comment.author.name)"
+                    :placeholder="sprintf(__('Reply to %s', 'mandragora-qa-test-manager'), comment.author.name)"
                   />
                   <div class="qa-row">
                     <button
@@ -1139,7 +1139,7 @@ onBeforeUnmount(releaseLock);
                       class="qa-button qa-button--primary qa-button--small"
                       :disabled="postingReply"
                     >
-                      {{ postingReply ? __('Replying…', 'qa-runner') : __('Reply', 'qa-runner') }}
+                      {{ postingReply ? __('Replying…', 'mandragora-qa-test-manager') : __('Reply', 'mandragora-qa-test-manager') }}
                     </button>
                     <button
                       type="button"
@@ -1147,7 +1147,7 @@ onBeforeUnmount(releaseLock);
                       :disabled="postingReply"
                       @click="cancelReply"
                     >
-                      {{ __('Cancel', 'qa-runner') }}
+                      {{ __('Cancel', 'mandragora-qa-test-manager') }}
                     </button>
                   </div>
                 </form>
@@ -1158,11 +1158,11 @@ onBeforeUnmount(releaseLock);
           <form v-if="canTest" class="qa-stack qa-stack--tight" @submit.prevent="postComment">
             <RichTextEditor
               v-model="commentDraft"
-              :placeholder="__('Add a comment', 'qa-runner')"
+              :placeholder="__('Add a comment', 'mandragora-qa-test-manager')"
             />
             <div>
               <button type="submit" class="qa-button qa-button--primary" :disabled="postingComment">
-                {{ postingComment ? __('Adding…', 'qa-runner') : __('Add comment', 'qa-runner') }}
+                {{ postingComment ? __('Adding…', 'mandragora-qa-test-manager') : __('Add comment', 'mandragora-qa-test-manager') }}
               </button>
             </div>
           </form>
@@ -1170,9 +1170,9 @@ onBeforeUnmount(releaseLock);
       </div>
     </template>
 
-    <EmptyState v-else :title="__('That case could not be found.', 'qa-runner')">
+    <EmptyState v-else :title="__('That case could not be found.', 'mandragora-qa-test-manager')">
       <RouterLink class="qa-button" :to="`/runs/${runId}`">{{
-        __('Back to the run', 'qa-runner')
+        __('Back to the run', 'mandragora-qa-test-manager')
       }}</RouterLink>
     </EmptyState>
   </div>

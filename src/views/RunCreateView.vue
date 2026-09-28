@@ -32,7 +32,7 @@ const search = ref('');
 const saving = ref(false);
 const loading = ref(true);
 
-const ENVIRONMENTS = window.qaRunner?.environments ?? ['local', 'staging', 'production'];
+const ENVIRONMENTS = window.mqatm?.environments ?? ['local', 'staging', 'production'];
 
 const hasFilter = computed(
   () =>
@@ -136,7 +136,7 @@ function selectAllCritical() {
         'Added %d critical case.',
         'Added %d critical cases.',
         critical.length,
-        'qa-runner'
+        'mandragora-qa-test-manager'
       ),
       critical.length
     )
@@ -176,10 +176,10 @@ async function submit() {
       assignee_ids: assigneeIds.value
     });
 
-    ui.toast(wp.i18n.__('Run created.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Run created.', 'mandragora-qa-test-manager'));
     router.push(`/runs/${run.id}`);
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The run could not be created.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The run could not be created.', 'mandragora-qa-test-manager'));
   } finally {
     saving.value = false;
   }
@@ -193,7 +193,7 @@ onMounted(async () => {
       caseStore.loadCases({active: true})
     ]);
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The case library could not be loaded.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The case library could not be loaded.', 'mandragora-qa-test-manager'));
   } finally {
     loading.value = false;
   }
@@ -204,22 +204,22 @@ onMounted(async () => {
   <form class="qa-stack" @submit.prevent="submit">
     <div class="qa-page-head">
       <div class="qa-page-head__meta">
-        <h2>{{ __('New run', 'qa-runner') }}</h2>
+        <h2>{{ __('New run', 'mandragora-qa-test-manager') }}</h2>
         <p class="qa-subtitle">
           {{
             __(
               'Environment and version are required — a run without them cannot be audited later.',
-              'qa-runner'
+              'mandragora-qa-test-manager'
             )
           }}
         </p>
       </div>
       <div class="qa-row">
         <RouterLink class="qa-button qa-button--quiet" to="/">{{
-          __('Cancel', 'qa-runner')
+          __('Cancel', 'mandragora-qa-test-manager')
         }}</RouterLink>
         <button type="submit" class="qa-button qa-button--primary" :disabled="!canSubmit">
-          {{ saving ? __('Creating…', 'qa-runner') : __('Create run', 'qa-runner') }}
+          {{ saving ? __('Creating…', 'mandragora-qa-test-manager') : __('Create run', 'mandragora-qa-test-manager') }}
         </button>
       </div>
     </div>
@@ -227,13 +227,13 @@ onMounted(async () => {
     <div class="qa-card">
       <div class="qa-card__body qa-stack">
         <div class="qa-field">
-          <label class="qa-field__label" for="run-name">{{ __('Name', 'qa-runner') }}</label>
+          <label class="qa-field__label" for="run-name">{{ __('Name', 'mandragora-qa-test-manager') }}</label>
           <input
             id="run-name"
             v-model="form.name"
             class="qa-input"
             type="text"
-            :placeholder="__('2.4.0 — Account changes', 'qa-runner')"
+            :placeholder="__('2.4.0 — Account changes', 'mandragora-qa-test-manager')"
             required
           />
         </div>
@@ -241,7 +241,7 @@ onMounted(async () => {
         <div class="qa-row" style="align-items: flex-start; gap: 16px">
           <div class="qa-field" style="flex: 1; min-width: 180px">
             <label class="qa-field__label" for="run-environment">{{
-              __('Environment', 'qa-runner')
+              __('Environment', 'mandragora-qa-test-manager')
             }}</label>
             <select id="run-environment" v-model="form.environment" class="qa-select">
               <option v-for="environment in ENVIRONMENTS" :key="environment" :value="environment">
@@ -252,38 +252,38 @@ onMounted(async () => {
 
           <div class="qa-field" style="flex: 1; min-width: 180px">
             <label class="qa-field__label" for="run-version">{{
-              __('Version', 'qa-runner')
+              __('Version', 'mandragora-qa-test-manager')
             }}</label>
             <input
               id="run-version"
               v-model="form.version"
               class="qa-input"
               type="text"
-              :placeholder="__('2.4.0 or a commit ref', 'qa-runner')"
+              :placeholder="__('2.4.0 or a commit ref', 'mandragora-qa-test-manager')"
               required
             />
           </div>
         </div>
 
         <div class="qa-field">
-          <label class="qa-field__label" for="run-notes">{{ __('Notes', 'qa-runner') }}</label>
+          <label class="qa-field__label" for="run-notes">{{ __('Notes', 'mandragora-qa-test-manager') }}</label>
           <textarea
             id="run-notes"
             v-model="form.notes"
             class="qa-textarea"
             :placeholder="
-              __('What this run covers, and anything the testers should know.', 'qa-runner')
+              __('What this run covers, and anything the testers should know.', 'mandragora-qa-test-manager')
             "
           />
         </div>
 
         <div class="qa-field">
-          <span class="qa-field__label">{{ __('Assignees', 'qa-runner') }}</span>
+          <span class="qa-field__label">{{ __('Assignees', 'mandragora-qa-test-manager') }}</span>
           <p class="qa-field__hint">
             {{
               __(
                 'Assignment is informational and sends one email. Anyone on the QA team can test any case in an open run.',
-                'qa-runner'
+                'mandragora-qa-test-manager'
               )
             }}
           </p>
@@ -293,7 +293,7 @@ onMounted(async () => {
               <span>{{ user.name }}</span>
             </label>
             <span v-if="!caseStore.users.length" class="qa-muted">{{
-              __('No one else can run tests yet.', 'qa-runner')
+              __('No one else can run tests yet.', 'mandragora-qa-test-manager')
             }}</span>
           </div>
         </div>
@@ -302,35 +302,35 @@ onMounted(async () => {
 
     <div class="qa-page-head">
       <div class="qa-page-head__meta">
-        <h2>{{ __('Cases', 'qa-runner') }}</h2>
+        <h2>{{ __('Cases', 'mandragora-qa-test-manager') }}</h2>
         <p class="qa-subtitle">
           {{
             sprintf(
-              _n('%d case selected', '%d cases selected', selectedIds.length, 'qa-runner'),
+              _n('%d case selected', '%d cases selected', selectedIds.length, 'mandragora-qa-test-manager'),
               selectedIds.length
             )
           }}
         </p>
       </div>
       <button type="button" class="qa-button qa-button--quiet" @click="selectAllCritical">
-        {{ __('Select all critical', 'qa-runner') }}
+        {{ __('Select all critical', 'mandragora-qa-test-manager') }}
       </button>
     </div>
 
     <div class="qa-picker">
       <div class="qa-picker__filters">
         <div class="qa-filter-group">
-          <span class="qa-filter-group__label">{{ __('Search case', 'qa-runner') }}</span>
+          <span class="qa-filter-group__label">{{ __('Search case', 'mandragora-qa-test-manager') }}</span>
           <input
             v-model="search"
             class="qa-input"
             type="search"
-            :placeholder="__('Case title', 'qa-runner')"
+            :placeholder="__('Case title', 'mandragora-qa-test-manager')"
           />
         </div>
 
         <div class="qa-filter-group">
-          <span class="qa-filter-group__label">{{ __('Suite', 'qa-runner') }}</span>
+          <span class="qa-filter-group__label">{{ __('Suite', 'mandragora-qa-test-manager') }}</span>
           <label v-for="suite in caseStore.suites" :key="suite.id" class="qa-checkbox">
             <input
               type="checkbox"
@@ -344,7 +344,7 @@ onMounted(async () => {
         </div>
 
         <div class="qa-filter-group">
-          <span class="qa-filter-group__label">{{ __('Priority', 'qa-runner') }}</span>
+          <span class="qa-filter-group__label">{{ __('Priority', 'mandragora-qa-test-manager') }}</span>
           <label v-for="priority in PRIORITIES" :key="priority.value" class="qa-checkbox">
             <input
               type="checkbox"
@@ -361,7 +361,7 @@ onMounted(async () => {
           <span>
             {{
               sprintf(
-                _n('%d case matching', '%d cases matching', visibleCases.length, 'qa-runner'),
+                _n('%d case matching', '%d cases matching', visibleCases.length, 'mandragora-qa-test-manager'),
                 visibleCases.length
               )
             }}
@@ -372,27 +372,27 @@ onMounted(async () => {
             :disabled="!visibleCases.length"
             @click="selectVisible"
           >
-            {{ __('Add all matching', 'qa-runner') }}
+            {{ __('Add all matching', 'mandragora-qa-test-manager') }}
           </button>
         </div>
 
-        <p v-if="loading" class="qa-skeleton">{{ __('Loading cases…', 'qa-runner') }}</p>
+        <p v-if="loading" class="qa-skeleton">{{ __('Loading cases…', 'mandragora-qa-test-manager') }}</p>
 
         <EmptyState
           v-else-if="!hasFilter"
-          :title="__('Pick a suite to start selecting cases.', 'qa-runner')"
+          :title="__('Pick a suite to start selecting cases.', 'mandragora-qa-test-manager')"
           :description="
             __(
               'Filter by suite, priority or title, then tick the cases this run should cover.',
-              'qa-runner'
+              'mandragora-qa-test-manager'
             )
           "
         />
 
         <EmptyState
           v-else-if="!visibleCases.length"
-          :title="__('No cases match these filters.', 'qa-runner')"
-          :description="__('Try widening the suite or priority selection.', 'qa-runner')"
+          :title="__('No cases match these filters.', 'mandragora-qa-test-manager')"
+          :description="__('Try widening the suite or priority selection.', 'mandragora-qa-test-manager')"
         />
 
         <div v-else class="qa-picker__list">
@@ -416,13 +416,13 @@ onMounted(async () => {
 
     <div v-if="selectedCases.length" class="qa-card">
       <div class="qa-card__head">
-        <h3>{{ __('Selected cases', 'qa-runner') }}</h3>
+        <h3>{{ __('Selected cases', 'mandragora-qa-test-manager') }}</h3>
         <button
           type="button"
           class="qa-button qa-button--small qa-button--quiet"
           @click="selectedIds = []"
         >
-          {{ __('Clear selection', 'qa-runner') }}
+          {{ __('Clear selection', 'mandragora-qa-test-manager') }}
         </button>
       </div>
       <div class="qa-card__body qa-chips">
@@ -431,7 +431,7 @@ onMounted(async () => {
           :key="item.id"
           type="button"
           class="qa-chip is-active"
-          :title="sprintf(__('Remove %s', 'qa-runner'), item.title)"
+          :title="sprintf(__('Remove %s', 'mandragora-qa-test-manager'), item.title)"
           @click="toggleCase(item.id)"
         >
           {{ item.title }} ×

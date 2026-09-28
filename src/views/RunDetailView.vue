@@ -153,7 +153,7 @@ async function load() {
     ]);
     runStore.startPolling(runId.value);
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('This run could not be loaded.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('This run could not be loaded.', 'mandragora-qa-test-manager'));
   } finally {
     loading.value = false;
   }
@@ -170,7 +170,7 @@ async function setStatus(result, status) {
   try {
     await runStore.setStatus(result.id, status);
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('That result could not be saved.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('That result could not be saved.', 'mandragora-qa-test-manager'));
   }
 }
 
@@ -194,7 +194,7 @@ async function openRunCasesDialog() {
   try {
     await caseStore.loadCases({active: true});
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The case library could not be loaded.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The case library could not be loaded.', 'mandragora-qa-test-manager'));
   } finally {
     loadingLibrary.value = false;
   }
@@ -212,10 +212,10 @@ async function saveRunCases(changes) {
   try {
     await runStore.setRunCases(runId.value, changes);
     runCasesDialogOpen.value = false;
-    ui.toast(wp.i18n.__('Run cases updated.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Run cases updated.', 'mandragora-qa-test-manager'));
   } catch (error) {
     // The dialog stays open on failure, so the draft is still there to retry or cancel.
-    ui.toastError(error, wp.i18n.__('The run cases could not be saved.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The run cases could not be saved.', 'mandragora-qa-test-manager'));
   } finally {
     savingRunCases.value = false;
   }
@@ -233,10 +233,10 @@ async function saveRunDetails(changes) {
   try {
     await runStore.updateRun(runId.value, changes);
     runDetailsDialogOpen.value = false;
-    ui.toast(wp.i18n.__('Run details updated.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Run details updated.', 'mandragora-qa-test-manager'));
   } catch (error) {
     // The dialog stays open on failure, so the draft is still there to retry or cancel.
-    ui.toastError(error, wp.i18n.__('The run details could not be saved.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The run details could not be saved.', 'mandragora-qa-test-manager'));
   } finally {
     savingRunDetails.value = false;
   }
@@ -254,10 +254,10 @@ async function saveRunAssignees(changes) {
   try {
     await runStore.setRunAssignees(runId.value, changes);
     runAssigneeDialogOpen.value = false;
-    ui.toast(wp.i18n.__('Run assignees updated.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Run assignees updated.', 'mandragora-qa-test-manager'));
   } catch (error) {
     // The dialog stays open on failure, so the draft is still there to retry or cancel.
-    ui.toastError(error, wp.i18n.__('The run assignees could not be saved.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The run assignees could not be saved.', 'mandragora-qa-test-manager'));
   } finally {
     savingRunAssignees.value = false;
   }
@@ -273,7 +273,7 @@ async function toggleAssignment(result) {
   try {
     await runStore.setAssignment(result.id, bootstrap.currentUser, !isMine(result));
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('That assignment could not be saved.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('That assignment could not be saved.', 'mandragora-qa-test-manager'));
   }
 }
 
@@ -307,9 +307,9 @@ async function completeRun() {
   try {
     await runStore.updateRun(runId.value, {status: 'completed'});
     runStore.stopPolling();
-    ui.toast(wp.i18n.__('Run completed.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Run completed.', 'mandragora-qa-test-manager'));
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The run could not be completed.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The run could not be completed.', 'mandragora-qa-test-manager'));
   }
 }
 
@@ -322,9 +322,9 @@ async function reopenRun() {
   try {
     await runStore.updateRun(runId.value, {status: 'open'});
     runStore.startPolling(runId.value);
-    ui.toast(wp.i18n.__('Run reopened.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Run reopened.', 'mandragora-qa-test-manager'));
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The run could not be reopened.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The run could not be reopened.', 'mandragora-qa-test-manager'));
   }
 }
 
@@ -339,10 +339,10 @@ async function cloneRun() {
   try {
     const clone = await api.runs.clone(runId.value);
 
-    ui.toast(wp.i18n.__('Run cloned.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Run cloned.', 'mandragora-qa-test-manager'));
     window.location.hash = `#/runs/${clone.id}`;
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The run could not be cloned.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The run could not be cloned.', 'mandragora-qa-test-manager'));
   } finally {
     cloning.value = false;
   }
@@ -373,18 +373,18 @@ onBeforeUnmount(() => runStore.reset());
 
 <template>
   <div class="qa-stack">
-    <p v-if="loading" class="qa-skeleton">{{ __('Loading run…', 'qa-runner') }}</p>
+    <p v-if="loading" class="qa-skeleton">{{ __('Loading run…', 'mandragora-qa-test-manager') }}</p>
 
     <template v-else-if="runStore.run">
       <div class="qa-page-head">
         <div class="qa-page-head__meta">
           <h2 class="qa-run-title">{{ runStore.run.name }}</h2>
           <p class="qa-subtitle">
-            {{ __('environment:', 'qa-runner') }}
+            {{ __('environment:', 'mandragora-qa-test-manager') }}
             <strong>{{ runStore.run.environment }}</strong> ·
-            {{ __('version:', 'qa-runner') }}
+            {{ __('version:', 'mandragora-qa-test-manager') }}
             <strong>{{ runStore.run.version }}</strong> <br />
-            {{ __('created by', 'qa-runner') }}
+            {{ __('created by', 'mandragora-qa-test-manager') }}
             <strong>{{ runStore.run.created_by.name }}</strong> &nbsp;
             <strong>
               <span :title="absoluteTime(runStore.run.created_at)">{{
@@ -402,7 +402,7 @@ onBeforeUnmount(() => runStore.reset());
             class="qa-button qa-button--quiet"
             @click="runDetailsDialogOpen = true"
           >
-            {{ __('Edit details', 'qa-runner') }}
+            {{ __('Edit details', 'mandragora-qa-test-manager') }}
           </button>
           <button
             v-if="bootstrap.caps?.runTests"
@@ -411,7 +411,7 @@ onBeforeUnmount(() => runStore.reset());
             :disabled="cloning"
             @click="cloneRun"
           >
-            {{ cloning ? __('Cloning…', 'qa-runner') : __('Clone run', 'qa-runner') }}
+            {{ cloning ? __('Cloning…', 'mandragora-qa-test-manager') : __('Clone run', 'mandragora-qa-test-manager') }}
           </button>
           <button
             v-if="bootstrap.caps?.runTests && isOpen"
@@ -419,7 +419,7 @@ onBeforeUnmount(() => runStore.reset());
             class="qa-button qa-button--primary"
             @click="completeRun"
           >
-            {{ __('Complete run', 'qa-runner') }}
+            {{ __('Complete run', 'mandragora-qa-test-manager') }}
           </button>
           <button
             v-else-if="bootstrap.caps?.runTests && runStore.run.status === 'completed'"
@@ -427,7 +427,7 @@ onBeforeUnmount(() => runStore.reset());
             class="qa-button"
             @click="reopenRun"
           >
-            {{ __('Reopen run', 'qa-runner') }}
+            {{ __('Reopen run', 'mandragora-qa-test-manager') }}
           </button>
         </div>
 
@@ -454,21 +454,21 @@ onBeforeUnmount(() => runStore.reset());
               class="qa-button qa-button--small"
               @click="runAssigneeDialogOpen = true"
             >
-              {{ __('Edit assignees', 'qa-runner') }}
+              {{ __('Edit assignees', 'mandragora-qa-test-manager') }}
             </button>
           </div>
         </div>
 
         <AssigneeDialog
           :open="runAssigneeDialogOpen"
-          :title="__('Who is on this run', 'qa-runner')"
+          :title="__('Who is on this run', 'mandragora-qa-test-manager')"
           :empty-text="
-            __('No testers exist yet. Give somebody the QA Tester role first.', 'qa-runner')
+            __('No testers exist yet. Give somebody the QA Tester role first.', 'mandragora-qa-test-manager')
           "
           :removal-warning="
             __(
               'Removing %s also drops the cases they claimed on this run. Adding them back will not restore those claims.',
-              'qa-runner'
+              'mandragora-qa-test-manager'
             )
           "
           :candidates="caseStore.users"
@@ -482,7 +482,7 @@ onBeforeUnmount(() => runStore.reset());
       <div v-if="!isOpen" class="qa-notice qa-notice--warning">
         {{
           sprintf(
-            __('This run is %s. Results, comments and locks are read-only.', 'qa-runner'),
+            __('This run is %s. Results, comments and locks are read-only.', 'mandragora-qa-test-manager'),
             runStatusLabel(runStore.run.status).toLowerCase()
           )
         }}
@@ -491,7 +491,7 @@ onBeforeUnmount(() => runStore.reset());
       <div v-if="regressions.length" class="qa-notice qa-notice--error">
         <strong>{{
           sprintf(
-            _n('%d regression.', '%d regressions.', regressions.length, 'qa-runner'),
+            _n('%d regression.', '%d regressions.', regressions.length, 'mandragora-qa-test-manager'),
             regressions.length
           )
         }}</strong>
@@ -501,7 +501,7 @@ onBeforeUnmount(() => runStore.reset());
               'This case passed in the previous run and fails now: %s',
               'These cases passed in the previous run and fail now: %s',
               regressions.length,
-              'qa-runner'
+              'mandragora-qa-test-manager'
             ),
             regressions.map((result) => result.case.title).join(', ')
           )
@@ -511,29 +511,29 @@ onBeforeUnmount(() => runStore.reset());
       <div class="qa-card">
         <div class="qa-card__head" style="flex-wrap: wrap">
           <div class="qa-row">
-            <label class="qa-sr-only" for="filter-status">{{ __('Status', 'qa-runner') }}</label>
+            <label class="qa-sr-only" for="filter-status">{{ __('Status', 'mandragora-qa-test-manager') }}</label>
             <select
               id="filter-status"
               v-model="filters.status"
               class="qa-select"
               style="width: auto"
             >
-              <option value="">{{ __('All statuses', 'qa-runner') }}</option>
+              <option value="">{{ __('All statuses', 'mandragora-qa-test-manager') }}</option>
               <option v-for="status in RESULT_STATUSES" :key="status.value" :value="status.value">
                 {{ statusLabel(status.value) }}
               </option>
             </select>
 
-            <label class="qa-sr-only" for="filter-suite">{{ __('Suite', 'qa-runner') }}</label>
+            <label class="qa-sr-only" for="filter-suite">{{ __('Suite', 'mandragora-qa-test-manager') }}</label>
             <select id="filter-suite" v-model="filters.suite" class="qa-select" style="width: auto">
-              <option value="">{{ __('All suites', 'qa-runner') }}</option>
+              <option value="">{{ __('All suites', 'mandragora-qa-test-manager') }}</option>
               <option v-for="suite in caseStore.suites" :key="suite.id" :value="String(suite.id)">
                 {{ suite.name }}
               </option>
             </select>
 
             <label class="qa-sr-only" for="filter-priority">{{
-              __('Priority', 'qa-runner')
+              __('Priority', 'mandragora-qa-test-manager')
             }}</label>
             <select
               id="filter-priority"
@@ -541,7 +541,7 @@ onBeforeUnmount(() => runStore.reset());
               class="qa-select"
               style="width: auto"
             >
-              <option value="">{{ __('All priorities', 'qa-runner') }}</option>
+              <option value="">{{ __('All priorities', 'mandragora-qa-test-manager') }}</option>
               <option v-for="priority in PRIORITIES" :key="priority.value" :value="priority.value">
                 {{ priority.label }}
               </option>
@@ -549,17 +549,17 @@ onBeforeUnmount(() => runStore.reset());
 
             <label class="qa-checkbox">
               <input v-model="filters.onlyMine" type="checkbox" />
-              <span>{{ __('Only mine', 'qa-runner') }}</span>
+              <span>{{ __('Only mine', 'mandragora-qa-test-manager') }}</span>
             </label>
 
             <label class="qa-checkbox">
               <input v-model="filters.onlyUnassigned" type="checkbox" />
-              <span>{{ __('Unassigned only', 'qa-runner') }}</span>
+              <span>{{ __('Unassigned only', 'mandragora-qa-test-manager') }}</span>
             </label>
 
             <label class="qa-checkbox">
               <input v-model="filters.onlyFailedLastRun" type="checkbox" />
-              <span>{{ __('Only failed last run', 'qa-runner') }}</span>
+              <span>{{ __('Only failed last run', 'mandragora-qa-test-manager') }}</span>
             </label>
           </div>
 
@@ -570,7 +570,7 @@ onBeforeUnmount(() => runStore.reset());
               class="qa-button qa-button--small qa-button--quiet"
               @click="clearFilters"
             >
-              {{ __('Clear filters', 'qa-runner') }}
+              {{ __('Clear filters', 'mandragora-qa-test-manager') }}
             </button>
 
             <button
@@ -579,7 +579,7 @@ onBeforeUnmount(() => runStore.reset());
               class="qa-button qa-button--small"
               @click="openRunCasesDialog"
             >
-              {{ __('Edit cases', 'qa-runner') }}
+              {{ __('Edit cases', 'mandragora-qa-test-manager') }}
             </button>
           </div>
         </div>
@@ -599,10 +599,10 @@ onBeforeUnmount(() => runStore.reset());
           v-if="!filtered.length"
           :title="
             hasFilters
-              ? __('No cases match these filters.', 'qa-runner')
-              : __('This run has no cases yet.', 'qa-runner')
+              ? __('No cases match these filters.', 'mandragora-qa-test-manager')
+              : __('This run has no cases yet.', 'mandragora-qa-test-manager')
           "
-          :description="hasFilters ? __('Clear a filter to see more of the run.', 'qa-runner') : ''"
+          :description="hasFilters ? __('Clear a filter to see more of the run.', 'mandragora-qa-test-manager') : ''"
         />
 
         <div v-for="group in groups" :key="group.id" class="qa-suite-group">
@@ -611,7 +611,7 @@ onBeforeUnmount(() => runStore.reset());
             <span class="qa-muted qa-count">
               {{
                 sprintf(
-                  _n('%d case', '%d cases', group.results.length, 'qa-runner'),
+                  _n('%d case', '%d cases', group.results.length, 'mandragora-qa-test-manager'),
                   group.results.length
                 )
               }}
@@ -635,12 +635,12 @@ onBeforeUnmount(() => runStore.reset());
                     relativeTime(result.tested_at)
                   }}</span>
                 </span>
-                <span v-else>{{ __('Not tested yet', 'qa-runner') }}</span>
+                <span v-else>{{ __('Not tested yet', 'mandragora-qa-test-manager') }}</span>
 
                 <span v-if="result.comment_count" class="qa-badge">
                   {{
                     sprintf(
-                      _n('%d comment', '%d comments', result.comment_count, 'qa-runner'),
+                      _n('%d comment', '%d comments', result.comment_count, 'mandragora-qa-test-manager'),
                       result.comment_count
                     )
                   }}
@@ -649,7 +649,7 @@ onBeforeUnmount(() => runStore.reset());
                 <span v-if="result.open_issue_count" class="qa-badge qa-badge--issue">
                   {{
                     sprintf(
-                      _n('%d open issue', '%d open issues', result.open_issue_count, 'qa-runner'),
+                      _n('%d open issue', '%d open issues', result.open_issue_count, 'mandragora-qa-test-manager'),
                       result.open_issue_count
                     )
                   }}
@@ -661,7 +661,7 @@ onBeforeUnmount(() => runStore.reset());
                   "
                   class="qa-badge qa-badge--lock"
                 >
-                  {{ sprintf(__('%s is testing this', 'qa-runner'), result.in_progress_by.name) }}
+                  {{ sprintf(__('%s is testing this', 'mandragora-qa-test-manager'), result.in_progress_by.name) }}
                 </span>
 
                 <span
@@ -669,14 +669,14 @@ onBeforeUnmount(() => runStore.reset());
                   class="qa-muted"
                   :title="
                     sprintf(
-                      __('Previous run: %s', 'qa-runner'),
+                      __('Previous run: %s', 'mandragora-qa-test-manager'),
                       runStore.previousStatus[result.case.id].run_name
                     )
                   "
                 >
                   {{
                     sprintf(
-                      __('Last run: %s', 'qa-runner'),
+                      __('Last run: %s', 'mandragora-qa-test-manager'),
                       statusLabel(runStore.previousStatus[result.case.id].status)
                     )
                   }}
@@ -691,12 +691,12 @@ onBeforeUnmount(() => runStore.reset());
                 class="qa-button qa-button--small qa-button--quiet"
                 :title="
                   isMine(result)
-                    ? __('Take yourself off this case', 'qa-runner')
-                    : __('Claim this case', 'qa-runner')
+                    ? __('Take yourself off this case', 'mandragora-qa-test-manager')
+                    : __('Claim this case', 'mandragora-qa-test-manager')
                 "
                 @click="toggleAssignment(result)"
               >
-                {{ isMine(result) ? __('Unassign me', 'qa-runner') : __('Assign me', 'qa-runner') }}
+                {{ isMine(result) ? __('Unassign me', 'mandragora-qa-test-manager') : __('Assign me', 'mandragora-qa-test-manager') }}
               </button>
 
               <StatusControl
@@ -714,10 +714,10 @@ onBeforeUnmount(() => runStore.reset());
 
     <EmptyState
       v-else
-      :title="__('That run could not be found.', 'qa-runner')"
-      :description="__('It may have been deleted.', 'qa-runner')"
+      :title="__('That run could not be found.', 'mandragora-qa-test-manager')"
+      :description="__('It may have been deleted.', 'mandragora-qa-test-manager')"
     >
-      <RouterLink class="qa-button" to="/">{{ __('Back to runs', 'qa-runner') }}</RouterLink>
+      <RouterLink class="qa-button" to="/">{{ __('Back to runs', 'mandragora-qa-test-manager') }}</RouterLink>
     </EmptyState>
   </div>
 </template>

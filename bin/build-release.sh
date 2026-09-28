@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Builds the WordPress.org release zip: a production bundle plus only the files listed as
-# shippable by .distignore. Output: dist/qa-runner/ (for SVN) and dist/qa-runner-<version>.zip.
+# shippable by .distignore. Output: dist/mandragora-qa-test-manager/ (for SVN) and dist/mandragora-qa-test-manager-<version>.zip.
 #
 # Usage: npm run release
 
@@ -9,12 +9,12 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-slug="qa-runner"
-version="$(sed -n 's/^ \* Version:[[:space:]]*//p' qa-runner.php)"
+slug="mandragora-qa-test-manager"
+version="$(sed -n 's/^ \* Version:[[:space:]]*//p' mandragora-qa-test-manager.php)"
 stable="$(sed -n 's/^Stable tag:[[:space:]]*//p' readme.txt)"
 
 if [[ "$version" != "$stable" ]]; then
-  echo "Version mismatch: qa-runner.php says $version, readme.txt Stable tag says $stable." >&2
+  echo "Version mismatch: mandragora-qa-test-manager.php says $version, readme.txt Stable tag says $stable." >&2
   exit 1
 fi
 
@@ -27,7 +27,7 @@ npm run build
 if command -v wp >/dev/null 2>&1; then
   npm run make-pot
 else
-  echo "WP-CLI not found: languages/qa-runner.pot was NOT regenerated." >&2
+  echo "WP-CLI not found: languages/mandragora-qa-test-manager.pot was NOT regenerated." >&2
 fi
 
 rm -rf dist

@@ -2,16 +2,16 @@
 /**
  * Outgoing mail.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Notification;
+namespace MandragoraQAManager\Notification;
 
-use QARunner\Repository\ResultRepository;
-use QARunner\Repository\RunRepository;
-use QARunner\Support\Settings;
+use MandragoraQAManager\Repository\ResultRepository;
+use MandragoraQAManager\Repository\RunRepository;
+use MandragoraQAManager\Support\Settings;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -90,7 +90,7 @@ final class Mailer {
 			}
 
 			/* translators: %s: run name. */
-			$subject = sprintf( __( '[QA] You\'ve been assigned to: %s', 'qa-runner' ), $run['name'] );
+			$subject = sprintf( __( '[QA] You\'ve been assigned to: %s', 'mandragora-qa-test-manager' ), $run['name'] );
 
 			$body = $this->render(
 				'assignment',
@@ -136,7 +136,7 @@ final class Mailer {
 		$actor = get_userdata( $actor_id );
 
 		/* translators: %s: case title. */
-		$subject = sprintf( __( '[QA] You\'ve been assigned to test: %s', 'qa-runner' ), $result['case']['title'] );
+		$subject = sprintf( __( '[QA] You\'ve been assigned to test: %s', 'mandragora-qa-test-manager' ), $result['case']['title'] );
 
 		$body = $this->render(
 			'case-assignment',
@@ -144,7 +144,7 @@ final class Mailer {
 				'run'        => $run,
 				'case'       => $result['case'],
 				'user'       => $user,
-				'actor_name' => $actor ? $actor->display_name : __( 'A teammate', 'qa-runner' ),
+				'actor_name' => $actor ? $actor->display_name : __( 'A teammate', 'mandragora-qa-test-manager' ),
 				'case_url'   => $this->run_url( (int) $run['id'] ) . '/cases/' . $result['case']['id'],
 			)
 		);
@@ -159,7 +159,7 @@ final class Mailer {
 	 * @return string
 	 */
 	public function run_url( int $run_id ): string {
-		return admin_url( 'admin.php?page=' . QA_RUNNER_SLUG ) . '#/runs/' . $run_id;
+		return admin_url( 'admin.php?page=' . MQATM_SLUG ) . '#/runs/' . $run_id;
 	}
 
 	/**
@@ -170,7 +170,7 @@ final class Mailer {
 	 * @return string
 	 */
 	private function render( string $template, array $data ): string {
-		$path = QA_RUNNER_PATH . 'templates/emails/' . $template . '.php';
+		$path = MQATM_PATH . 'templates/emails/' . $template . '.php';
 
 		if ( ! is_readable( $path ) ) {
 			return '';

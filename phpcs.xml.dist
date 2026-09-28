@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<ruleset name="QA Runner">
-	<description>WordPress Coding Standards for the QA Runner plugin.</description>
+<ruleset name="Mandragora QA Test Manager">
+	<description>WordPress Coding Standards for the Mandragora QA Test Manager plugin.</description>
 
-	<file>qa-runner.php</file>
+	<file>mandragora-qa-test-manager.php</file>
 	<file>uninstall.php</file>
 	<file>includes</file>
 	<file>templates</file>
@@ -34,7 +34,7 @@
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array">
-				<element value="qa-runner"/>
+				<element value="mandragora-qa-test-manager"/>
 			</property>
 		</properties>
 	</rule>
@@ -42,9 +42,9 @@
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<property name="prefixes" type="array">
-				<element value="qa_runner"/>
-				<element value="QARunner"/>
-				<element value="QA_RUNNER"/>
+				<element value="mqatm"/>
+				<element value="MandragoraQAManager"/>
+				<element value="MQATM"/>
 			</property>
 		</properties>
 	</rule>
@@ -52,9 +52,9 @@
 	<rule ref="WordPress.WP.Capabilities">
 		<properties>
 			<property name="custom_capabilities" type="array">
-				<element value="qa_view_qa"/>
-				<element value="qa_run_tests"/>
-				<element value="qa_manage_cases"/>
+				<element value="mqatm_view"/>
+				<element value="mqatm_run_tests"/>
+				<element value="mqatm_manage_cases"/>
 			</property>
 		</properties>
 	</rule>

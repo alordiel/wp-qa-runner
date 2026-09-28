@@ -2,14 +2,14 @@
 /**
  * Shared REST controller behaviour.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Rest;
+namespace MandragoraQAManager\Rest;
 
-use QARunner\Install\Roles;
+use MandragoraQAManager\Install\Roles;
 use WP_Error;
 use WP_REST_Request;
 
@@ -26,7 +26,7 @@ abstract class Controller {
 	/**
 	 * REST namespace shared by every route.
 	 */
-	public const REST_NAMESPACE = 'qa-runner/v1';
+	public const REST_NAMESPACE = 'mqatm/v1';
 
 	/**
 	 * Registers this controller's routes.
@@ -69,7 +69,7 @@ abstract class Controller {
 	 * @return WP_Error
 	 */
 	protected function not_found( string $message ): WP_Error {
-		return new WP_Error( 'qa_runner_not_found', $message, array( 'status' => 404 ) );
+		return new WP_Error( 'mqatm_not_found', $message, array( 'status' => 404 ) );
 	}
 
 	/**
@@ -79,7 +79,7 @@ abstract class Controller {
 	 * @return WP_Error
 	 */
 	protected function bad_request( string $message ): WP_Error {
-		return new WP_Error( 'qa_runner_bad_request', $message, array( 'status' => 400 ) );
+		return new WP_Error( 'mqatm_bad_request', $message, array( 'status' => 400 ) );
 	}
 
 	/**
@@ -89,7 +89,7 @@ abstract class Controller {
 	 * @return WP_Error
 	 */
 	protected function forbidden( string $message ): WP_Error {
-		return new WP_Error( 'qa_runner_forbidden', $message, array( 'status' => 403 ) );
+		return new WP_Error( 'mqatm_forbidden', $message, array( 'status' => 403 ) );
 	}
 
 	/**
@@ -101,8 +101,8 @@ abstract class Controller {
 	 */
 	protected function run_closed(): WP_Error {
 		return new WP_Error(
-			'qa_runner_run_closed',
-			__( 'This run is no longer open, so its results cannot be changed.', 'qa-runner' ),
+			'mqatm_run_closed',
+			__( 'This run is no longer open, so its results cannot be changed.', 'mandragora-qa-test-manager' ),
 			array( 'status' => 409 )
 		);
 	}
@@ -114,7 +114,7 @@ abstract class Controller {
 	 * @return WP_Error
 	 */
 	protected function write_failed( string $message ): WP_Error {
-		return new WP_Error( 'qa_runner_write_failed', $message, array( 'status' => 500 ) );
+		return new WP_Error( 'mqatm_write_failed', $message, array( 'status' => 500 ) );
 	}
 
 	/**

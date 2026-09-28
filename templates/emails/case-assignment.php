@@ -4,23 +4,23 @@
  *
  * Plain HTML tables only — no external CSS, no flexbox, nothing Outlook will drop.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  *
  * @var array<string, mixed> $run        Run record.
  * @var array<string, mixed> $case       Case as it sits in the run (id, title, suite_name…).
  * @var WP_User              $user       Recipient.
  * @var string               $actor_name Display name of whoever made the assignment.
- * @var string               $case_url   Deep link to the case in the QA Runner screen.
+ * @var string               $case_url   Deep link to the case in the Mandragora QA Test Manager screen.
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$qa_runner_rows = array(
-	__( 'Case', 'qa-runner' )        => $case['title'],
-	__( 'Suite', 'qa-runner' )       => $case['suite_name'],
-	__( 'Run', 'qa-runner' )         => $run['name'],
-	__( 'Environment', 'qa-runner' ) => $run['environment'],
-	__( 'Version', 'qa-runner' )     => $run['version'],
+$mqatm_rows = array(
+	__( 'Case', 'mandragora-qa-test-manager' )        => $case['title'],
+	__( 'Suite', 'mandragora-qa-test-manager' )       => $case['suite_name'],
+	__( 'Run', 'mandragora-qa-test-manager' )         => $run['name'],
+	__( 'Environment', 'mandragora-qa-test-manager' ) => $run['environment'],
+	__( 'Version', 'mandragora-qa-test-manager' )     => $run['version'],
 );
 ?>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f0f0f1;padding:24px 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
@@ -30,13 +30,13 @@ $qa_runner_rows = array(
 				<tr>
 					<td style="padding:24px 24px 8px 24px;font-size:13px;color:#1d2327;">
 						<p style="margin:0 0 16px 0;font-size:16px;font-weight:600;color:#1d2327;">
-							<?php esc_html_e( 'You have been assigned a case to test', 'qa-runner' ); ?>
+							<?php esc_html_e( 'You have been assigned a case to test', 'mandragora-qa-test-manager' ); ?>
 						</p>
 						<p style="margin:0 0 16px 0;">
 							<?php
 							printf(
 								/* translators: %s: recipient display name. */
-								esc_html__( 'Hello %s,', 'qa-runner' ),
+								esc_html__( 'Hello %s,', 'mandragora-qa-test-manager' ),
 								esc_html( $user->display_name )
 							);
 							?>
@@ -45,7 +45,7 @@ $qa_runner_rows = array(
 							<?php
 							printf(
 								/* translators: 1: assigning user's display name, 2: case title. */
-								esc_html__( '%1$s assigned you to test %2$s.', 'qa-runner' ),
+								esc_html__( '%1$s assigned you to test %2$s.', 'mandragora-qa-test-manager' ),
 								esc_html( $actor_name ),
 								'<strong>' . esc_html( $case['title'] ) . '</strong>'
 							);
@@ -56,18 +56,18 @@ $qa_runner_rows = array(
 				<tr>
 					<td style="padding:0 24px;">
 						<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-size:13px;color:#1d2327;">
-							<?php foreach ( $qa_runner_rows as $qa_runner_label => $qa_runner_value ) : ?>
+							<?php foreach ( $mqatm_rows as $mqatm_label => $mqatm_value ) : ?>
 								<?php
-								if ( '' === (string) $qa_runner_value ) {
+								if ( '' === (string) $mqatm_value ) {
 									continue;
 								}
 								?>
 								<tr>
 									<td style="padding:8px 12px;border:1px solid #dcdcde;background-color:#f6f7f7;width:130px;font-weight:600;">
-										<?php echo esc_html( $qa_runner_label ); ?>
+										<?php echo esc_html( $mqatm_label ); ?>
 									</td>
 									<td style="padding:8px 12px;border:1px solid #dcdcde;">
-										<?php echo esc_html( (string) $qa_runner_value ); ?>
+										<?php echo esc_html( (string) $mqatm_value ); ?>
 									</td>
 								</tr>
 							<?php endforeach; ?>
@@ -80,7 +80,7 @@ $qa_runner_rows = array(
 							<tr>
 								<td style="background-color:#2271b1;padding:10px 20px;">
 									<a href="<?php echo esc_url( $case_url ); ?>" style="color:#ffffff;font-size:13px;font-weight:600;text-decoration:none;display:inline-block;">
-										<?php esc_html_e( 'Open the case', 'qa-runner' ); ?>
+										<?php esc_html_e( 'Open the case', 'mandragora-qa-test-manager' ); ?>
 									</a>
 								</td>
 							</tr>

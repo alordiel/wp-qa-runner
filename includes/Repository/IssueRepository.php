@@ -2,21 +2,21 @@
 /**
  * Issue persistence. Issues attach to a case, which is what makes them cross-run.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Repository;
+namespace MandragoraQAManager\Repository;
 
-use QARunner\Support\Dates;
-use QARunner\Support\Enum;
-use QARunner\Support\Sanitize;
+use MandragoraQAManager\Support\Dates;
+use MandragoraQAManager\Support\Enum;
+use MandragoraQAManager\Support\Sanitize;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Reads and writes qa_issues.
+ * Reads and writes mqatm_issues.
  *
  * Only open issues are ever surfaced during testing. Resolved and wontfix issues stay in
  * the table for audit and are reachable from the case library, but a tester only needs to
@@ -215,14 +215,14 @@ final class IssueRepository extends BaseRepository {
 			'status'          => (string) $row['status'],
 			'created_by'      => array(
 				'id'     => $created_by,
-				'name'   => $creator ? $creator->display_name : __( 'Unknown user', 'qa-runner' ),
+				'name'   => $creator ? $creator->display_name : __( 'Unknown user', 'mandragora-qa-test-manager' ),
 				'avatar' => get_avatar_url( $created_by, array( 'size' => 48 ) ),
 			),
 			'created_at'      => Dates::to_iso( $row['created_at'] ?? null ),
 			'resolved_by'     => $resolved_by
 				? array(
 					'id'   => $resolved_by,
-					'name' => $resolver ? $resolver->display_name : __( 'Unknown user', 'qa-runner' ),
+					'name' => $resolver ? $resolver->display_name : __( 'Unknown user', 'mandragora-qa-test-manager' ),
 				)
 				: null,
 			'resolved_at'     => Dates::to_iso( $row['resolved_at'] ?? null ),

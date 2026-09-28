@@ -16,18 +16,18 @@ import {useUiStore} from '../stores/ui.js';
 const ui = useUiStore();
 
 const ROLE_OPTIONS = [
-  {value: 'qa_tester', label: wp.i18n.__('QA Tester', 'qa-runner')},
-  {value: 'qa_admin', label: wp.i18n.__('QA Admin', 'qa-runner')}
+  {value: 'mqatm_tester', label: wp.i18n.__('QA Tester', 'mandragora-qa-test-manager')},
+  {value: 'mqatm_admin', label: wp.i18n.__('QA Admin', 'mandragora-qa-test-manager')}
 ];
 
 const ROLE_HINTS = {
-  qa_tester: wp.i18n.__(
+  mqatm_tester: wp.i18n.__(
     'Runs tests: creates runs, records results, comments and raises issues.',
-    'qa-runner'
+    'mandragora-qa-test-manager'
   ),
-  qa_admin: wp.i18n.__(
+  mqatm_admin: wp.i18n.__(
     'Everything a tester can do, plus the case library, suites and settings.',
-    'qa-runner'
+    'mandragora-qa-test-manager'
   )
 };
 
@@ -39,7 +39,7 @@ const search = ref('');
 const candidates = ref([]);
 const loadingCandidates = ref(false);
 const newUserId = ref(0);
-const newRole = ref('qa_tester');
+const newRole = ref('mqatm_tester');
 const adding = ref(false);
 
 const selectedCandidate = computed(() =>
@@ -55,7 +55,7 @@ async function loadMembers() {
   try {
     members.value = await api.team.list();
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The QA team could not be loaded.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The QA team could not be loaded.', 'mandragora-qa-test-manager'));
   } finally {
     loading.value = false;
   }
@@ -76,7 +76,7 @@ async function loadCandidates() {
       newUserId.value = candidates.value[0]?.id ?? 0;
     }
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The user list could not be loaded.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The user list could not be loaded.', 'mandragora-qa-test-manager'));
   } finally {
     loadingCandidates.value = false;
   }
@@ -106,11 +106,11 @@ async function addMember() {
 
     members.value = [...members.value, member];
     /* translators: %s: user display name. */
-    ui.toast(wp.i18n.sprintf(wp.i18n.__('%s added to the QA team.', 'qa-runner'), member.name));
+    ui.toast(wp.i18n.sprintf(wp.i18n.__('%s added to the QA team.', 'mandragora-qa-test-manager'), member.name));
     search.value = '';
     await loadCandidates();
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('That person could not be added.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('That person could not be added.', 'mandragora-qa-test-manager'));
   } finally {
     adding.value = false;
   }
@@ -133,13 +133,13 @@ async function changeRole(member, role) {
     ui.toast(
       wp.i18n.sprintf(
         /* translators: 1: user display name, 2: QA role name. */
-        wp.i18n.__('%1$s is now a %2$s.', 'qa-runner'),
+        wp.i18n.__('%1$s is now a %2$s.', 'mandragora-qa-test-manager'),
         updated.name,
         roleLabel(updated.qa_role)
       )
     );
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The role could not be changed.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The role could not be changed.', 'mandragora-qa-test-manager'));
   } finally {
     savingId.value = 0;
   }
@@ -156,8 +156,8 @@ async function removeMember(member) {
     ? wp.i18n.sprintf(
         /* translators: 1: user display name, 2: their WordPress role names. */
         wp.i18n.__(
-          'Remove %1$s from the QA team? They keep their WordPress role (%2$s), but lose access to QA Runner.',
-          'qa-runner'
+          'Remove %1$s from the QA team? They keep their WordPress role (%2$s), but lose access to Mandragora QA Test Manager.',
+          'mandragora-qa-test-manager'
         ),
         member.name,
         member.wp_roles.join(', ')
@@ -165,8 +165,8 @@ async function removeMember(member) {
     : wp.i18n.sprintf(
         /* translators: %s: user display name. */
         wp.i18n.__(
-          'Remove %s from the QA team? They have no other WordPress role, so they become a Subscriber and lose access to QA Runner.',
-          'qa-runner'
+          'Remove %s from the QA team? They have no other WordPress role, so they become a Subscriber and lose access to Mandragora QA Test Manager.',
+          'mandragora-qa-test-manager'
         ),
         member.name
       );
@@ -182,10 +182,10 @@ async function removeMember(member) {
 
     members.value = members.value.filter((item) => item.id !== member.id);
     /* translators: %s: user display name. */
-    ui.toast(wp.i18n.sprintf(wp.i18n.__('%s removed from the QA team.', 'qa-runner'), member.name));
+    ui.toast(wp.i18n.sprintf(wp.i18n.__('%s removed from the QA team.', 'mandragora-qa-test-manager'), member.name));
     await loadCandidates();
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('That person could not be removed.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('That person could not be removed.', 'mandragora-qa-test-manager'));
   } finally {
     savingId.value = 0;
   }
@@ -200,7 +200,7 @@ async function removeMember(member) {
 function roleLabel(role) {
   return (
     ROLE_OPTIONS.find((option) => option.value === role)?.label ??
-    wp.i18n.__('Administrator', 'qa-runner')
+    wp.i18n.__('Administrator', 'mandragora-qa-test-manager')
   );
 }
 
@@ -223,22 +223,22 @@ onMounted(() => {
 <template>
   <div class="qa-card">
     <div class="qa-card__head">
-      <h3>{{ __('QA team', 'qa-runner') }}</h3>
+      <h3>{{ __('QA team', 'mandragora-qa-test-manager') }}</h3>
     </div>
 
     <p v-if="loading" class="qa-card__body qa-skeleton">
-      {{ __('Loading the QA team…', 'qa-runner') }}
+      {{ __('Loading the QA team…', 'mandragora-qa-test-manager') }}
     </p>
 
     <div v-else class="qa-table-scroll">
       <table class="qa-table">
         <thead>
           <tr>
-            <th scope="col">{{ __('User', 'qa-runner') }}</th>
-            <th scope="col">{{ __('WordPress role', 'qa-runner') }}</th>
-            <th scope="col">{{ __('QA role', 'qa-runner') }}</th>
+            <th scope="col">{{ __('User', 'mandragora-qa-test-manager') }}</th>
+            <th scope="col">{{ __('WordPress role', 'mandragora-qa-test-manager') }}</th>
+            <th scope="col">{{ __('QA role', 'mandragora-qa-test-manager') }}</th>
             <th scope="col">
-              <span class="screen-reader-text">{{ __('Actions', 'qa-runner') }}</span>
+              <span class="screen-reader-text">{{ __('Actions', 'mandragora-qa-test-manager') }}</span>
             </th>
           </tr>
         </thead>
@@ -267,7 +267,7 @@ onMounted(() => {
                 class="qa-select"
                 :value="member.qa_role"
                 :disabled="savingId === member.id"
-                :aria-label="sprintf(__('QA role for %s', 'qa-runner'), member.name)"
+                :aria-label="sprintf(__('QA role for %s', 'mandragora-qa-test-manager'), member.name)"
                 @change="changeRole(member, $event.target.value)"
               >
                 <option v-for="option in ROLE_OPTIONS" :key="option.value" :value="option.value">
@@ -275,11 +275,11 @@ onMounted(() => {
                 </option>
               </select>
               <span v-else-if="member.qa_role === 'administrator'" class="qa-muted">
-                {{ __('Full access (site administrator)', 'qa-runner') }}
+                {{ __('Full access (site administrator)', 'mandragora-qa-test-manager') }}
               </span>
               <span v-else
                 >{{ roleLabel(member.qa_role) }}
-                <span class="qa-muted">{{ __('(you)', 'qa-runner') }}</span></span
+                <span class="qa-muted">{{ __('(you)', 'mandragora-qa-test-manager') }}</span></span
               >
             </td>
             <td class="qa-team-actions">
@@ -287,8 +287,8 @@ onMounted(() => {
                 v-if="isEditable(member)"
                 type="button"
                 class="qa-icon-button qa-icon-button--danger"
-                :title="sprintf(__('Remove %s from the QA team', 'qa-runner'), member.name)"
-                :aria-label="sprintf(__('Remove %s from the QA team', 'qa-runner'), member.name)"
+                :title="sprintf(__('Remove %s from the QA team', 'mandragora-qa-test-manager'), member.name)"
+                :aria-label="sprintf(__('Remove %s from the QA team', 'mandragora-qa-test-manager'), member.name)"
                 :disabled="savingId === member.id"
                 @click="removeMember(member)"
               >
@@ -301,24 +301,24 @@ onMounted(() => {
     </div>
 
     <form class="qa-card__body qa-team-add" @submit.prevent="addMember">
-      <h4 class="qa-team-add__title">{{ __('Add an existing user', 'qa-runner') }}</h4>
+      <h4 class="qa-team-add__title">{{ __('Add an existing user', 'mandragora-qa-test-manager') }}</h4>
       <div class="qa-team-add__fields">
         <div class="qa-field">
           <label class="qa-field__label" for="team-search">{{
-            __('Search users', 'qa-runner')
+            __('Search users', 'mandragora-qa-test-manager')
           }}</label>
           <input
             id="team-search"
             v-model="search"
             class="qa-input"
             type="search"
-            :placeholder="__('Name, username or email', 'qa-runner')"
+            :placeholder="__('Name, username or email', 'mandragora-qa-test-manager')"
             autocomplete="off"
           />
         </div>
 
         <div class="qa-field">
-          <label class="qa-field__label" for="team-user">{{ __('User', 'qa-runner') }}</label>
+          <label class="qa-field__label" for="team-user">{{ __('User', 'mandragora-qa-test-manager') }}</label>
           <select
             id="team-user"
             v-model.number="newUserId"
@@ -328,8 +328,8 @@ onMounted(() => {
             <option v-if="!candidates.length" :value="0">
               {{
                 loadingCandidates
-                  ? __('Loading…', 'qa-runner')
-                  : __('No matching users without QA access', 'qa-runner')
+                  ? __('Loading…', 'mandragora-qa-test-manager')
+                  : __('No matching users without QA access', 'mandragora-qa-test-manager')
               }}
             </option>
             <option v-for="user in candidates" :key="user.id" :value="user.id">
@@ -339,7 +339,7 @@ onMounted(() => {
         </div>
 
         <div class="qa-field">
-          <label class="qa-field__label" for="team-role">{{ __('QA role', 'qa-runner') }}</label>
+          <label class="qa-field__label" for="team-role">{{ __('QA role', 'mandragora-qa-test-manager') }}</label>
           <select id="team-role" v-model="newRole" class="qa-select">
             <option v-for="option in ROLE_OPTIONS" :key="option.value" :value="option.value">
               {{ option.label }}
@@ -352,7 +352,7 @@ onMounted(() => {
           class="qa-button qa-button--primary"
           :disabled="adding || !selectedCandidate"
         >
-          {{ adding ? __('Adding…', 'qa-runner') : __('Add to team', 'qa-runner') }}
+          {{ adding ? __('Adding…', 'mandragora-qa-test-manager') : __('Add to team', 'mandragora-qa-test-manager') }}
         </button>
       </div>
       <p class="qa-field__hint">
@@ -360,7 +360,7 @@ onMounted(() => {
         {{
           __(
             'The QA role is added alongside their current WordPress role. Site administrators always have full access.',
-            'qa-runner'
+            'mandragora-qa-test-manager'
           )
         }}
       </p>

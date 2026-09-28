@@ -2,16 +2,16 @@
 /**
  * Case library routes.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Rest;
+namespace MandragoraQAManager\Rest;
 
-use QARunner\Repository\CaseRepository;
-use QARunner\Repository\IssueRepository;
-use QARunner\Support\Enum;
+use MandragoraQAManager\Repository\CaseRepository;
+use MandragoraQAManager\Repository\IssueRepository;
+use MandragoraQAManager\Support\Enum;
 use WP_REST_Request;
 
 defined( 'ABSPATH' ) || exit;
@@ -162,7 +162,7 @@ final class CasesController extends Controller {
 		$case = $this->cases->find( $id );
 
 		if ( null === $case ) {
-			return $this->not_found( __( 'That case no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That case no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		// Split rather than filtered: open issues are what a tester must act on, and the
@@ -200,7 +200,7 @@ final class CasesController extends Controller {
 		);
 
 		if ( 0 === $id ) {
-			return $this->write_failed( __( 'The case could not be saved.', 'qa-runner' ) );
+			return $this->write_failed( __( 'The case could not be saved.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return $this->cases->find( $id );
@@ -216,7 +216,7 @@ final class CasesController extends Controller {
 		$id = (int) $request->get_param( 'id' );
 
 		if ( null === $this->cases->find( $id ) ) {
-			return $this->not_found( __( 'That case no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That case no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		$data = array();
@@ -228,7 +228,7 @@ final class CasesController extends Controller {
 		}
 
 		if ( ! $this->cases->update( $id, $data ) ) {
-			return $this->write_failed( __( 'The case could not be saved.', 'qa-runner' ) );
+			return $this->write_failed( __( 'The case could not be saved.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return $this->cases->find( $id );
@@ -249,7 +249,7 @@ final class CasesController extends Controller {
 		$source = $this->cases->find( $id );
 
 		if ( null === $source ) {
-			return $this->not_found( __( 'That case no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That case no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		$title = (string) $request->get_param( 'title' );
@@ -271,7 +271,7 @@ final class CasesController extends Controller {
 		);
 
 		if ( 0 === $new_id ) {
-			return $this->write_failed( __( 'The case could not be cloned.', 'qa-runner' ) );
+			return $this->write_failed( __( 'The case could not be cloned.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return $this->cases->find( $new_id );
@@ -290,11 +290,11 @@ final class CasesController extends Controller {
 		$id = (int) $request->get_param( 'id' );
 
 		if ( null === $this->cases->find( $id ) ) {
-			return $this->not_found( __( 'That case no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That case no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		if ( ! $this->cases->deactivate( $id ) ) {
-			return $this->write_failed( __( 'The case could not be archived.', 'qa-runner' ) );
+			return $this->write_failed( __( 'The case could not be archived.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return $this->cases->find( $id );
@@ -344,7 +344,7 @@ final class CasesController extends Controller {
 	 * @return string
 	 */
 	private function cloned_title( string $title ): string {
-		$suffix = __( ' (cloned)', 'qa-runner' );
+		$suffix = __( ' (cloned)', 'mandragora-qa-test-manager' );
 		$room   = 255 - mb_strlen( $suffix );
 
 		if ( mb_strlen( $title ) > $room ) {

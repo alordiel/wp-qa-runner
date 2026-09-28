@@ -2,21 +2,21 @@
 /**
  * Suite persistence.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Repository;
+namespace MandragoraQAManager\Repository;
 
-use QARunner\Install\Schema;
-use QARunner\Support\Dates;
-use QARunner\Support\Sanitize;
+use MandragoraQAManager\Install\Schema;
+use MandragoraQAManager\Support\Dates;
+use MandragoraQAManager\Support\Sanitize;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Reads and writes qa_suites.
+ * Reads and writes mqatm_suites.
  */
 final class SuiteRepository extends BaseRepository {
 

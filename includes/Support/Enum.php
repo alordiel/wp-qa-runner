@@ -2,12 +2,12 @@
 /**
  * Allowed-value maps for every status and priority field.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Support;
+namespace MandragoraQAManager\Support;
 
 defined( 'ABSPATH' ) || exit;
 

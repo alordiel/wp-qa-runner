@@ -37,7 +37,7 @@ function choose(status) {
     class="qa-segmented"
     role="group"
     :aria-label="
-      caseTitle ? sprintf(__('Result for %s', 'qa-runner'), caseTitle) : __('Result', 'qa-runner')
+      caseTitle ? sprintf(__('Result for %s', 'mandragora-qa-test-manager'), caseTitle) : __('Result', 'mandragora-qa-test-manager')
     "
   >
     <button
@@ -51,8 +51,8 @@ function choose(status) {
       :aria-pressed="status.value === modelValue"
       :title="
         status.value === 'untested'
-          ? __('Clear this result', 'qa-runner')
-          : sprintf(__('Mark as %s', 'qa-runner'), status.label)
+          ? __('Clear this result', 'mandragora-qa-test-manager')
+          : sprintf(__('Mark as %s', 'mandragora-qa-test-manager'), status.label)
       "
       @click="choose(status.value)"
     >

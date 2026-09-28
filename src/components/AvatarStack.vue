@@ -27,5 +27,5 @@ const names = computed(() => props.people.map((person) => person.name).join(', '
       <span>{{ person.name }}</span>
     </span>
   </span>
-  <span v-else class="qa-muted">{{ __('Nobody assigned', 'qa-runner') }}</span>
+  <span v-else class="qa-muted">{{ __('Nobody assigned', 'mandragora-qa-test-manager') }}</span>
 </template>

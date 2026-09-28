@@ -51,10 +51,10 @@ export default defineConfig(({mode}) => {
         output: {
           // iife instead of esm so WordPress can enqueue it as a classic script
           format: 'iife',
-          entryFileNames: 'qa-admin-page.js',
+          entryFileNames: 'mqatm-admin-page.js',
           assetFileNames: (asset) => asset.names.some((name) => name.endsWith('.css'))
-            ? 'qa-admin-page.css'
-            : 'qa-admin-page-[name].[ext]'
+            ? 'mqatm-admin-page.css'
+            : 'mqatm-admin-page-[name].[ext]'
         }
       },
       cssCodeSplit: false

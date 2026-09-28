@@ -2,20 +2,20 @@
 /**
  * Comment persistence. Comments hang off a result, so they are scoped to one run.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Repository;
+namespace MandragoraQAManager\Repository;
 
-use QARunner\Support\Dates;
-use QARunner\Support\Sanitize;
+use MandragoraQAManager\Support\Dates;
+use MandragoraQAManager\Support\Sanitize;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Reads and writes qa_comments.
+ * Reads and writes mqatm_comments.
  */
 final class CommentRepository extends BaseRepository {
 
@@ -201,7 +201,7 @@ final class CommentRepository extends BaseRepository {
 			'parent_id'  => empty( $row['parent_id'] ) ? null : (int) $row['parent_id'],
 			'author'     => array(
 				'id'     => $user_id,
-				'name'   => $user ? $user->display_name : __( 'Unknown user', 'qa-runner' ),
+				'name'   => $user ? $user->display_name : __( 'Unknown user', 'mandragora-qa-test-manager' ),
 				'avatar' => get_avatar_url( $user_id, array( 'size' => 48 ) ),
 			),
 			'content'    => (string) $row['content'],

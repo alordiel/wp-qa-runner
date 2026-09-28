@@ -1,4 +1,4 @@
-# QA Runner
+# Mandragora QA Test Manager
 
 Manual QA test runs for a small internal team. Testers open a page in wp-admin, pick a run,
 work through a list of test cases, and mark each one pass / fail / blocked / skipped.
@@ -36,7 +36,7 @@ npm install && npm run build      # build/ is committed, so this is only needed 
 composer install                  # optional: dev tooling only, no runtime dependency
 ```
 
-Activate the plugin. Activation creates the tables, registers the `qa_tester` role, writes
+Activate the plugin. Activation creates the tables, registers the `mqatm_tester` role, writes
 the default options.
 
 The runtime has **no Composer dependency** — classes autoload from `includes/` via a PSR-4
@@ -44,11 +44,11 @@ autoloader in the main plugin file, so an rsync deploy needs no install step on 
 
 ## Verify the REST namespace first
 
-Before debugging anything in the app, confirm the API is reachable. Open the QA Runner
+Before debugging anything in the app, confirm the API is reachable. Open the Mandragora QA Test Manager
 screen and run this in the browser console:
 
 ```js
-fetch(qaRunner.root + 'ping', {headers: {'X-WP-Nonce': qaRunner.nonce}, credentials: 'same-origin'})
+fetch(mqatm.root + 'ping', {headers: {'X-WP-Nonce': mqatm.nonce}, credentials: 'same-origin'})
   .then((r) => r.json())
   .then(console.log);
 ```
@@ -62,19 +62,19 @@ Always checked as capabilities, never role names.
 
 | Capability | Grants |
 |---|---|
-| `qa_view_qa` | See the QA screens |
-| `qa_run_tests` | Set results, comment, raise and resolve issues, create runs |
-| `qa_manage_cases` | Edit the case library and suites, delete any comment, abandon runs, change settings |
+| `mqatm_view` | See the QA screens |
+| `mqatm_run_tests` | Set results, comment, raise and resolve issues, create runs |
+| `mqatm_manage_cases` | Edit the case library and suites, delete any comment, abandon runs, change settings |
 
 Two roles ship with the plugin, both cloned from subscriber so their users can reach
 wp-admin at all:
 
 | Role | Capabilities | Owns |
 |---|---|---|
-| `qa_admin` (QA Admin) | all three | The library: creates, edits and archives suites and cases, abandons runs, changes settings |
-| `qa_tester` (QA Tester) | `qa_view_qa`, `qa_run_tests` | The work in flight: creates and runs runs, adds and removes their cases, claims cases, comments, raises and resolves issues |
+| `mqatm_admin` (QA Admin) | all three | The library: creates, edits and archives suites and cases, abandons runs, changes settings |
+| `mqatm_tester` (QA Tester) | `mqatm_view`, `mqatm_run_tests` | The work in flight: creates and runs runs, adds and removes their cases, claims cases, comments, raises and resolves issues |
 
-The line between them is `qa_manage_cases`. A tester sees the whole library but cannot
+The line between them is `mqatm_manage_cases`. A tester sees the whole library but cannot
 create or archive anything in it; the case library, suites and settings screens are hidden
 from them in the router as well as refused by the REST layer. Testers can create runs — that
 is deliberate.
@@ -87,15 +87,15 @@ request, or deactivate and reactivate the plugin.
 
 Run assignment is informational: it sends an email and shows an avatar. It does not restrict
 who may set a result. Case assignment within a run is a claim testers make on themselves —
-it needs no capability beyond `qa_run_tests` plus a place on the run.
+it needs no capability beyond `mqatm_run_tests` plus a place on the run.
 
 ## Build
 
-`vite.config.js` emits an **IIFE bundle at fixed paths** — `build/qa-admin-page.js` and
-`build/qa-admin-page.css` — rather than a hashed ES module with a manifest. `Assets.php`
+`vite.config.js` emits an **IIFE bundle at fixed paths** — `build/mqatm-admin-page.js` and
+`build/mqatm-admin-page.css` — rather than a hashed ES module with a manifest. `Assets.php`
 enqueues those directly as a classic script, so there is no manifest to read and no
 `script_loader_tag` filter adding `type="module"`. Cache busting comes from
-`QA_RUNNER_VERSION`.
+`MQATM_VERSION`.
 
 `build/` is committed on purpose: deployment is rsync-based with no build step on the server.
 
@@ -124,24 +124,24 @@ and removed immediately after, so other plugins' mail is untouched.
 
 ## Translations
 
-Text domain `qa-runner`. PHP uses the usual `__()` family. The Vue app uses WordPress's
+Text domain `mandragora-qa-test-manager`. PHP uses the usual `__()` family. The Vue app uses WordPress's
 `wp-i18n` script, in two forms that both survive minification — the only way strings reach
 `wp i18n make-pot`, which reads the built bundle (it cannot parse `.vue` files):
 
-- **Templates:** `{{ __('Text', 'qa-runner') }}`, plus `_n`, `_x` and `sprintf`. These are
+- **Templates:** `{{ __('Text', 'mandragora-qa-test-manager') }}`, plus `_n`, `_x` and `sprintf`. These are
   app-wide globals (`src/main.js`) and compile to `_ctx.__(…)`.
-- **Script code:** `wp.i18n.__('Text', 'qa-runner')`. Never import or destructure `__`: the
+- **Script code:** `wp.i18n.__('Text', 'mandragora-qa-test-manager')`. Never import or destructure `__`: the
   minifier renames it, and its strings silently drop out of the POT.
 
 Always pass the text domain as a literal, and use `sprintf` placeholders, never string
 concatenation, so translators can reorder words.
 
 ```
-npm run make-pot    # regenerate languages/qa-runner.pot (needs WP-CLI); release does this too
+npm run make-pot    # regenerate languages/mandragora-qa-test-manager.pot (needs WP-CLI); release does this too
 ```
 
 `Assets.php` calls `wp_set_script_translations()` with `languages/` as the path, so a
-`qa-runner-{locale}-{md5}.json` built there with `wp i18n make-json` is picked up first.
+`mandragora-qa-test-manager-{locale}-{md5}.json` built there with `wp i18n make-json` is picked up first.
 WordPress.org language packs are the fallback.
 
 ## Uninstall
@@ -154,12 +154,12 @@ troubleshoot something else.
 ## Layout
 
 ```
-qa-runner.php          bootstrap, constants, PSR-4 autoloader, activation hooks
+mandragora-qa-test-manager.php          bootstrap, constants, PSR-4 autoloader, activation hooks
 uninstall.php          role + options always; tables only behind the opt-in
 includes/
   Plugin.php           singleton, wires hooks
   Install/             Schema (dbDelta + migrations), Roles, Seeder
-  Admin/               Menu (mount point), Assets (enqueue + window.qaRunner)
+  Admin/               Menu (mount point), Assets (enqueue + window.mqatm)
   Repository/          one per table, every query via $wpdb->prepare()
   Rest/                Controller base + one controller per resource
   Notification/        Mailer

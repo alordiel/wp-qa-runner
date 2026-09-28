@@ -2,16 +2,16 @@
 /**
  * Comment routes. Comments are scoped to one result, and so to one run.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Rest;
+namespace MandragoraQAManager\Rest;
 
-use QARunner\Repository\CommentRepository;
-use QARunner\Repository\ResultRepository;
-use QARunner\Repository\RunRepository;
+use MandragoraQAManager\Repository\CommentRepository;
+use MandragoraQAManager\Repository\ResultRepository;
+use MandragoraQAManager\Repository\RunRepository;
 use WP_REST_Request;
 
 defined( 'ABSPATH' ) || exit;
@@ -127,7 +127,7 @@ final class CommentsController extends Controller {
 		$id = (int) $request->get_param( 'id' );
 
 		if ( null === $this->results->find_raw( $id ) ) {
-			return $this->not_found( __( 'That result no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That result no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return $this->comments->for_result( $id );
@@ -146,7 +146,7 @@ final class CommentsController extends Controller {
 		$result = $this->results->find_raw( $id );
 
 		if ( null === $result ) {
-			return $this->not_found( __( 'That result no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That result no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		if ( ! $this->runs->is_open( (int) $result['run_id'] ) ) {
@@ -159,18 +159,18 @@ final class CommentsController extends Controller {
 			$parent = $this->comments->find( $parent_id );
 
 			if ( null === $parent || $parent['result_id'] !== $id ) {
-				return $this->bad_request( __( 'The comment you are replying to no longer exists.', 'qa-runner' ) );
+				return $this->bad_request( __( 'The comment you are replying to no longer exists.', 'mandragora-qa-test-manager' ) );
 			}
 
 			if ( $this->comments->depth( $parent_id ) >= CommentRepository::MAX_DEPTH ) {
-				return $this->bad_request( __( 'This thread is too deep to reply to.', 'qa-runner' ) );
+				return $this->bad_request( __( 'This thread is too deep to reply to.', 'mandragora-qa-test-manager' ) );
 			}
 		}
 
 		$comment_id = $this->comments->create( $id, get_current_user_id(), (string) $request->get_param( 'content' ), $parent_id );
 
 		if ( 0 === $comment_id ) {
-			return $this->write_failed( __( 'The comment could not be saved.', 'qa-runner' ) );
+			return $this->write_failed( __( 'The comment could not be saved.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return $this->comments->find( $comment_id );
@@ -189,11 +189,11 @@ final class CommentsController extends Controller {
 		$comment = $this->comments->find( $id );
 
 		if ( null === $comment ) {
-			return $this->not_found( __( 'That comment no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That comment no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		if ( get_current_user_id() !== $comment['author']['id'] ) {
-			return $this->forbidden( __( 'You can only edit your own comments.', 'qa-runner' ) );
+			return $this->forbidden( __( 'You can only edit your own comments.', 'mandragora-qa-test-manager' ) );
 		}
 
 		$guard = $this->guard_open_run( (int) $comment['result_id'] );
@@ -203,7 +203,7 @@ final class CommentsController extends Controller {
 		}
 
 		if ( ! $this->comments->update( $id, (string) $request->get_param( 'content' ) ) ) {
-			return $this->write_failed( __( 'The comment could not be saved.', 'qa-runner' ) );
+			return $this->write_failed( __( 'The comment could not be saved.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return $this->comments->find( $id );
@@ -212,7 +212,7 @@ final class CommentsController extends Controller {
 	/**
 	 * DELETE /comments/{id}
 	 *
-	 * Authors delete their own; qa_manage_cases holders delete any. Replies beneath the
+	 * Authors delete their own; mqatm_manage_cases holders delete any. Replies beneath the
 	 * comment go with it.
 	 *
 	 * @param WP_REST_Request $request Request.
@@ -223,11 +223,11 @@ final class CommentsController extends Controller {
 		$comment = $this->comments->find( $id );
 
 		if ( null === $comment ) {
-			return $this->not_found( __( 'That comment no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That comment no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		if ( get_current_user_id() !== $comment['author']['id'] && ! $this->can_manage() ) {
-			return $this->forbidden( __( 'You can only delete your own comments.', 'qa-runner' ) );
+			return $this->forbidden( __( 'You can only delete your own comments.', 'mandragora-qa-test-manager' ) );
 		}
 
 		$guard = $this->guard_open_run( (int) $comment['result_id'] );
@@ -239,7 +239,7 @@ final class CommentsController extends Controller {
 		$deleted_ids = $this->comments->delete_thread( $id );
 
 		if ( ! $deleted_ids ) {
-			return $this->write_failed( __( 'The comment could not be deleted.', 'qa-runner' ) );
+			return $this->write_failed( __( 'The comment could not be deleted.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return array(
@@ -258,7 +258,7 @@ final class CommentsController extends Controller {
 		$result = $this->results->find_raw( $result_id );
 
 		if ( null === $result ) {
-			return $this->not_found( __( 'That result no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That result no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		if ( ! $this->runs->is_open( (int) $result['run_id'] ) ) {

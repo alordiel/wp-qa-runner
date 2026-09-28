@@ -2,15 +2,15 @@
 /**
  * Optional demo content for local development.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Install;
+namespace MandragoraQAManager\Install;
 
-use QARunner\Repository\CaseRepository;
-use QARunner\Repository\SuiteRepository;
+use MandragoraQAManager\Repository\CaseRepository;
+use MandragoraQAManager\Repository\SuiteRepository;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -40,8 +40,8 @@ final class Seeder {
 
 		$suite_id = $suites->create(
 			array(
-				'name'        => __( 'Login', 'qa-runner' ),
-				'description' => __( 'Authentication and session handling.', 'qa-runner' ),
+				'name'        => __( 'Login', 'mandragora-qa-test-manager' ),
+				'description' => __( 'Authentication and session handling.', 'mandragora-qa-test-manager' ),
 				'sort_order'  => 0,
 			)
 		);
@@ -54,21 +54,21 @@ final class Seeder {
 
 		$demo = array(
 			array(
-				'title'    => __( 'Log in with a valid account', 'qa-runner' ),
-				'steps'    => '<ol><li>' . esc_html__( 'Open the login page.', 'qa-runner' ) . '</li><li>' . esc_html__( 'Enter a valid email and password.', 'qa-runner' ) . '</li><li>' . esc_html__( 'Submit the form.', 'qa-runner' ) . '</li></ol>',
-				'expected' => '<p>' . esc_html__( 'You land on the dashboard and your name appears in the header.', 'qa-runner' ) . '</p>',
+				'title'    => __( 'Log in with a valid account', 'mandragora-qa-test-manager' ),
+				'steps'    => '<ol><li>' . esc_html__( 'Open the login page.', 'mandragora-qa-test-manager' ) . '</li><li>' . esc_html__( 'Enter a valid email and password.', 'mandragora-qa-test-manager' ) . '</li><li>' . esc_html__( 'Submit the form.', 'mandragora-qa-test-manager' ) . '</li></ol>',
+				'expected' => '<p>' . esc_html__( 'You land on the dashboard and your name appears in the header.', 'mandragora-qa-test-manager' ) . '</p>',
 				'priority' => 'critical',
 			),
 			array(
-				'title'    => __( 'Reject an incorrect password', 'qa-runner' ),
-				'steps'    => '<ol><li>' . esc_html__( 'Open the login page.', 'qa-runner' ) . '</li><li>' . esc_html__( 'Enter a valid email with the wrong password.', 'qa-runner' ) . '</li></ol>',
-				'expected' => '<p>' . esc_html__( 'An inline error appears and no session is created.', 'qa-runner' ) . '</p>',
+				'title'    => __( 'Reject an incorrect password', 'mandragora-qa-test-manager' ),
+				'steps'    => '<ol><li>' . esc_html__( 'Open the login page.', 'mandragora-qa-test-manager' ) . '</li><li>' . esc_html__( 'Enter a valid email with the wrong password.', 'mandragora-qa-test-manager' ) . '</li></ol>',
+				'expected' => '<p>' . esc_html__( 'An inline error appears and no session is created.', 'mandragora-qa-test-manager' ) . '</p>',
 				'priority' => 'critical',
 			),
 			array(
-				'title'    => __( 'Request a password reset email', 'qa-runner' ),
-				'steps'    => '<ol><li>' . esc_html__( 'Choose "Lost your password?".', 'qa-runner' ) . '</li><li>' . esc_html__( 'Enter a registered email address.', 'qa-runner' ) . '</li></ol>',
-				'expected' => '<p>' . esc_html__( 'A reset email arrives within a minute and its link opens the reset form.', 'qa-runner' ) . '</p>',
+				'title'    => __( 'Request a password reset email', 'mandragora-qa-test-manager' ),
+				'steps'    => '<ol><li>' . esc_html__( 'Choose "Lost your password?".', 'mandragora-qa-test-manager' ) . '</li><li>' . esc_html__( 'Enter a registered email address.', 'mandragora-qa-test-manager' ) . '</li></ol>',
+				'expected' => '<p>' . esc_html__( 'A reset email arrives within a minute and its link opens the reset form.', 'mandragora-qa-test-manager' ) . '</p>',
 				'priority' => 'normal',
 			),
 		);

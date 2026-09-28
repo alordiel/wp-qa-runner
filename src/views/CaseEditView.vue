@@ -62,15 +62,15 @@ async function submit() {
   try {
     if (isEdit.value) {
       await api.cases.update(Number(props.id), payload);
-      ui.toast(wp.i18n.__('Case saved.', 'qa-runner'));
+      ui.toast(wp.i18n.__('Case saved.', 'mandragora-qa-test-manager'));
     } else {
       await api.cases.create(payload);
-      ui.toast(wp.i18n.__('Case created.', 'qa-runner'));
+      ui.toast(wp.i18n.__('Case created.', 'mandragora-qa-test-manager'));
     }
 
     router.push('/cases');
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The case could not be saved.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The case could not be saved.', 'mandragora-qa-test-manager'));
   } finally {
     saving.value = false;
   }
@@ -99,7 +99,7 @@ onMounted(async () => {
         : String(caseStore.suites[0]?.id ?? '');
     }
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('This case could not be loaded.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('This case could not be loaded.', 'mandragora-qa-test-manager'));
   } finally {
     loading.value = false;
   }
@@ -110,47 +110,47 @@ onMounted(async () => {
   <form class="qa-stack" @submit.prevent="submit">
     <div class="qa-page-head">
       <div class="qa-page-head__meta">
-        <h2>{{ isEdit ? __('Edit case', 'qa-runner') : __('New case', 'qa-runner') }}</h2>
+        <h2>{{ isEdit ? __('Edit case', 'mandragora-qa-test-manager') : __('New case', 'mandragora-qa-test-manager') }}</h2>
         <p>
           {{
             __(
               'Cases are written once and edited rarely, and many runs can reuse them. Keep edits to minor changes; for a major change, create a new case instead.',
-              'qa-runner'
+              'mandragora-qa-test-manager'
             )
           }}
         </p>
       </div>
       <div class="qa-row">
         <RouterLink class="qa-button qa-button--quiet" to="/cases">{{
-          __('Cancel', 'qa-runner')
+          __('Cancel', 'mandragora-qa-test-manager')
         }}</RouterLink>
         <button type="submit" class="qa-button qa-button--primary" :disabled="!canSubmit">
-          {{ saving ? __('Saving…', 'qa-runner') : __('Save case', 'qa-runner') }}
+          {{ saving ? __('Saving…', 'mandragora-qa-test-manager') : __('Save case', 'mandragora-qa-test-manager') }}
         </button>
       </div>
     </div>
 
-    <p v-if="loading" class="qa-skeleton">{{ __('Loading…', 'qa-runner') }}</p>
+    <p v-if="loading" class="qa-skeleton">{{ __('Loading…', 'mandragora-qa-test-manager') }}</p>
 
     <div v-else class="qa-card">
       <div class="qa-card__body qa-stack">
         <div class="qa-row" style="align-items: flex-start; gap: 16px">
           <div class="qa-field" style="flex: 2; min-width: 220px">
-            <label class="qa-field__label" for="case-title">{{ __('Title', 'qa-runner') }}</label>
+            <label class="qa-field__label" for="case-title">{{ __('Title', 'mandragora-qa-test-manager') }}</label>
             <input
               id="case-title"
               v-model="form.title"
               class="qa-input"
               type="text"
-              :placeholder="__('Log in with a valid account', 'qa-runner')"
+              :placeholder="__('Log in with a valid account', 'mandragora-qa-test-manager')"
               required
             />
           </div>
 
           <div class="qa-field" style="flex: 1; min-width: 160px">
-            <label class="qa-field__label" for="case-suite">{{ __('Suite', 'qa-runner') }}</label>
+            <label class="qa-field__label" for="case-suite">{{ __('Suite', 'mandragora-qa-test-manager') }}</label>
             <select id="case-suite" v-model="form.suite_id" class="qa-select" required>
-              <option value="" disabled>{{ __('Choose a suite', 'qa-runner') }}</option>
+              <option value="" disabled>{{ __('Choose a suite', 'mandragora-qa-test-manager') }}</option>
               <option v-for="suite in caseStore.suites" :key="suite.id" :value="String(suite.id)">
                 {{ suite.name }}
               </option>
@@ -159,7 +159,7 @@ onMounted(async () => {
 
           <div class="qa-field" style="flex: 1; min-width: 140px">
             <label class="qa-field__label" for="case-priority">{{
-              __('Priority', 'qa-runner')
+              __('Priority', 'mandragora-qa-test-manager')
             }}</label>
             <select id="case-priority" v-model="form.priority" class="qa-select">
               <option v-for="option in PRIORITIES" :key="option.value" :value="option.value">
@@ -170,27 +170,27 @@ onMounted(async () => {
         </div>
 
         <div class="qa-field">
-          <span class="qa-field__label">{{ __('Steps', 'qa-runner') }}</span>
+          <span class="qa-field__label">{{ __('Steps', 'mandragora-qa-test-manager') }}</span>
           <RichTextEditor
             v-model="form.steps"
-            :placeholder="__('What the tester should do, in order.', 'qa-runner')"
+            :placeholder="__('What the tester should do, in order.', 'mandragora-qa-test-manager')"
           />
         </div>
 
         <div class="qa-field">
-          <span class="qa-field__label">{{ __('Expected result', 'qa-runner') }}</span>
+          <span class="qa-field__label">{{ __('Expected result', 'mandragora-qa-test-manager') }}</span>
           <RichTextEditor
             v-model="form.expected"
-            :placeholder="__('What should happen if the case passes.', 'qa-runner')"
+            :placeholder="__('What should happen if the case passes.', 'mandragora-qa-test-manager')"
           />
         </div>
 
         <label v-if="isEdit" class="qa-checkbox">
           <input v-model="form.is_active" type="checkbox" />
           <span>
-            {{ __('Active', 'qa-runner') }}
+            {{ __('Active', 'mandragora-qa-test-manager') }}
             <span class="qa-field__hint">{{
-              __('Archived cases stay in past runs but cannot join new ones.', 'qa-runner')
+              __('Archived cases stay in past runs but cannot join new ones.', 'mandragora-qa-test-manager')
             }}</span>
           </span>
         </label>

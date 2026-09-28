@@ -2,37 +2,37 @@
 /**
  * Plugin bootstrap.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner;
+namespace MandragoraQAManager;
 
-use QARunner\Admin\Assets;
-use QARunner\Admin\Menu;
-use QARunner\Install\Roles;
-use QARunner\Install\Schema;
-use QARunner\Install\Seeder;
-use QARunner\Notification\Mailer;
-use QARunner\Repository\CaseRepository;
-use QARunner\Repository\CommentRepository;
-use QARunner\Repository\IssueRepository;
-use QARunner\Repository\ResultRepository;
-use QARunner\Repository\RunRepository;
-use QARunner\Repository\SuiteRepository;
-use QARunner\Rest\CasesController;
-use QARunner\Rest\CommentsController;
-use QARunner\Rest\Controller;
-use QARunner\Rest\IssuesController;
-use QARunner\Rest\PingController;
-use QARunner\Rest\ResultsController;
-use QARunner\Rest\RunsController;
-use QARunner\Rest\SettingsController;
-use QARunner\Rest\SuitesController;
-use QARunner\Rest\TeamController;
-use QARunner\Rest\UsersController;
-use QARunner\Support\Settings;
+use MandragoraQAManager\Admin\Assets;
+use MandragoraQAManager\Admin\Menu;
+use MandragoraQAManager\Install\Roles;
+use MandragoraQAManager\Install\Schema;
+use MandragoraQAManager\Install\Seeder;
+use MandragoraQAManager\Notification\Mailer;
+use MandragoraQAManager\Repository\CaseRepository;
+use MandragoraQAManager\Repository\CommentRepository;
+use MandragoraQAManager\Repository\IssueRepository;
+use MandragoraQAManager\Repository\ResultRepository;
+use MandragoraQAManager\Repository\RunRepository;
+use MandragoraQAManager\Repository\SuiteRepository;
+use MandragoraQAManager\Rest\CasesController;
+use MandragoraQAManager\Rest\CommentsController;
+use MandragoraQAManager\Rest\Controller;
+use MandragoraQAManager\Rest\IssuesController;
+use MandragoraQAManager\Rest\PingController;
+use MandragoraQAManager\Rest\ResultsController;
+use MandragoraQAManager\Rest\RunsController;
+use MandragoraQAManager\Rest\SettingsController;
+use MandragoraQAManager\Rest\SuitesController;
+use MandragoraQAManager\Rest\TeamController;
+use MandragoraQAManager\Rest\UsersController;
+use MandragoraQAManager\Support\Settings;
 
 defined( 'ABSPATH' ) || exit;
 

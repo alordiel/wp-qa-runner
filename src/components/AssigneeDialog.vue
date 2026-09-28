@@ -18,11 +18,11 @@ import {computed, ref, watch} from 'vue';
 
 const props = defineProps({
   open: {type: Boolean, default: false},
-  title: {type: String, default: () => wp.i18n.__('Assign', 'qa-runner')},
+  title: {type: String, default: () => wp.i18n.__('Assign', 'mandragora-qa-test-manager')},
   /** Shown in place of the list when there are no candidates at all. */
   emptyText: {
     type: String,
-    default: () => wp.i18n.__('There is nobody to choose from.', 'qa-runner')
+    default: () => wp.i18n.__('There is nobody to choose from.', 'mandragora-qa-test-manager')
   },
   /** Warning shown when a save would remove people. '%s' becomes their names. */
   removalWarning: {type: String, default: ''},
@@ -108,7 +108,7 @@ watch(
       <button
         type="button"
         class="qa-dialog__close"
-        :aria-label="__('Close', 'qa-runner')"
+        :aria-label="__('Close', 'mandragora-qa-test-manager')"
         @click="cancel"
       >
         ×
@@ -142,7 +142,7 @@ watch(
 
     <div class="qa-dialog__foot">
       <button type="button" class="qa-button qa-button--quiet" :disabled="saving" @click="cancel">
-        {{ __('Cancel', 'qa-runner') }}
+        {{ __('Cancel', 'mandragora-qa-test-manager') }}
       </button>
       <button
         type="button"
@@ -150,7 +150,7 @@ watch(
         :disabled="!dirty || saving"
         @click="save"
       >
-        {{ saving ? __('Saving…', 'qa-runner') : __('Save', 'qa-runner') }}
+        {{ saving ? __('Saving…', 'mandragora-qa-test-manager') : __('Save', 'mandragora-qa-test-manager') }}
       </button>
     </div>
   </dialog>

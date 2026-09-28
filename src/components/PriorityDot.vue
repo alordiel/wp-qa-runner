@@ -14,13 +14,13 @@ const props = defineProps({
 const label = computed(
   () =>
     PRIORITIES.find((item) => item.value === props.priority)?.label ??
-    wp.i18n.__('Normal', 'qa-runner')
+    wp.i18n.__('Normal', 'mandragora-qa-test-manager')
 );
 </script>
 
 <template>
   <span class="qa-row" style="gap: 5px">
     <span class="qa-priority" :class="`qa-priority--${priority}`" aria-hidden="true" />
-    <span class="qa-sr-only">{{ sprintf(__('%s priority', 'qa-runner'), label) }}</span>
+    <span class="qa-sr-only">{{ sprintf(__('%s priority', 'mandragora-qa-test-manager'), label) }}</span>
   </span>
 </template>

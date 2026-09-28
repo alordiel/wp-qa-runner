@@ -29,9 +29,9 @@ async function save() {
 
   try {
     settings.value = await api.settings.update(settings.value);
-    ui.toast(wp.i18n.__('Settings saved.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Settings saved.', 'mandragora-qa-test-manager'));
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The settings could not be saved.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The settings could not be saved.', 'mandragora-qa-test-manager'));
   } finally {
     saving.value = false;
   }
@@ -41,7 +41,7 @@ onMounted(async () => {
   try {
     settings.value = await api.settings.get();
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The settings could not be loaded.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The settings could not be loaded.', 'mandragora-qa-test-manager'));
   } finally {
     loading.value = false;
   }
@@ -53,26 +53,26 @@ onMounted(async () => {
     <form class="qa-stack" @submit.prevent="save">
       <div class="qa-page-head">
         <div class="qa-page-head__meta">
-          <h2>{{ __('Settings', 'qa-runner') }}</h2>
+          <h2>{{ __('Settings', 'mandragora-qa-test-manager') }}</h2>
         </div>
         <button type="submit" class="qa-button qa-button--primary" :disabled="saving || loading">
-          {{ saving ? __('Saving…', 'qa-runner') : __('Save settings', 'qa-runner') }}
+          {{ saving ? __('Saving…', 'mandragora-qa-test-manager') : __('Save settings', 'mandragora-qa-test-manager') }}
         </button>
       </div>
 
-      <p v-if="loading" class="qa-skeleton">{{ __('Loading settings…', 'qa-runner') }}</p>
+      <p v-if="loading" class="qa-skeleton">{{ __('Loading settings…', 'mandragora-qa-test-manager') }}</p>
 
       <div v-else class="qa-card">
         <div class="qa-card__body qa-stack">
           <label class="qa-checkbox">
             <input v-model="settings.notificationsPaused" type="checkbox" />
             <span>
-              {{ __('Pause notifications', 'qa-runner') }}
+              {{ __('Pause notifications', 'mandragora-qa-test-manager') }}
               <span class="qa-field__hint">
                 {{
                   __(
                     'Stops the emails sent when someone assigns another person to a run or a case.',
-                    'qa-runner'
+                    'mandragora-qa-test-manager'
                   )
                 }}
               </span>
@@ -82,12 +82,12 @@ onMounted(async () => {
           <label class="qa-checkbox">
             <input v-model="settings.deleteDataOnUninstall" type="checkbox" />
             <span>
-              {{ __('Delete all QA data when the plugin is uninstalled', 'qa-runner') }}
+              {{ __('Delete all QA data when the plugin is uninstalled', 'mandragora-qa-test-manager') }}
               <span class="qa-field__hint">
                 {{
                   __(
                     'Off by default. With this off, uninstalling removes the roles and settings but leaves every run, result and issue in the database.',
-                    'qa-runner'
+                    'mandragora-qa-test-manager'
                   )
                 }}
               </span>

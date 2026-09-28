@@ -2,12 +2,12 @@
 /**
  * Custom roles and capability registration.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Install;
+namespace MandragoraQAManager\Install;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -24,22 +24,22 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Roles {
 
-	public const ROLE_ADMIN  = 'qa_admin';
-	public const ROLE_TESTER = 'qa_tester';
+	public const ROLE_ADMIN  = 'mqatm_admin';
+	public const ROLE_TESTER = 'mqatm_tester';
 
 	/**
 	 * Option holding the role version last written to the database.
 	 */
-	public const VERSION_OPTION = 'qa_runner_roles_version';
+	public const VERSION_OPTION = 'mqatm_roles_version';
 
 	/**
 	 * Bumped whenever the capability sets below change, to force a re-install.
 	 */
 	public const VERSION = 2;
 
-	public const CAP_VIEW   = 'qa_view_qa';
-	public const CAP_TEST   = 'qa_run_tests';
-	public const CAP_MANAGE = 'qa_manage_cases';
+	public const CAP_VIEW   = 'mqatm_view';
+	public const CAP_TEST   = 'mqatm_run_tests';
+	public const CAP_MANAGE = 'mqatm_manage_cases';
 
 	/**
 	 * Capabilities granted to the QA Admin role and to self::ELEVATED_ROLES.
@@ -87,10 +87,10 @@ final class Roles {
 	public static function install(): void {
 		// remove_role() then add_role() keeps each capability list in step across upgrades.
 		remove_role( self::ROLE_ADMIN );
-		add_role( self::ROLE_ADMIN, __( 'QA Admin', 'qa-runner' ), self::role_caps( self::ADMIN_CAPS ) );
+		add_role( self::ROLE_ADMIN, __( 'QA Admin', 'mandragora-qa-test-manager' ), self::role_caps( self::ADMIN_CAPS ) );
 
 		remove_role( self::ROLE_TESTER );
-		add_role( self::ROLE_TESTER, __( 'QA Tester', 'qa-runner' ), self::role_caps( self::TESTER_CAPS ) );
+		add_role( self::ROLE_TESTER, __( 'QA Tester', 'mandragora-qa-test-manager' ), self::role_caps( self::TESTER_CAPS ) );
 
 		// add_cap() writes to the stored role definition, so a role dropped from
 		// ELEVATED_ROLES would keep its capabilities forever unless they are taken back

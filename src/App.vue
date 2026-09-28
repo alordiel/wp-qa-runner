@@ -18,7 +18,7 @@ onSessionExpired(() => ui.expireSession());
 onMounted(() => {
   if (route.query.denied) {
     ui.toast(
-      wp.i18n.__('You do not have permission to manage the case library.', 'qa-runner'),
+      wp.i18n.__('You do not have permission to manage the case library.', 'mandragora-qa-test-manager'),
       'error'
     );
   }
@@ -36,11 +36,11 @@ function reload() {
 
 <template>
   <div class="qa-shell">
-    <h1>{{ __('QA Runner', 'qa-runner') }}</h1>
+    <h1>{{ __('Mandragora QA Test Manager', 'mandragora-qa-test-manager') }}</h1>
 
-    <nav class="qa-nav" :aria-label="__('QA Runner sections', 'qa-runner')">
+    <nav class="qa-nav" :aria-label="__('Mandragora QA Test Manager sections', 'mandragora-qa-test-manager')">
       <RouterLink class="qa-nav__link" active-class="is-active" to="/">{{
-        __('Runs', 'qa-runner')
+        __('Runs', 'mandragora-qa-test-manager')
       }}</RouterLink>
       <RouterLink
         v-if="bootstrap.caps?.manageCases"
@@ -48,7 +48,7 @@ function reload() {
         active-class="is-active"
         to="/cases"
       >
-        {{ __('Cases', 'qa-runner') }}
+        {{ __('Cases', 'mandragora-qa-test-manager') }}
       </RouterLink>
       <RouterLink
         v-if="bootstrap.caps?.manageCases"
@@ -56,7 +56,7 @@ function reload() {
         active-class="is-active"
         to="/suites"
       >
-        {{ __('Suites', 'qa-runner') }}
+        {{ __('Suites', 'mandragora-qa-test-manager') }}
       </RouterLink>
       <span class="qa-nav__spacer" />
       <RouterLink
@@ -65,7 +65,7 @@ function reload() {
         active-class="is-active"
         to="/settings"
       >
-        {{ __('Settings', 'qa-runner') }}
+        {{ __('Settings', 'mandragora-qa-test-manager') }}
       </RouterLink>
     </nav>
 
@@ -75,9 +75,9 @@ function reload() {
     -->
     <div v-if="ui.sessionExpired" class="qa-notice qa-notice--error" role="alert">
       <div class="qa-row">
-        <span>{{ __('Your session expired. Reload the page to continue.', 'qa-runner') }}</span>
+        <span>{{ __('Your session expired. Reload the page to continue.', 'mandragora-qa-test-manager') }}</span>
         <button type="button" class="qa-button qa-button--small" @click="reload">
-          {{ __('Reload now', 'qa-runner') }}
+          {{ __('Reload now', 'mandragora-qa-test-manager') }}
         </button>
       </div>
     </div>

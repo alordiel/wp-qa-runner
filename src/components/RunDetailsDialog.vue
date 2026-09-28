@@ -24,7 +24,7 @@ const emit = defineEmits(['close', 'save']);
 
 const dialog = ref(null);
 
-const ENVIRONMENTS = window.qaRunner?.environments ?? ['local', 'staging', 'production'];
+const ENVIRONMENTS = window.mqatm?.environments ?? ['local', 'staging', 'production'];
 
 const form = ref({name: '', environment: 'staging', version: '', notes: ''});
 
@@ -109,11 +109,11 @@ watch(
   <dialog ref="dialog" class="qa-dialog qa-dialog--wide" @close="cancel" @cancel="cancel">
     <form @submit.prevent="save">
       <div class="qa-dialog__head">
-        <h3 class="qa-dialog__title">{{ __('Edit run details', 'qa-runner') }}</h3>
+        <h3 class="qa-dialog__title">{{ __('Edit run details', 'mandragora-qa-test-manager') }}</h3>
         <button
           type="button"
           class="qa-dialog__close"
-          :aria-label="__('Close', 'qa-runner')"
+          :aria-label="__('Close', 'mandragora-qa-test-manager')"
           @click="cancel"
         >
           ×
@@ -122,7 +122,7 @@ watch(
 
       <div class="qa-dialog__body qa-stack">
         <div class="qa-field">
-          <label class="qa-field__label" for="edit-run-name">{{ __('Name', 'qa-runner') }}</label>
+          <label class="qa-field__label" for="edit-run-name">{{ __('Name', 'mandragora-qa-test-manager') }}</label>
           <input
             id="edit-run-name"
             v-model="form.name"
@@ -136,7 +136,7 @@ watch(
         <div class="qa-row" style="align-items: flex-start; gap: 16px">
           <div class="qa-field" style="flex: 1; min-width: 140px">
             <label class="qa-field__label" for="edit-run-environment">{{
-              __('Environment', 'qa-runner')
+              __('Environment', 'mandragora-qa-test-manager')
             }}</label>
             <select
               id="edit-run-environment"
@@ -152,14 +152,14 @@ watch(
 
           <div class="qa-field" style="flex: 1; min-width: 140px">
             <label class="qa-field__label" for="edit-run-version">{{
-              __('Version', 'qa-runner')
+              __('Version', 'mandragora-qa-test-manager')
             }}</label>
             <input
               id="edit-run-version"
               v-model="form.version"
               class="qa-input"
               type="text"
-              :placeholder="__('2.4.0 or a commit ref', 'qa-runner')"
+              :placeholder="__('2.4.0 or a commit ref', 'mandragora-qa-test-manager')"
               :disabled="saving"
               required
             />
@@ -167,13 +167,13 @@ watch(
         </div>
 
         <div class="qa-field">
-          <label class="qa-field__label" for="edit-run-notes">{{ __('Notes', 'qa-runner') }}</label>
+          <label class="qa-field__label" for="edit-run-notes">{{ __('Notes', 'mandragora-qa-test-manager') }}</label>
           <textarea
             id="edit-run-notes"
             v-model="form.notes"
             class="qa-textarea"
             :placeholder="
-              __('What this run covers, and anything the testers should know.', 'qa-runner')
+              __('What this run covers, and anything the testers should know.', 'mandragora-qa-test-manager')
             "
             :disabled="saving"
           />
@@ -182,14 +182,14 @@ watch(
 
       <div class="qa-dialog__foot">
         <button type="button" class="qa-button qa-button--quiet" :disabled="saving" @click="cancel">
-          {{ __('Cancel', 'qa-runner') }}
+          {{ __('Cancel', 'mandragora-qa-test-manager') }}
         </button>
         <button
           type="submit"
           class="qa-button qa-button--primary"
           :disabled="!dirty || !valid || saving"
         >
-          {{ saving ? __('Saving…', 'qa-runner') : __('Save', 'qa-runner') }}
+          {{ saving ? __('Saving…', 'mandragora-qa-test-manager') : __('Save', 'mandragora-qa-test-manager') }}
         </button>
       </div>
     </form>

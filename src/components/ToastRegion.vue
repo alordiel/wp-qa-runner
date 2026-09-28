@@ -9,7 +9,7 @@ const ui = useUiStore();
 </script>
 
 <template>
-  <div class="qa-toasts" role="region" :aria-label="__('Notifications', 'qa-runner')">
+  <div class="qa-toasts" role="region" :aria-label="__('Notifications', 'mandragora-qa-test-manager')">
     <div aria-live="polite" aria-atomic="false" class="qa-stack qa-stack--tight">
       <div
         v-for="toast in ui.toasts"
@@ -21,7 +21,7 @@ const ui = useUiStore();
         <button
           type="button"
           class="qa-toast__dismiss"
-          :aria-label="__('Dismiss notification', 'qa-runner')"
+          :aria-label="__('Dismiss notification', 'mandragora-qa-test-manager')"
           @click="ui.dismiss(toast.id)"
         >
           ×

@@ -25,9 +25,9 @@ const filter = ref('open');
 const loading = ref(true);
 
 const FILTERS = [
-  {value: 'open', label: wp.i18n._x('Open', 'run status', 'qa-runner')},
-  {value: 'completed', label: wp.i18n.__('Completed', 'qa-runner')},
-  {value: '', label: wp.i18n.__('All', 'qa-runner')}
+  {value: 'open', label: wp.i18n._x('Open', 'run status', 'mandragora-qa-test-manager')},
+  {value: 'completed', label: wp.i18n.__('Completed', 'mandragora-qa-test-manager')},
+  {value: '', label: wp.i18n.__('All', 'mandragora-qa-test-manager')}
 ];
 
 /**
@@ -51,7 +51,7 @@ async function load() {
   try {
     await runStore.loadRuns(filter.value);
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The runs could not be loaded.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The runs could not be loaded.', 'mandragora-qa-test-manager'));
   } finally {
     loading.value = false;
   }
@@ -76,18 +76,18 @@ onMounted(load);
   <div class="qa-stack">
     <div class="qa-page-head">
       <div class="qa-page-head__meta">
-        <h2>{{ __('Test runs', 'qa-runner') }}</h2>
+        <h2>{{ __('Test runs', 'mandragora-qa-test-manager') }}</h2>
       </div>
       <RouterLink
         v-if="bootstrap.caps?.runTests"
         class="qa-button qa-button--primary"
         to="/runs/new"
       >
-        {{ __('New run', 'qa-runner') }}
+        {{ __('New run', 'mandragora-qa-test-manager') }}
       </RouterLink>
     </div>
 
-    <div class="qa-chips" role="group" :aria-label="__('Filter runs by status', 'qa-runner')">
+    <div class="qa-chips" role="group" :aria-label="__('Filter runs by status', 'mandragora-qa-test-manager')">
       <button
         v-for="option in FILTERS"
         :key="option.label"
@@ -102,14 +102,14 @@ onMounted(load);
     </div>
 
     <div class="qa-card">
-      <p v-if="loading" class="qa-skeleton">{{ __('Loading runs…', 'qa-runner') }}</p>
+      <p v-if="loading" class="qa-skeleton">{{ __('Loading runs…', 'mandragora-qa-test-manager') }}</p>
 
       <EmptyState
         v-else-if="!runStore.runs.length"
         :title="
           filter === 'open'
-            ? __('No open runs. Create one to start testing.', 'qa-runner')
-            : __('No runs match this filter.', 'qa-runner')
+            ? __('No open runs. Create one to start testing.', 'mandragora-qa-test-manager')
+            : __('No runs match this filter.', 'mandragora-qa-test-manager')
         "
       >
         <RouterLink
@@ -117,7 +117,7 @@ onMounted(load);
           class="qa-button qa-button--primary"
           to="/runs/new"
         >
-          {{ __('New run', 'qa-runner') }}
+          {{ __('New run', 'mandragora-qa-test-manager') }}
         </RouterLink>
       </EmptyState>
 
@@ -125,12 +125,12 @@ onMounted(load);
         <table class="qa-table">
           <thead>
             <tr>
-              <th scope="col">{{ _x('Run', 'noun', 'qa-runner') }}</th>
-              <th scope="col">{{ __('Version', 'qa-runner') }}</th>
-              <th scope="col" style="min-width: 200px">{{ __('Progress', 'qa-runner') }}</th>
-              <th scope="col">{{ __('Assignees', 'qa-runner') }}</th>
-              <th scope="col">{{ __('Created', 'qa-runner') }}</th>
-              <th scope="col">{{ __('Status', 'qa-runner') }}</th>
+              <th scope="col">{{ _x('Run', 'noun', 'mandragora-qa-test-manager') }}</th>
+              <th scope="col">{{ __('Version', 'mandragora-qa-test-manager') }}</th>
+              <th scope="col" style="min-width: 200px">{{ __('Progress', 'mandragora-qa-test-manager') }}</th>
+              <th scope="col">{{ __('Assignees', 'mandragora-qa-test-manager') }}</th>
+              <th scope="col">{{ __('Created', 'mandragora-qa-test-manager') }}</th>
+              <th scope="col">{{ __('Status', 'mandragora-qa-test-manager') }}</th>
             </tr>
           </thead>
           <tbody>

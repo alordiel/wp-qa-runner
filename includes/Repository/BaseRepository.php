@@ -2,14 +2,14 @@
 /**
  * Shared repository behaviour.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Repository;
+namespace MandragoraQAManager\Repository;
 
-use QARunner\Install\Schema;
+use MandragoraQAManager\Install\Schema;
 
 defined( 'ABSPATH' ) || exit;
 

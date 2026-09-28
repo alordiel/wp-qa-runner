@@ -127,7 +127,7 @@ export const useRunStore = defineStore('runs', () => {
     }
 
     const snapshot = {...results.value[index]};
-    const me = window.qaRunner?.currentUser ?? null;
+    const me = window.mqatm?.currentUser ?? null;
 
     results.value[index] = {
       ...snapshot,

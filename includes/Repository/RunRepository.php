@@ -2,22 +2,22 @@
 /**
  * Run persistence: runs, their case selection and their assignees.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Repository;
+namespace MandragoraQAManager\Repository;
 
-use QARunner\Install\Schema;
-use QARunner\Support\Dates;
-use QARunner\Support\Enum;
-use QARunner\Support\Sanitize;
+use MandragoraQAManager\Install\Schema;
+use MandragoraQAManager\Support\Dates;
+use MandragoraQAManager\Support\Enum;
+use MandragoraQAManager\Support\Sanitize;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Reads and writes qa_runs, qa_run_cases and qa_run_assignees.
+ * Reads and writes mqatm_runs, mqatm_run_cases and mqatm_run_assignees.
  *
  * Runs are independent: nothing here closes, supersedes or archives one run because
  * another was created or completed.
@@ -528,7 +528,7 @@ final class RunRepository extends BaseRepository {
 
 			$out[ $run_id ][] = array(
 				'id'          => $user_id,
-				'name'        => $user ? $user->display_name : __( 'Unknown user', 'qa-runner' ),
+				'name'        => $user ? $user->display_name : __( 'Unknown user', 'mandragora-qa-test-manager' ),
 				'avatar'      => get_avatar_url( $user_id, array( 'size' => 48 ) ),
 				'assigned_at' => Dates::to_iso( $row['assigned_at'] ),
 				'notified_at' => Dates::to_iso( $row['notified_at'] ),
@@ -623,7 +623,7 @@ final class RunRepository extends BaseRepository {
 			'notes'        => (string) ( $row['notes'] ?? '' ),
 			'created_by'   => array(
 				'id'   => (int) $row['created_by'],
-				'name' => $creator ? $creator->display_name : __( 'Unknown user', 'qa-runner' ),
+				'name' => $creator ? $creator->display_name : __( 'Unknown user', 'mandragora-qa-test-manager' ),
 			),
 			'created_at'   => Dates::to_iso( $row['created_at'] ?? null ),
 			'completed_at' => Dates::to_iso( $row['completed_at'] ?? null ),

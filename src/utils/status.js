@@ -7,13 +7,13 @@
  */
 
 export const RESULT_STATUSES = [
-  {value: 'pass', label: wp.i18n.__('Pass', 'qa-runner'), glyph: '✓', tone: 'pass'},
-  {value: 'fail', label: wp.i18n.__('Fail', 'qa-runner'), glyph: '✕', tone: 'fail'},
-  {value: 'blocked', label: wp.i18n.__('Blocked', 'qa-runner'), glyph: '▲', tone: 'blocked'},
-  {value: 'skipped', label: wp.i18n.__('Skipped', 'qa-runner'), glyph: '–', tone: 'skipped'},
+  {value: 'pass', label: wp.i18n.__('Pass', 'mandragora-qa-test-manager'), glyph: '✓', tone: 'pass'},
+  {value: 'fail', label: wp.i18n.__('Fail', 'mandragora-qa-test-manager'), glyph: '✕', tone: 'fail'},
+  {value: 'blocked', label: wp.i18n.__('Blocked', 'mandragora-qa-test-manager'), glyph: '▲', tone: 'blocked'},
+  {value: 'skipped', label: wp.i18n.__('Skipped', 'mandragora-qa-test-manager'), glyph: '–', tone: 'skipped'},
   {
     value: 'untested',
-    label: wp.i18n._x('Clear', 'reset a result to untested', 'qa-runner'),
+    label: wp.i18n._x('Clear', 'reset a result to untested', 'mandragora-qa-test-manager'),
     glyph: '○',
     tone: 'untested'
   }
@@ -39,24 +39,24 @@ export function statusMeta(value) {
  * @returns {string}
  */
 export function statusLabel(value) {
-  return value === 'untested' ? wp.i18n.__('Untested', 'qa-runner') : statusMeta(value).label;
+  return value === 'untested' ? wp.i18n.__('Untested', 'mandragora-qa-test-manager') : statusMeta(value).label;
 }
 
 export const PRIORITIES = [
-  {value: 'critical', label: wp.i18n.__('Critical', 'qa-runner')},
-  {value: 'normal', label: wp.i18n.__('Normal', 'qa-runner')},
-  {value: 'low', label: wp.i18n.__('Low', 'qa-runner')}
+  {value: 'critical', label: wp.i18n.__('Critical', 'mandragora-qa-test-manager')},
+  {value: 'normal', label: wp.i18n.__('Normal', 'mandragora-qa-test-manager')},
+  {value: 'low', label: wp.i18n.__('Low', 'mandragora-qa-test-manager')}
 ];
 
 export const RUN_STATUSES = [
-  {value: 'open', label: wp.i18n._x('Open', 'run status', 'qa-runner')},
-  {value: 'completed', label: wp.i18n.__('Completed', 'qa-runner')},
-  {value: 'abandoned', label: wp.i18n.__('Abandoned', 'qa-runner')}
+  {value: 'open', label: wp.i18n._x('Open', 'run status', 'mandragora-qa-test-manager')},
+  {value: 'completed', label: wp.i18n.__('Completed', 'mandragora-qa-test-manager')},
+  {value: 'abandoned', label: wp.i18n.__('Abandoned', 'mandragora-qa-test-manager')}
 ];
 
 export const ISSUE_STATUSES = [
-  {value: 'open', label: wp.i18n._x('Open', 'issue status', 'qa-runner')},
-  {value: 'resolved', label: wp.i18n.__('Resolved', 'qa-runner')}
+  {value: 'open', label: wp.i18n._x('Open', 'issue status', 'mandragora-qa-test-manager')},
+  {value: 'resolved', label: wp.i18n.__('Resolved', 'mandragora-qa-test-manager')}
 ];
 
 /**

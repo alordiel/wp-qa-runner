@@ -2,14 +2,14 @@
 /**
  * Settings routes.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Rest;
+namespace MandragoraQAManager\Rest;
 
-use QARunner\Support\Settings;
+use MandragoraQAManager\Support\Settings;
 use WP_REST_Request;
 
 defined( 'ABSPATH' ) || exit;

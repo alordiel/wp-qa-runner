@@ -1,5 +1,5 @@
 {
-  "name": "internal/qa-runner",
+  "name": "internal/mandragora-qa-test-manager",
   "description": "Manual QA test runs for WordPress.",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
@@ -8,7 +8,7 @@
   },
   "autoload": {
     "psr-4": {
-      "QARunner\\": "includes/"
+      "MandragoraQAManager\\": "includes/"
     }
   },
   "config": {

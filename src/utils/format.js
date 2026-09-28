@@ -34,7 +34,7 @@ export function relativeTime(iso) {
   const magnitude = Math.abs(seconds);
 
   if (magnitude < 60) {
-    return wp.i18n.__('just now', 'qa-runner');
+    return wp.i18n.__('just now', 'mandragora-qa-test-manager');
   }
 
   const [unit, size] = UNITS.find(([, unitSize]) => magnitude >= unitSize) ?? ['minute', 60];

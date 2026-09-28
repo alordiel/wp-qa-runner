@@ -2,21 +2,21 @@
 /**
  * Result persistence: the intersection of a run and a case.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Repository;
+namespace MandragoraQAManager\Repository;
 
-use QARunner\Install\Schema;
-use QARunner\Support\Dates;
-use QARunner\Support\Enum;
+use MandragoraQAManager\Install\Schema;
+use MandragoraQAManager\Support\Dates;
+use MandragoraQAManager\Support\Enum;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Reads and writes qa_results.
+ * Reads and writes mqatm_results.
  *
  * One row exists per run/case pair from the moment the run is created; nothing here
  * creates results lazily.
@@ -299,7 +299,7 @@ final class ResultRepository extends BaseRepository {
 
 			$out[ (int) $row['result_id'] ][] = array(
 				'id'          => $user_id,
-				'name'        => $user ? $user->display_name : __( 'Unknown user', 'qa-runner' ),
+				'name'        => $user ? $user->display_name : __( 'Unknown user', 'mandragora-qa-test-manager' ),
 				'avatar'      => get_avatar_url( $user_id, array( 'size' => 48 ) ),
 				'assigned_at' => Dates::to_iso( $row['assigned_at'] ),
 			);
@@ -415,7 +415,7 @@ final class ResultRepository extends BaseRepository {
 			$user      = get_userdata( (int) $row['tested_by'] );
 			$tested_by = array(
 				'id'   => (int) $row['tested_by'],
-				'name' => $user ? $user->display_name : __( 'Unknown user', 'qa-runner' ),
+				'name' => $user ? $user->display_name : __( 'Unknown user', 'mandragora-qa-test-manager' ),
 			);
 		}
 
@@ -426,7 +426,7 @@ final class ResultRepository extends BaseRepository {
 			$user           = get_userdata( (int) $row['in_progress_by'] );
 			$in_progress_by = array(
 				'id'   => (int) $row['in_progress_by'],
-				'name' => $user ? $user->display_name : __( 'Unknown user', 'qa-runner' ),
+				'name' => $user ? $user->display_name : __( 'Unknown user', 'mandragora-qa-test-manager' ),
 			);
 		}
 

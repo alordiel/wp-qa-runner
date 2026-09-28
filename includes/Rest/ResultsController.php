@@ -2,18 +2,18 @@
 /**
  * Result routes: status and the soft lock.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Rest;
+namespace MandragoraQAManager\Rest;
 
-use QARunner\Install\Roles;
-use QARunner\Notification\Mailer;
-use QARunner\Repository\ResultRepository;
-use QARunner\Repository\RunRepository;
-use QARunner\Support\Enum;
+use MandragoraQAManager\Install\Roles;
+use MandragoraQAManager\Notification\Mailer;
+use MandragoraQAManager\Repository\ResultRepository;
+use MandragoraQAManager\Repository\RunRepository;
+use MandragoraQAManager\Support\Enum;
 use WP_REST_Request;
 
 defined( 'ABSPATH' ) || exit;
@@ -157,7 +157,7 @@ final class ResultsController extends Controller {
 		);
 
 		if ( ! $updated ) {
-			return $this->write_failed( __( 'The result could not be saved.', 'qa-runner' ) );
+			return $this->write_failed( __( 'The result could not be saved.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return $this->reload( $id );
@@ -232,7 +232,7 @@ final class ResultsController extends Controller {
 		$already_assigned = $this->results->is_assigned( $id, $user_id );
 
 		if ( ! $this->results->assign( $id, $user_id ) ) {
-			return $this->write_failed( __( 'That assignment could not be saved.', 'qa-runner' ) );
+			return $this->write_failed( __( 'That assignment could not be saved.', 'mandragora-qa-test-manager' ) );
 		}
 
 		if ( ! $already_assigned ) {
@@ -270,7 +270,7 @@ final class ResultsController extends Controller {
 		}
 
 		if ( ! $this->results->unassign( $id, $user_id ) ) {
-			return $this->write_failed( __( 'That assignment could not be removed.', 'qa-runner' ) );
+			return $this->write_failed( __( 'That assignment could not be removed.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return $this->reload( $id );
@@ -295,13 +295,13 @@ final class ResultsController extends Controller {
 		}
 
 		if ( ! user_can( $user_id, Roles::CAP_TEST ) ) {
-			return $this->bad_request( __( 'That person cannot run tests.', 'qa-runner' ) );
+			return $this->bad_request( __( 'That person cannot run tests.', 'mandragora-qa-test-manager' ) );
 		}
 
 		// Managers are exempt: they pick up cases on runs they oversee without being listed
 		// as an assignee on every one of them.
 		if ( ! $this->runs->is_assignee( $run_id, $user_id ) && ! $this->can_manage() ) {
-			return $this->bad_request( __( 'That person is not assigned to this run.', 'qa-runner' ) );
+			return $this->bad_request( __( 'That person is not assigned to this run.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return true;
@@ -315,7 +315,7 @@ final class ResultsController extends Controller {
 	 */
 	private function guard_caller( int $run_id ) {
 		if ( ! $this->runs->is_assignee( $run_id, get_current_user_id() ) && ! $this->can_manage() ) {
-			return $this->forbidden( __( 'You are not assigned to this run.', 'qa-runner' ) );
+			return $this->forbidden( __( 'You are not assigned to this run.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return true;
@@ -331,7 +331,7 @@ final class ResultsController extends Controller {
 		$result = $this->results->find_raw( $id );
 
 		if ( null === $result ) {
-			return $this->not_found( __( 'That result no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That result no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		if ( ! $this->runs->is_open( (int) $result['run_id'] ) ) {
@@ -351,7 +351,7 @@ final class ResultsController extends Controller {
 		$result = $this->results->find_for_api( $id );
 
 		if ( null === $result ) {
-			return $this->not_found( __( 'That result no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That result no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return $result;

@@ -36,9 +36,9 @@ async function create() {
   try {
     await caseStore.createSuite({...draft.value, sort_order: caseStore.suites.length});
     draft.value = {name: '', description: ''};
-    ui.toast(wp.i18n.__('Suite created.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Suite created.', 'mandragora-qa-test-manager'));
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The suite could not be created.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The suite could not be created.', 'mandragora-qa-test-manager'));
   } finally {
     saving.value = false;
   }
@@ -68,9 +68,9 @@ async function saveEdit() {
   try {
     await caseStore.updateSuite(editingId.value, editDraft.value);
     editingId.value = 0;
-    ui.toast(wp.i18n.__('Suite saved.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Suite saved.', 'mandragora-qa-test-manager'));
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The suite could not be saved.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The suite could not be saved.', 'mandragora-qa-test-manager'));
   }
 }
 
@@ -109,14 +109,14 @@ async function remove(suite) {
           'Delete the suite "%1$s"? Its %2$d archived case will be deleted with it.',
           'Delete the suite "%1$s"? Its %2$d archived cases will be deleted with it.',
           archived,
-          'qa-runner'
+          'mandragora-qa-test-manager'
         ),
         suite.name,
         archived
       )
     : wp.i18n.sprintf(
         /* translators: %s: suite name. */
-        wp.i18n.__('Delete the suite "%s"?', 'qa-runner'),
+        wp.i18n.__('Delete the suite "%s"?', 'mandragora-qa-test-manager'),
         suite.name
       );
 
@@ -126,9 +126,9 @@ async function remove(suite) {
 
   try {
     await caseStore.deleteSuite(suite.id);
-    ui.toast(wp.i18n.__('Suite deleted.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Suite deleted.', 'mandragora-qa-test-manager'));
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The suite could not be deleted.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The suite could not be deleted.', 'mandragora-qa-test-manager'));
   }
 }
 
@@ -144,9 +144,9 @@ async function confirmMove(suite) {
   try {
     await caseStore.deleteSuite(suite.id, Number(moveTarget.value));
     movingId.value = 0;
-    ui.toast(wp.i18n.__('Archived cases moved and suite deleted.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Archived cases moved and suite deleted.', 'mandragora-qa-test-manager'));
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The suite could not be deleted.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The suite could not be deleted.', 'mandragora-qa-test-manager'));
   } finally {
     moving.value = false;
   }
@@ -156,7 +156,7 @@ onMounted(async () => {
   try {
     await caseStore.loadSuites(true);
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The suites could not be loaded.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The suites could not be loaded.', 'mandragora-qa-test-manager'));
   } finally {
     loading.value = false;
   }
@@ -167,59 +167,59 @@ onMounted(async () => {
   <div class="qa-stack">
     <div class="qa-page-head">
       <div class="qa-page-head__meta">
-        <h2>{{ __('Suites', 'qa-runner') }}</h2>
+        <h2>{{ __('Suites', 'mandragora-qa-test-manager') }}</h2>
       </div>
     </div>
 
     <form class="qa-card" @submit.prevent="create">
       <div class="qa-card__head">
-        <h3>{{ __('New suite', 'qa-runner') }}</h3>
+        <h3>{{ __('New suite', 'mandragora-qa-test-manager') }}</h3>
       </div>
       <div class="qa-card__body qa-inline-form">
         <div class="qa-field" style="flex: 1; min-width: 180px">
-          <label class="qa-field__label" for="suite-name">{{ __('Name', 'qa-runner') }}</label>
+          <label class="qa-field__label" for="suite-name">{{ __('Name', 'mandragora-qa-test-manager') }}</label>
           <input
             id="suite-name"
             v-model="draft.name"
             class="qa-input"
             type="text"
-            :placeholder="__('Checkout', 'qa-runner')"
+            :placeholder="__('Checkout', 'mandragora-qa-test-manager')"
             required
           />
         </div>
         <div class="qa-field" style="flex: 2; min-width: 220px">
           <label class="qa-field__label" for="suite-description">{{
-            __('Description', 'qa-runner')
+            __('Description', 'mandragora-qa-test-manager')
           }}</label>
           <input
             id="suite-description"
             v-model="draft.description"
             class="qa-input"
             type="text"
-            :placeholder="__('What this area covers', 'qa-runner')"
+            :placeholder="__('What this area covers', 'mandragora-qa-test-manager')"
           />
         </div>
         <button type="submit" class="qa-button qa-button--primary" :disabled="saving">
-          {{ saving ? __('Adding…', 'qa-runner') : __('Add suite', 'qa-runner') }}
+          {{ saving ? __('Adding…', 'mandragora-qa-test-manager') : __('Add suite', 'mandragora-qa-test-manager') }}
         </button>
       </div>
     </form>
 
     <div class="qa-card">
-      <p v-if="loading" class="qa-skeleton">{{ __('Loading suites…', 'qa-runner') }}</p>
+      <p v-if="loading" class="qa-skeleton">{{ __('Loading suites…', 'mandragora-qa-test-manager') }}</p>
 
       <EmptyState
         v-else-if="!caseStore.suites.length"
-        :title="__('No suites yet. Add one above to start grouping cases.', 'qa-runner')"
+        :title="__('No suites yet. Add one above to start grouping cases.', 'mandragora-qa-test-manager')"
       />
 
       <div v-else class="qa-table-scroll">
         <table class="qa-table">
           <thead>
             <tr>
-              <th scope="col">{{ __('Name', 'qa-runner') }}</th>
-              <th scope="col">{{ __('Description', 'qa-runner') }}</th>
-              <th scope="col">{{ __('Cases', 'qa-runner') }}</th>
+              <th scope="col">{{ __('Name', 'mandragora-qa-test-manager') }}</th>
+              <th scope="col">{{ __('Description', 'mandragora-qa-test-manager') }}</th>
+              <th scope="col">{{ __('Cases', 'mandragora-qa-test-manager') }}</th>
               <th scope="col" />
             </tr>
           </thead>
@@ -232,7 +232,7 @@ onMounted(async () => {
                       v-model="editDraft.name"
                       class="qa-input"
                       type="text"
-                      :aria-label="__('Suite name', 'qa-runner')"
+                      :aria-label="__('Suite name', 'mandragora-qa-test-manager')"
                     />
                   </td>
                   <td>
@@ -240,7 +240,7 @@ onMounted(async () => {
                       v-model="editDraft.description"
                       class="qa-input"
                       type="text"
-                      :aria-label="__('Suite description', 'qa-runner')"
+                      :aria-label="__('Suite description', 'mandragora-qa-test-manager')"
                     />
                   </td>
                   <td class="qa-count">{{ suite.case_count }}</td>
@@ -251,14 +251,14 @@ onMounted(async () => {
                         class="qa-button qa-button--small qa-button--primary"
                         @click="saveEdit"
                       >
-                        {{ __('Save', 'qa-runner') }}
+                        {{ __('Save', 'mandragora-qa-test-manager') }}
                       </button>
                       <button
                         type="button"
                         class="qa-button qa-button--small qa-button--quiet"
                         @click="editingId = 0"
                       >
-                        {{ __('Cancel', 'qa-runner') }}
+                        {{ __('Cancel', 'mandragora-qa-test-manager') }}
                       </button>
                     </div>
                   </td>
@@ -269,7 +269,7 @@ onMounted(async () => {
                   <td class="qa-count">
                     {{ suite.case_count }}
                     <span v-if="suite.archived_case_count" class="qa-muted">
-                      {{ sprintf(__('+ %d archived', 'qa-runner'), suite.archived_case_count) }}
+                      {{ sprintf(__('+ %d archived', 'mandragora-qa-test-manager'), suite.archived_case_count) }}
                     </span>
                   </td>
                   <td>
@@ -279,7 +279,7 @@ onMounted(async () => {
                         class="qa-button qa-button--small"
                         @click="startEdit(suite)"
                       >
-                        {{ __('Edit', 'qa-runner') }}
+                        {{ __('Edit', 'mandragora-qa-test-manager') }}
                       </button>
                       <button
                         type="button"
@@ -287,12 +287,12 @@ onMounted(async () => {
                         :disabled="suite.case_count > 0"
                         :title="
                           suite.case_count > 0
-                            ? __('Archive or move this suite’s cases first.', 'qa-runner')
-                            : __('Delete this suite', 'qa-runner')
+                            ? __('Archive or move this suite’s cases first.', 'mandragora-qa-test-manager')
+                            : __('Delete this suite', 'mandragora-qa-test-manager')
                         "
                         @click="remove(suite)"
                       >
-                        {{ __('Delete', 'qa-runner') }}
+                        {{ __('Delete', 'mandragora-qa-test-manager') }}
                       </button>
                     </div>
                   </td>
@@ -309,7 +309,7 @@ onMounted(async () => {
                             '%d archived case here still appears in past runs, so it needs a suite to stay in. Move it to:',
                             '%d archived cases here still appear in past runs, so they need a suite to stay in. Move them to:',
                             suite.retained_case_count,
-                            'qa-runner'
+                            'mandragora-qa-test-manager'
                           ),
                           suite.retained_case_count
                         )
@@ -318,7 +318,7 @@ onMounted(async () => {
 
                     <template v-if="moveTargets(suite).length">
                       <label class="qa-sr-only" :for="`move-target-${suite.id}`">
-                        {{ __('Destination suite', 'qa-runner') }}
+                        {{ __('Destination suite', 'mandragora-qa-test-manager') }}
                       </label>
                       <select
                         :id="`move-target-${suite.id}`"
@@ -342,14 +342,14 @@ onMounted(async () => {
                       >
                         {{
                           moving
-                            ? __('Moving…', 'qa-runner')
-                            : __('Move & delete suite', 'qa-runner')
+                            ? __('Moving…', 'mandragora-qa-test-manager')
+                            : __('Move & delete suite', 'mandragora-qa-test-manager')
                         }}
                       </button>
                     </template>
                     <span v-else class="qa-muted">
                       {{
-                        __('Add another suite first — there is nowhere to move them.', 'qa-runner')
+                        __('Add another suite first — there is nowhere to move them.', 'mandragora-qa-test-manager')
                       }}
                     </span>
 
@@ -358,7 +358,7 @@ onMounted(async () => {
                       class="qa-button qa-button--small qa-button--quiet"
                       @click="movingId = 0"
                     >
-                      {{ __('Cancel', 'qa-runner') }}
+                      {{ __('Cancel', 'mandragora-qa-test-manager') }}
                     </button>
                   </div>
                 </td>

@@ -6,22 +6,22 @@
  * explicitly opted in: QA history must never vanish because someone removed the plugin to
  * troubleshoot something else.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner;
+namespace MandragoraQAManager;
 
-use QARunner\Install\Roles;
-use QARunner\Install\Schema;
-use QARunner\Support\Settings;
+use MandragoraQAManager\Install\Roles;
+use MandragoraQAManager\Install\Schema;
+use MandragoraQAManager\Support\Settings;
 
 defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 
 // The main plugin file is not loaded during uninstall, and requiring it would re-register
 // hooks for no reason, so the classes this routine needs are autoloaded directly.
-defined( 'QA_RUNNER_PATH' ) || define( 'QA_RUNNER_PATH', plugin_dir_path( __FILE__ ) );
+defined( 'MQATM_PATH' ) || define( 'MQATM_PATH', plugin_dir_path( __FILE__ ) );
 
 spl_autoload_register(
 	static function ( string $class_name ): void {
@@ -31,7 +31,7 @@ spl_autoload_register(
 			return;
 		}
 
-		$path = QA_RUNNER_PATH . 'includes/' . str_replace( '\\', '/', substr( $class_name, strlen( $prefix ) ) ) . '.php';
+		$path = MQATM_PATH . 'includes/' . str_replace( '\\', '/', substr( $class_name, strlen( $prefix ) ) ) . '.php';
 
 		if ( is_readable( $path ) ) {
 			require_once $path;
@@ -39,11 +39,11 @@ spl_autoload_register(
 	}
 );
 
-$qa_runner_drop_tables = Settings::delete_data_on_uninstall();
+$mqatm_drop_tables = Settings::delete_data_on_uninstall();
 
 Roles::uninstall();
 
-if ( $qa_runner_drop_tables ) {
+if ( $mqatm_drop_tables ) {
 	Schema::drop();
 }
 

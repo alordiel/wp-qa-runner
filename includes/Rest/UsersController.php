@@ -2,14 +2,14 @@
 /**
  * User routes for the assignee pickers.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Rest;
+namespace MandragoraQAManager\Rest;
 
-use QARunner\Install\Roles;
+use MandragoraQAManager\Install\Roles;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -36,7 +36,7 @@ final class UsersController extends Controller {
 	/**
 	 * GET /users
 	 *
-	 * Only users who hold qa_run_tests: assigning anyone else would produce an email they
+	 * Only users who hold mqatm_run_tests: assigning anyone else would produce an email they
 	 * cannot act on.
 	 *
 	 * @return array<int, array<string, mixed>>

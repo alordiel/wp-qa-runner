@@ -2,14 +2,14 @@
 /**
  * Admin menu entry and app mount point.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Admin;
+namespace MandragoraQAManager\Admin;
 
-use QARunner\Install\Roles;
+use MandragoraQAManager\Install\Roles;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -32,10 +32,10 @@ final class Menu {
 	 */
 	public function register(): void {
 		$this->hook_suffix = (string) add_menu_page(
-			__( 'QA Runner', 'qa-runner' ),
-			__( 'QA Runner', 'qa-runner' ),
+			__( 'Mandragora QA Test Manager', 'mandragora-qa-test-manager' ),
+			__( 'Mandragora QA Test Manager', 'mandragora-qa-test-manager' ),
 			Roles::CAP_VIEW,
-			QA_RUNNER_SLUG,
+			MQATM_SLUG,
 			array( $this, 'render' ),
 			'dashicons-yes-alt',
 			58
@@ -60,12 +60,12 @@ final class Menu {
 	 */
 	public function render(): void {
 		?>
-		<div class="wrap qa-runner-wrap">
-			<div id="qa-runner-app">
-				<p class="qa-runner-boot"><?php esc_html_e( 'Loading QA Runner…', 'qa-runner' ); ?></p>
+		<div class="wrap mqatm-wrap">
+			<div id="mqatm-app">
+				<p class="mqatm-boot"><?php esc_html_e( 'Loading Mandragora QA Test Manager…', 'mandragora-qa-test-manager' ); ?></p>
 			</div>
 			<noscript>
-				<p><?php esc_html_e( 'QA Runner needs JavaScript enabled.', 'qa-runner' ); ?></p>
+				<p><?php esc_html_e( 'Mandragora QA Test Manager needs JavaScript enabled.', 'mandragora-qa-test-manager' ); ?></p>
 			</noscript>
 		</div>
 		<?php

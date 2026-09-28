@@ -51,7 +51,7 @@ function bold(count) {
             '%1$d of %2$d case tested, %3$d failing',
             '%1$d of %2$d cases tested, %3$d failing',
             total,
-            'qa-runner'
+            'mandragora-qa-test-manager'
           ),
           tested,
           total,
@@ -73,7 +73,7 @@ function bold(count) {
         class="qa-badge qa-badge--success"
         v-html="
           sprintf(
-            _n('%s passed', '%s passed', counts.pass ?? 0, 'qa-runner'),
+            _n('%s passed', '%s passed', counts.pass ?? 0, 'mandragora-qa-test-manager'),
             bold(counts.pass ?? 0)
           )
         "
@@ -81,31 +81,31 @@ function bold(count) {
       <span
         :class="{'qa-badge--issue': failCount > 0, 'qa-badge--env': failCount === 0}"
         class="qa-badge"
-        v-html="sprintf(_n('%s failed', '%s failed', failCount, 'qa-runner'), bold(failCount))"
+        v-html="sprintf(_n('%s failed', '%s failed', failCount, 'mandragora-qa-test-manager'), bold(failCount))"
       />
       <span
         v-if="counts.blocked"
         class="qa-badge qa-badge--issue"
         v-html="
-          sprintf(_n('%s blocked', '%s blocked', counts.blocked, 'qa-runner'), bold(counts.blocked))
+          sprintf(_n('%s blocked', '%s blocked', counts.blocked, 'mandragora-qa-test-manager'), bold(counts.blocked))
         "
       />
       <span
         v-if="counts.skipped"
         class="qa-badge qa-badge--env"
         v-html="
-          sprintf(_n('%s skipped', '%s skipped', counts.skipped, 'qa-runner'), bold(counts.skipped))
+          sprintf(_n('%s skipped', '%s skipped', counts.skipped, 'mandragora-qa-test-manager'), bold(counts.skipped))
         "
       />
       <span
         class="qa-badge qa-badge--lock"
         v-html="
-          sprintf(_n('%s remaining', '%s remaining', remaining, 'qa-runner'), bold(remaining))
+          sprintf(_n('%s remaining', '%s remaining', remaining, 'mandragora-qa-test-manager'), bold(remaining))
         "
       />
       <span v-if="issues > 0" class="qa-badge qa-badge--issue">
         <span class="qa-count">{{
-          sprintf(_n('%d open issue', '%d open issues', issues, 'qa-runner'), issues)
+          sprintf(_n('%d open issue', '%d open issues', issues, 'mandragora-qa-test-manager'), issues)
         }}</span>
       </span>
     </div>

@@ -1,11 +1,11 @@
 /**
- * The one wrapper around fetch for the QA Runner REST API.
+ * The one wrapper around fetch for the Mandragora QA Test Manager REST API.
  *
  * Everything goes through here so nonce handling, error shape and the expired-session
  * banner live in exactly one place.
  */
 
-const bootstrap = window.qaRunner ?? {};
+const bootstrap = window.mqatm ?? {};
 
 /**
  * Error thrown for any non-2xx response, carrying the WordPress error payload.
@@ -124,7 +124,7 @@ async function request(path, {method = 'GET', body, params} = {}) {
     response = await fetch(url, init);
   } catch {
     throw new ApiError(
-      wp.i18n.__('Could not reach the server. Check your connection and try again.', 'qa-runner'),
+      wp.i18n.__('Could not reach the server. Check your connection and try again.', 'mandragora-qa-test-manager'),
       0,
       'network_error',
       null
@@ -144,7 +144,7 @@ async function request(path, {method = 'GET', body, params} = {}) {
 
   if (!response.ok) {
     const error = new ApiError(
-      payload?.message ?? wp.i18n.__('Something went wrong. Please try again.', 'qa-runner'),
+      payload?.message ?? wp.i18n.__('Something went wrong. Please try again.', 'mandragora-qa-test-manager'),
       response.status,
       payload?.code ?? 'unknown_error',
       payload?.data ?? null

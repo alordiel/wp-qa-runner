@@ -2,14 +2,14 @@
 /**
  * Suite routes.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Rest;
+namespace MandragoraQAManager\Rest;
 
-use QARunner\Repository\SuiteRepository;
+use MandragoraQAManager\Repository\SuiteRepository;
 use WP_REST_Request;
 
 defined( 'ABSPATH' ) || exit;
@@ -134,7 +134,7 @@ final class SuitesController extends Controller {
 		);
 
 		if ( 0 === $id ) {
-			return $this->write_failed( __( 'The suite could not be saved.', 'qa-runner' ) );
+			return $this->write_failed( __( 'The suite could not be saved.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return $this->suites->find( $id );
@@ -150,7 +150,7 @@ final class SuitesController extends Controller {
 		$id = (int) $request->get_param( 'id' );
 
 		if ( null === $this->suites->find( $id ) ) {
-			return $this->not_found( __( 'That suite no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That suite no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		$data = array();
@@ -162,7 +162,7 @@ final class SuitesController extends Controller {
 		}
 
 		if ( ! $this->suites->update( $id, $data ) ) {
-			return $this->write_failed( __( 'The suite could not be saved.', 'qa-runner' ) );
+			return $this->write_failed( __( 'The suite could not be saved.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return $this->suites->find( $id );
@@ -183,26 +183,26 @@ final class SuitesController extends Controller {
 		$id = (int) $request->get_param( 'id' );
 
 		if ( null === $this->suites->find( $id ) ) {
-			return $this->not_found( __( 'That suite no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That suite no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		if ( $this->suites->active_case_count( $id ) > 0 ) {
-			return $this->bad_request( __( 'Archive or move this suite\'s cases before deleting the suite.', 'qa-runner' ) );
+			return $this->bad_request( __( 'Archive or move this suite\'s cases before deleting the suite.', 'mandragora-qa-test-manager' ) );
 		}
 
 		$reassign_to = (int) $request->get_param( 'reassign_to' );
 
 		if ( $reassign_to > 0 ) {
 			if ( $reassign_to === $id ) {
-				return $this->bad_request( __( 'Pick a different suite to move the archived cases into.', 'qa-runner' ) );
+				return $this->bad_request( __( 'Pick a different suite to move the archived cases into.', 'mandragora-qa-test-manager' ) );
 			}
 
 			if ( null === $this->suites->find( $reassign_to ) ) {
-				return $this->not_found( __( 'The suite to move the archived cases into no longer exists.', 'qa-runner' ) );
+				return $this->not_found( __( 'The suite to move the archived cases into no longer exists.', 'mandragora-qa-test-manager' ) );
 			}
 
 			if ( ! $this->suites->move_cases( $id, $reassign_to ) ) {
-				return $this->write_failed( __( 'The archived cases could not be moved.', 'qa-runner' ) );
+				return $this->write_failed( __( 'The archived cases could not be moved.', 'mandragora-qa-test-manager' ) );
 			}
 		} else {
 			$retained = $this->suites->retained_case_count( $id );
@@ -215,7 +215,7 @@ final class SuitesController extends Controller {
 							'%d archived case in this suite still appears in past runs. Move it to another suite first.',
 							'%d archived cases in this suite still appear in past runs. Move them to another suite first.',
 							$retained,
-							'qa-runner'
+							'mandragora-qa-test-manager'
 						),
 						$retained
 					)
@@ -226,7 +226,7 @@ final class SuitesController extends Controller {
 		}
 
 		if ( ! $this->suites->delete( $id ) ) {
-			return $this->write_failed( __( 'The suite could not be deleted.', 'qa-runner' ) );
+			return $this->write_failed( __( 'The suite could not be deleted.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return array( 'deleted' => true );

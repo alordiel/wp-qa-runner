@@ -2,12 +2,12 @@
 /**
  * Sanitisation helpers shared by the REST layer and the repositories.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Support;
+namespace MandragoraQAManager\Support;
 
 defined( 'ABSPATH' ) || exit;
 

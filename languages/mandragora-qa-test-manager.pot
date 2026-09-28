@@ -2,8 +2,8 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: QA Runner 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/qa-runner\n"
+"Project-Id-Version: Mandragora QA Test Manager 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mandragora-qa-test-manager\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -12,57 +12,57 @@ msgstr ""
 "POT-Creation-Date: 2026-09-26T16:34:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
-"X-Domain: qa-runner\n"
+"X-Domain: mandragora-qa-test-manager\n"
 
 #. Plugin Name of the plugin
-#: qa-runner.php
+#: mandragora-qa-test-manager.php
 #: includes/Admin/Menu.php:35
 #: includes/Admin/Menu.php:36
-#: build/qa-admin-page.js:2
-msgid "QA Runner"
+#: build/mqatm-admin-page.js:2
+msgid "mandragora-qa-test-manager"
 msgstr ""
 
 #. Plugin URI of the plugin
-#: qa-runner.php
-msgid "https://github.com/alordiel/wp-qa-runner"
+#: mandragora-qa-test-manager.php
+msgid "https://github.com/alordiel/mandragora-qa-test-manager"
 msgstr ""
 
 #. Description of the plugin
-#: qa-runner.php
+#: mandragora-qa-test-manager.php
 msgid "Manual QA test runs for a small internal team: suites, cases, runs, results, comments and issues."
 msgstr ""
 
 #. Author of the plugin
-#: qa-runner.php
+#: mandragora-qa-test-manager.php
 msgid "Alexander Vasilev"
 msgstr ""
 
 #. Author URI of the plugin
-#: qa-runner.php
+#: mandragora-qa-test-manager.php
 msgid "https://profiles.wordpress.org/alordiel/"
 msgstr ""
 
 #. translators: %s: npm command to run.
 #: includes/Admin/Assets.php:162
 #, php-format
-msgid "QA Runner cannot find its built assets. Run %s in the plugin directory."
+msgid "Mandragora QA Test Manager cannot find its built assets. Run %s in the plugin directory."
 msgstr ""
 
 #: includes/Admin/Menu.php:65
-msgid "Loading QA Runner…"
+msgid "Loading Mandragora QA Test Manager…"
 msgstr ""
 
 #: includes/Admin/Menu.php:68
-msgid "QA Runner needs JavaScript enabled."
+msgid "Mandragora QA Test Manager needs JavaScript enabled."
 msgstr ""
 
 #: includes/Install/Roles.php:90
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "QA Admin"
 msgstr ""
 
 #: includes/Install/Roles.php:93
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "QA Tester"
 msgstr ""
 
@@ -75,7 +75,7 @@ msgid "Authentication and session handling."
 msgstr ""
 
 #: includes/Install/Seeder.php:57
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Log in with a valid account"
 msgstr ""
 
@@ -162,17 +162,17 @@ msgstr ""
 
 #: includes/Rest/CasesController.php:203
 #: includes/Rest/CasesController.php:231
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The case could not be saved."
 msgstr ""
 
 #: includes/Rest/CasesController.php:274
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The case could not be cloned."
 msgstr ""
 
 #: includes/Rest/CasesController.php:297
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The case could not be archived."
 msgstr ""
 
@@ -215,7 +215,7 @@ msgid "You can only delete your own comments."
 msgstr ""
 
 #: includes/Rest/CommentsController.php:242
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The comment could not be deleted."
 msgstr ""
 
@@ -237,12 +237,12 @@ msgid "The result could not be saved."
 msgstr ""
 
 #: includes/Rest/ResultsController.php:235
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "That assignment could not be saved."
 msgstr ""
 
 #: includes/Rest/ResultsController.php:273
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "That assignment could not be removed."
 msgstr ""
 
@@ -275,7 +275,7 @@ msgid "Select at least one active case for this run."
 msgstr ""
 
 #: includes/Rest/RunsController.php:333
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The run could not be created."
 msgstr ""
 
@@ -302,13 +302,13 @@ msgid "%s (retest)"
 msgstr ""
 
 #: includes/Rest/RunsController.php:535
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The run could not be cloned."
 msgstr ""
 
 #: includes/Rest/SuitesController.php:137
 #: includes/Rest/SuitesController.php:165
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The suite could not be saved."
 msgstr ""
 
@@ -342,7 +342,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/Rest/SuitesController.php:229
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The suite could not be deleted."
 msgstr ""
 
@@ -368,24 +368,24 @@ msgstr ""
 
 #: templates/emails/assignment.php:18
 #: templates/emails/case-assignment.php:22
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Environment"
 msgstr ""
 
 #: templates/emails/assignment.php:19
 #: templates/emails/case-assignment.php:23
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Version"
 msgstr ""
 
 #: templates/emails/assignment.php:20
-#: build/qa-admin-page.js:2
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:2
+#: build/mqatm-admin-page.js:47
 msgid "Cases"
 msgstr ""
 
 #: templates/emails/assignment.php:24
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Notes"
 msgstr ""
 
@@ -419,7 +419,7 @@ msgid "Case"
 msgstr ""
 
 #: templates/emails/case-assignment.php:20
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Suite"
 msgstr ""
 
@@ -441,1396 +441,1396 @@ msgstr ""
 msgid "Open the case"
 msgstr ""
 
-#: build/qa-admin-page.js:2
+#: build/mqatm-admin-page.js:2
 msgid "Something went wrong. Please try again."
 msgstr ""
 
-#: build/qa-admin-page.js:2
+#: build/mqatm-admin-page.js:2
 msgid "Notifications"
 msgstr ""
 
-#: build/qa-admin-page.js:2
+#: build/mqatm-admin-page.js:2
 msgid "Dismiss notification"
 msgstr ""
 
-#: build/qa-admin-page.js:2
+#: build/mqatm-admin-page.js:2
 msgid "Could not reach the server. Check your connection and try again."
 msgstr ""
 
-#: build/qa-admin-page.js:2
+#: build/mqatm-admin-page.js:2
 msgid "You do not have permission to manage the case library."
 msgstr ""
 
-#: build/qa-admin-page.js:2
-msgid "QA Runner sections"
+#: build/mqatm-admin-page.js:2
+msgid "Mandragora QA Test Manager sections"
 msgstr ""
 
-#: build/qa-admin-page.js:2
+#: build/mqatm-admin-page.js:2
 msgid "Runs"
 msgstr ""
 
-#: build/qa-admin-page.js:2
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:2
+#: build/mqatm-admin-page.js:47
 msgid "Suites"
 msgstr ""
 
-#: build/qa-admin-page.js:2
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:2
+#: build/mqatm-admin-page.js:47
 msgid "Settings"
 msgstr ""
 
-#: build/qa-admin-page.js:2
+#: build/mqatm-admin-page.js:2
 msgid "Your session expired. Reload the page to continue."
 msgstr ""
 
-#: build/qa-admin-page.js:2
+#: build/mqatm-admin-page.js:2
 msgid "Reload now"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Pass"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Fail"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Blocked"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Skipped"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgctxt "reset a result to untested"
 msgid "Clear"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Untested"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Critical"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Normal"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Low"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgctxt "run status"
 msgid "Open"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Completed"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Abandoned"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgctxt "issue status"
 msgid "Open"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Resolved"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Case saved."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Case created."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "This case could not be loaded."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Edit case"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "New case"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Cases are written once and edited rarely, and many runs can reuse them. Keep edits to minor changes; for a major change, create a new case instead."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Cancel"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Saving…"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Save case"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Loading…"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Title"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Choose a suite"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Priority"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Steps"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "What the tester should do, in order."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Expected result"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "What should happen if the case passes."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Active"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Archived cases stay in past runs but cannot join new ones."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%s priority"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "just now"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The case library could not be loaded."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Case cloned."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "Archive \"%s\"? It stays in past runs but cannot join new ones."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Case archived."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The issue history could not be loaded."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Case library"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Manage suites"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Search cases"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Search titles"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "All priorities"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Show archived"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Loading cases…"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%d case"
 msgid_plural "%d cases"
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "New case here"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Archived"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "Updated %s"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Hide issues"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Issue history"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Cloning…"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Clone"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Edit"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Archive"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Issue"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Status"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Raised"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Link"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgctxt "issue raiser name, date"
 msgid "%1$s, %2$s"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "GitHub ↗"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "No issues have ever been raised on this case."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "No cases yet. Add one to start building the library."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Cases live in suites, so create a suite first if you have none."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Assign"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "There is nobody to choose from."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Close"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Save"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "Result for %s"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Result"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Clear this result"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "Mark as %s"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Assignees updated."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Those assignments could not be saved."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Assigned to you."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "You are off this case."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "That result could not be saved."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Comment added."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The comment could not be added."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Reply added."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The reply could not be added."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Comment updated."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The comment could not be updated."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Delete this comment and all of its replies?"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Delete this comment?"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Comment deleted."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Issue raised."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The issue could not be raised."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Issue resolved."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Issue closed as won’t fix."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The issue could not be updated."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Won’t fix"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Loading case…"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "← Back to run"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgctxt "suite name → case title"
 msgid "%1$s → %2$s"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "← Previous"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Next →"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%s is testing this. You can still record your own result."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "This run is %s. Results and comments are read-only."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "Set by %s"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "This case is not part of this run."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Assigned testers"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Unassign me"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Assign me"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Assign others…"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "Unassign %s"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Nobody is assigned to this case yet."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Claim it so the rest of the team knows."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Assign this case"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Nobody is assigned to this run yet, so there is no one to hand this case to."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "No steps recorded."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "No expected result recorded."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%d open issue on this case"
 msgid_plural "%d open issues on this case"
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Raised in any run, still unresolved."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "raised in run #%d"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Resolution note"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "What fixed it, or why it will not be fixed."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Resolve issue"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "Hide %d closed issue"
 msgid_plural "Hide %d closed issues"
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "Show %d closed issue"
 msgid_plural "Show %d closed issues"
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "Raised by %s"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgctxt "closure label, e.g. Resolved, by person"
 msgid "%1$s by %2$s"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "somebody"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Raise an issue"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "What is broken"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Description"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "What you saw, and what you expected."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "GitHub issue"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Must be a github.com link. Leave blank if you have not filed it yet."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Raise issue"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Comments"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Scoped to this run"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Reply"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Reply to comment"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Edit comment"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Delete comment"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "Reply to %s"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Replying…"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "No comments on this case yet."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Add one when a result needs explaining."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Add a comment"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Adding…"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Add comment"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "That case could not be found."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Back to the run"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "Added %d critical case."
 msgid_plural "Added %d critical cases."
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Run created."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "New run"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Environment and version are required — a run without them cannot be audited later."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Creating…"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Create run"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Name"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "2.4.0 — Account changes"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "2.4.0 or a commit ref"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "What this run covers, and anything the testers should know."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Assignees"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Assignment is informational and sends one email. Anyone on the QA team can test any case in an open run."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "No one else can run tests yet."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%d case selected"
 msgid_plural "%d cases selected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Select all critical"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Search case"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Case title"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%d case matching"
 msgid_plural "%d cases matching"
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Add all matching"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "No cases match these filters."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Try widening the suite or priority selection."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Pick a suite to start selecting cases."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Filter by suite, priority or title, then tick the cases this run should cover."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Selected cases"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Clear selection"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "Remove %s"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Nobody assigned"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%1$d of %2$d case tested, %3$d failing"
 msgid_plural "%1$d of %2$d cases tested, %3$d failing"
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%s passed"
 msgid_plural "%s passed"
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%s failed"
 msgid_plural "%s failed"
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%s blocked"
 msgid_plural "%s blocked"
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%s skipped"
 msgid_plural "%s skipped"
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%s remaining"
 msgid_plural "%s remaining"
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%d open issue"
 msgid_plural "%d open issues"
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "This will delete everything this run recorded against it: the status, every comment and any issue raised on it here. The case itself is not deleted, but its history in this run is erased."
 msgid_plural "This will delete everything this run recorded against them: the status, every comment and any issue raised on them here. The cases themselves are not deleted, but their history in this run is erased."
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Removing:"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%d comment"
 msgid_plural "%d comments"
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Cases in this run"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "On the run (%d)"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Untick a case to take it off this run."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "This run has no cases yet."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Add from the library"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Search by title"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "All suites"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Loading the case library…"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "No cases match, or they are all on this run already."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Search or pick a suite to see the cases you can add."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "Yes, remove %d case and delete what this run recorded against it."
 msgid_plural "Yes, remove %d cases and delete what this run recorded against them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Edit run details"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "This run could not be loaded."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Run cases updated."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The run cases could not be saved."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Run details updated."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The run details could not be saved."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Run assignees updated."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The run assignees could not be saved."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Run completed."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The run could not be completed."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Run reopened."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The run could not be reopened."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Run cloned."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Loading run…"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "environment:"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "version:"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "created by"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Edit details"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Clone run"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Complete run"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Reopen run"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Edit assignees"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Who is on this run"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "No testers exist yet. Give somebody the QA Tester role first."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "Removing %s also drops the cases they claimed on this run. Adding them back will not restore those claims."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "This run is %s. Results, comments and locks are read-only."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%d regression."
 msgid_plural "%d regressions."
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "This case passed in the previous run and fails now: %s"
 msgid_plural "These cases passed in the previous run and fail now: %s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "All statuses"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Only mine"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Unassigned only"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Only failed last run"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Clear filters"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Edit cases"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Clear a filter to see more of the run."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Not tested yet"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%s is testing this"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "Previous run: %s"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "Last run: %s"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Take yourself off this case"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Claim this case"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "That run could not be found."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "It may have been deleted."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Back to runs"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "All"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The runs could not be loaded."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Test runs"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Filter runs by status"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Loading runs…"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgctxt "noun"
 msgid "Run"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Progress"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Created"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "No open runs. Create one to start testing."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "No runs match this filter."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Runs tests: creates runs, records results, comments and raises issues."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Everything a tester can do, plus the case library, suites and settings."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The QA team could not be loaded."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The user list could not be loaded."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%s added to the QA team."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "That person could not be added."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%1$s is now a %2$s."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The role could not be changed."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
-msgid "Remove %1$s from the QA team? They keep their WordPress role (%2$s), but lose access to QA Runner."
+msgid "Remove %1$s from the QA team? They keep their WordPress role (%2$s), but lose access to Mandragora QA Test Manager."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
-msgid "Remove %s from the QA team? They have no other WordPress role, so they become a Subscriber and lose access to QA Runner."
+msgid "Remove %s from the QA team? They have no other WordPress role, so they become a Subscriber and lose access to Mandragora QA Test Manager."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%s removed from the QA team."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "That person could not be removed."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Administrator"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "QA team"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Loading the QA team…"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "User"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "WordPress role"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "QA role"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Actions"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "QA role for %s"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Full access (site administrator)"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "(you)"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "Remove %s from the QA team"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Add an existing user"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Search users"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Name, username or email"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "No matching users without QA access"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Add to team"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The QA role is added alongside their current WordPress role. Site administrators always have full access."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Settings saved."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The settings could not be saved."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The settings could not be loaded."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Save settings"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Loading settings…"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Pause notifications"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Stops the emails sent when someone assigns another person to a run or a case."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Delete all QA data when the plugin is uninstalled"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Off by default. With this off, uninstalling removes the roles and settings but leaves every run, result and issue in the database."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Suite created."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The suite could not be created."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Suite saved."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "Delete the suite \"%1$s\"? Its %2$d archived case will be deleted with it."
 msgid_plural "Delete the suite \"%1$s\"? Its %2$d archived cases will be deleted with it."
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "Delete the suite \"%s\"?"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Suite deleted."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Archived cases moved and suite deleted."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "The suites could not be loaded."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "New suite"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Checkout"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "What this area covers"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Add suite"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Loading suites…"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Suite name"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Suite description"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "+ %d archived"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Archive or move this suite’s cases first."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Delete this suite"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Delete"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 #, js-format
 msgid "%d archived case here still appears in past runs, so it needs a suite to stay in. Move it to:"
 msgid_plural "%d archived cases here still appear in past runs, so they need a suite to stay in. Move them to:"
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Destination suite"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Moving…"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Move & delete suite"
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "Add another suite first — there is nowhere to move them."
 msgstr ""
 
-#: build/qa-admin-page.js:47
+#: build/mqatm-admin-page.js:47
 msgid "No suites yet. Add one above to start grouping cases."
 msgstr ""

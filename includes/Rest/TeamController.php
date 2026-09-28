@@ -2,14 +2,14 @@
 /**
  * QA team routes: who holds a QA role, and granting or revoking one on existing users.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Rest;
+namespace MandragoraQAManager\Rest;
 
-use QARunner\Install\Roles;
+use MandragoraQAManager\Install\Roles;
 use WP_REST_Request;
 use WP_User;
 
@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
  * one hands them back exactly the site access they had before. Administrators hold every QA
  * capability through their WordPress role and are listed read-only.
  *
- * Gated on promote_users rather than qa_manage_cases: handing out a role is a site
+ * Gated on promote_users rather than mqatm_manage_cases: handing out a role is a site
  * administrator's decision, and a QA Admin able to mint other QA Admins would make the
  * capability split meaningless.
  */
@@ -178,7 +178,7 @@ final class TeamController extends Controller {
 		}
 
 		if ( null !== $this->qa_role( $user ) ) {
-			return $this->bad_request( __( 'That person is already on the QA team.', 'qa-runner' ) );
+			return $this->bad_request( __( 'That person is already on the QA team.', 'mandragora-qa-test-manager' ) );
 		}
 
 		$this->set_role( $user, (string) $request->get_param( 'role' ) );
@@ -200,7 +200,7 @@ final class TeamController extends Controller {
 		}
 
 		if ( null === $this->qa_role( $user ) ) {
-			return $this->not_found( __( 'That person is not on the QA team.', 'qa-runner' ) );
+			return $this->not_found( __( 'That person is not on the QA team.', 'mandragora-qa-test-manager' ) );
 		}
 
 		$this->set_role( $user, (string) $request->get_param( 'role' ) );
@@ -244,15 +244,15 @@ final class TeamController extends Controller {
 		$user = get_userdata( $user_id );
 
 		if ( ! $user instanceof WP_User || ( is_multisite() && ! is_user_member_of_blog( $user_id ) ) ) {
-			return $this->not_found( __( 'That user no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That user no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		if ( get_current_user_id() === $user_id ) {
-			return $this->forbidden( __( 'You cannot change your own QA role.', 'qa-runner' ) );
+			return $this->forbidden( __( 'You cannot change your own QA role.', 'mandragora-qa-test-manager' ) );
 		}
 
 		if ( self::ROLE_SITE_ADMIN === $this->qa_role( $user ) ) {
-			return $this->bad_request( __( 'Administrators have full QA access through their WordPress role.', 'qa-runner' ) );
+			return $this->bad_request( __( 'Administrators have full QA access through their WordPress role.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return $user;

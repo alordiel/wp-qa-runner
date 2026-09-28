@@ -2,12 +2,12 @@
 /**
  * Date helpers. Everything stored is UTC; everything emitted is ISO 8601 UTC.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Support;
+namespace MandragoraQAManager\Support;
 
 use DateTimeImmutable;
 use DateTimeZone;

@@ -2,12 +2,12 @@
 /**
  * Connectivity smoke test.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Rest;
+namespace MandragoraQAManager\Rest;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -44,7 +44,7 @@ final class PingController extends Controller {
 		return array(
 			'ok'      => true,
 			'user'    => get_current_user_id(),
-			'version' => QA_RUNNER_VERSION,
+			'version' => MQATM_VERSION,
 		);
 	}
 }

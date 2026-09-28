@@ -39,7 +39,7 @@ export const useUiStore = defineStore('ui', () => {
     toast(
       error?.message ||
         fallback ||
-        wp.i18n.__('Something went wrong. Please try again.', 'qa-runner'),
+        wp.i18n.__('Something went wrong. Please try again.', 'mandragora-qa-test-manager'),
       'error'
     );
   }

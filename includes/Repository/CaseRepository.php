@@ -2,22 +2,22 @@
 /**
  * Case library persistence.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Repository;
+namespace MandragoraQAManager\Repository;
 
-use QARunner\Install\Schema;
-use QARunner\Support\Dates;
-use QARunner\Support\Enum;
-use QARunner\Support\Sanitize;
+use MandragoraQAManager\Install\Schema;
+use MandragoraQAManager\Support\Dates;
+use MandragoraQAManager\Support\Enum;
+use MandragoraQAManager\Support\Sanitize;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Reads and writes qa_cases.
+ * Reads and writes mqatm_cases.
  *
  * A case carries no status of its own — only results do. That is what makes one run
  * comparable to another.

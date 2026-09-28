@@ -72,7 +72,7 @@ async function load() {
   try {
     await Promise.all([caseStore.loadSuites(), caseStore.loadCases()]);
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The case library could not be loaded.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The case library could not be loaded.', 'mandragora-qa-test-manager'));
   } finally {
     loading.value = false;
   }
@@ -94,10 +94,10 @@ async function clone(item) {
   try {
     const copy = await caseStore.cloneCase(item.id);
 
-    ui.toast(wp.i18n.__('Case cloned.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Case cloned.', 'mandragora-qa-test-manager'));
     router.push(`/cases/${copy.id}/edit`);
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The case could not be cloned.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The case could not be cloned.', 'mandragora-qa-test-manager'));
   } finally {
     cloning.value = 0;
   }
@@ -112,7 +112,7 @@ async function clone(item) {
 async function archive(item) {
   const question = wp.i18n.sprintf(
     /* translators: %s: case title. */
-    wp.i18n.__('Archive "%s"? It stays in past runs but cannot join new ones.', 'qa-runner'),
+    wp.i18n.__('Archive "%s"? It stays in past runs but cannot join new ones.', 'mandragora-qa-test-manager'),
     item.title
   );
 
@@ -122,9 +122,9 @@ async function archive(item) {
 
   try {
     await caseStore.archiveCase(item.id);
-    ui.toast(wp.i18n.__('Case archived.', 'qa-runner'));
+    ui.toast(wp.i18n.__('Case archived.', 'mandragora-qa-test-manager'));
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The case could not be archived.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The case could not be archived.', 'mandragora-qa-test-manager'));
   }
 }
 
@@ -145,7 +145,7 @@ async function toggleHistory(id) {
     history.value = await api.cases.issues(id, 'all');
     historyFor.value = id;
   } catch (error) {
-    ui.toastError(error, wp.i18n.__('The issue history could not be loaded.', 'qa-runner'));
+    ui.toastError(error, wp.i18n.__('The issue history could not be loaded.', 'mandragora-qa-test-manager'));
   }
 }
 
@@ -156,14 +156,14 @@ onMounted(load);
   <div class="qa-stack">
     <div class="qa-page-head">
       <div class="qa-page-head__meta">
-        <h2>{{ __('Case library', 'qa-runner') }}</h2>
+        <h2>{{ __('Case library', 'mandragora-qa-test-manager') }}</h2>
       </div>
       <div class="qa-row">
         <RouterLink class="qa-button qa-button--quiet" to="/suites">{{
-          __('Manage suites', 'qa-runner')
+          __('Manage suites', 'mandragora-qa-test-manager')
         }}</RouterLink>
         <RouterLink class="qa-button qa-button--primary" to="/cases/new">{{
-          __('New case', 'qa-runner')
+          __('New case', 'mandragora-qa-test-manager')
         }}</RouterLink>
       </div>
     </div>
@@ -171,19 +171,19 @@ onMounted(load);
     <div class="qa-card">
       <div class="qa-card__head" style="flex-wrap: wrap">
         <div class="qa-row">
-          <label class="qa-sr-only" for="case-search">{{ __('Search cases', 'qa-runner') }}</label>
+          <label class="qa-sr-only" for="case-search">{{ __('Search cases', 'mandragora-qa-test-manager') }}</label>
           <input
             id="case-search"
             v-model="search"
             class="qa-input"
             type="search"
-            :placeholder="__('Search titles', 'qa-runner')"
+            :placeholder="__('Search titles', 'mandragora-qa-test-manager')"
             style="width: auto"
           />
 
-          <label class="qa-sr-only" for="case-priority">{{ __('Priority', 'qa-runner') }}</label>
+          <label class="qa-sr-only" for="case-priority">{{ __('Priority', 'mandragora-qa-test-manager') }}</label>
           <select id="case-priority" v-model="priority" class="qa-select" style="width: auto">
-            <option value="">{{ __('All priorities', 'qa-runner') }}</option>
+            <option value="">{{ __('All priorities', 'mandragora-qa-test-manager') }}</option>
             <option v-for="option in PRIORITIES" :key="option.value" :value="option.value">
               {{ option.label }}
             </option>
@@ -191,22 +191,22 @@ onMounted(load);
 
           <label class="qa-checkbox">
             <input v-model="showArchived" type="checkbox" />
-            <span>{{ __('Show archived', 'qa-runner') }}</span>
+            <span>{{ __('Show archived', 'mandragora-qa-test-manager') }}</span>
           </label>
         </div>
       </div>
 
-      <p v-if="loading" class="qa-skeleton">{{ __('Loading cases…', 'qa-runner') }}</p>
+      <p v-if="loading" class="qa-skeleton">{{ __('Loading cases…', 'mandragora-qa-test-manager') }}</p>
 
       <EmptyState
         v-else-if="!groups.length"
-        :title="__('No cases yet. Add one to start building the library.', 'qa-runner')"
+        :title="__('No cases yet. Add one to start building the library.', 'mandragora-qa-test-manager')"
         :description="
-          __('Cases live in suites, so create a suite first if you have none.', 'qa-runner')
+          __('Cases live in suites, so create a suite first if you have none.', 'mandragora-qa-test-manager')
         "
       >
         <RouterLink class="qa-button qa-button--primary" to="/cases/new">{{
-          __('New case', 'qa-runner')
+          __('New case', 'mandragora-qa-test-manager')
         }}</RouterLink>
       </EmptyState>
 
@@ -217,7 +217,7 @@ onMounted(load);
             <span class="qa-muted qa-count">
               {{
                 sprintf(
-                  _n('%d case', '%d cases', group.cases.length, 'qa-runner'),
+                  _n('%d case', '%d cases', group.cases.length, 'mandragora-qa-test-manager'),
                   group.cases.length
                 )
               }}
@@ -226,7 +226,7 @@ onMounted(load);
               class="qa-button qa-button--small qa-button--quiet"
               :to="`/cases/new?suite=${group.id}`"
             >
-              {{ __('New case here', 'qa-runner') }}
+              {{ __('New case here', 'mandragora-qa-test-manager') }}
             </RouterLink>
           </div>
         </div>
@@ -238,12 +238,12 @@ onMounted(load);
                 <PriorityDot :priority="item.priority" />
                 <RouterLink :to="`/cases/${item.id}/edit`">{{ item.title }}</RouterLink>
                 <span v-if="!item.is_active" class="qa-badge">{{
-                  __('Archived', 'qa-runner')
+                  __('Archived', 'mandragora-qa-test-manager')
                 }}</span>
               </div>
               <div class="qa-case-row__meta">
                 <span>{{
-                  sprintf(__('Updated %s', 'qa-runner'), shortDate(item.updated_at))
+                  sprintf(__('Updated %s', 'mandragora-qa-test-manager'), shortDate(item.updated_at))
                 }}</span>
               </div>
             </div>
@@ -255,8 +255,8 @@ onMounted(load);
               >
                 {{
                   historyFor === item.id
-                    ? __('Hide issues', 'qa-runner')
-                    : __('Issue history', 'qa-runner')
+                    ? __('Hide issues', 'mandragora-qa-test-manager')
+                    : __('Issue history', 'mandragora-qa-test-manager')
                 }}
               </button>
               <button
@@ -265,10 +265,10 @@ onMounted(load);
                 :disabled="cloning === item.id"
                 @click="clone(item)"
               >
-                {{ cloning === item.id ? __('Cloning…', 'qa-runner') : __('Clone', 'qa-runner') }}
+                {{ cloning === item.id ? __('Cloning…', 'mandragora-qa-test-manager') : __('Clone', 'mandragora-qa-test-manager') }}
               </button>
               <RouterLink class="qa-button qa-button--small" :to="`/cases/${item.id}/edit`">{{
-                __('Edit', 'qa-runner')
+                __('Edit', 'mandragora-qa-test-manager')
               }}</RouterLink>
               <button
                 v-if="item.is_active"
@@ -276,22 +276,22 @@ onMounted(load);
                 class="qa-button qa-button--small qa-button--danger"
                 @click="archive(item)"
               >
-                {{ __('Archive', 'qa-runner') }}
+                {{ __('Archive', 'mandragora-qa-test-manager') }}
               </button>
             </div>
           </div>
 
           <div v-if="historyFor === item.id" class="qa-card__body qa-stack qa-stack--tight">
             <p v-if="!history.length" class="qa-muted">
-              {{ __('No issues have ever been raised on this case.', 'qa-runner') }}
+              {{ __('No issues have ever been raised on this case.', 'mandragora-qa-test-manager') }}
             </p>
             <table v-else class="qa-table">
               <thead>
                 <tr>
-                  <th scope="col">{{ __('Issue', 'qa-runner') }}</th>
-                  <th scope="col">{{ __('Status', 'qa-runner') }}</th>
-                  <th scope="col">{{ __('Raised', 'qa-runner') }}</th>
-                  <th scope="col">{{ __('Link', 'qa-runner') }}</th>
+                  <th scope="col">{{ __('Issue', 'mandragora-qa-test-manager') }}</th>
+                  <th scope="col">{{ __('Status', 'mandragora-qa-test-manager') }}</th>
+                  <th scope="col">{{ __('Raised', 'mandragora-qa-test-manager') }}</th>
+                  <th scope="col">{{ __('Link', 'mandragora-qa-test-manager') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -303,7 +303,7 @@ onMounted(load);
                   <td class="qa-muted">
                     {{
                       sprintf(
-                        _x('%1$s, %2$s', 'issue raiser name, date', 'qa-runner'),
+                        _x('%1$s, %2$s', 'issue raiser name, date', 'mandragora-qa-test-manager'),
                         issue.created_by.name,
                         shortDate(issue.created_at)
                       )
@@ -316,7 +316,7 @@ onMounted(load);
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {{ __('GitHub ↗', 'qa-runner') }}
+                      {{ __('GitHub ↗', 'mandragora-qa-test-manager') }}
                     </a>
                     <span v-else class="qa-muted">—</span>
                   </td>

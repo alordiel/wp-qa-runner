@@ -2,21 +2,21 @@
 /**
  * Run routes.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Rest;
+namespace MandragoraQAManager\Rest;
 
-use QARunner\Notification\Mailer;
-use QARunner\Repository\CaseRepository;
-use QARunner\Repository\CommentRepository;
-use QARunner\Repository\IssueRepository;
-use QARunner\Repository\ResultRepository;
-use QARunner\Repository\RunRepository;
-use QARunner\Support\Enum;
-use QARunner\Support\Sanitize;
+use MandragoraQAManager\Notification\Mailer;
+use MandragoraQAManager\Repository\CaseRepository;
+use MandragoraQAManager\Repository\CommentRepository;
+use MandragoraQAManager\Repository\IssueRepository;
+use MandragoraQAManager\Repository\ResultRepository;
+use MandragoraQAManager\Repository\RunRepository;
+use MandragoraQAManager\Support\Enum;
+use MandragoraQAManager\Support\Sanitize;
 use WP_REST_Request;
 
 defined( 'ABSPATH' ) || exit;
@@ -297,7 +297,7 @@ final class RunsController extends Controller {
 		$run = $this->runs->find_with_detail( (int) $request->get_param( 'id' ) );
 
 		if ( null === $run ) {
-			return $this->not_found( __( 'That run no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That run no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return $run;
@@ -316,7 +316,7 @@ final class RunsController extends Controller {
 		$case_ids = $this->cases->filter_active( Sanitize::id_list( $request->get_param( 'case_ids' ) ) );
 
 		if ( empty( $case_ids ) ) {
-			return $this->bad_request( __( 'Select at least one active case for this run.', 'qa-runner' ) );
+			return $this->bad_request( __( 'Select at least one active case for this run.', 'mandragora-qa-test-manager' ) );
 		}
 
 		$run_id = $this->runs->create(
@@ -330,7 +330,7 @@ final class RunsController extends Controller {
 		);
 
 		if ( 0 === $run_id ) {
-			return $this->write_failed( __( 'The run could not be created.', 'qa-runner' ) );
+			return $this->write_failed( __( 'The run could not be created.', 'mandragora-qa-test-manager' ) );
 		}
 
 		$added = $this->runs->add_cases( $run_id, $case_ids );
@@ -360,7 +360,7 @@ final class RunsController extends Controller {
 		$run = $this->runs->find( $id );
 
 		if ( null === $run ) {
-			return $this->not_found( __( 'That run no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That run no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		$data = array();
@@ -372,11 +372,11 @@ final class RunsController extends Controller {
 		}
 
 		if ( isset( $data['status'] ) && 'abandoned' === $data['status'] && ! $this->can_manage() ) {
-			return $this->forbidden( __( 'You do not have permission to abandon a run.', 'qa-runner' ) );
+			return $this->forbidden( __( 'You do not have permission to abandon a run.', 'mandragora-qa-test-manager' ) );
 		}
 
 		if ( ! $this->runs->update( $id, $data ) ) {
-			return $this->write_failed( __( 'The run could not be saved.', 'qa-runner' ) );
+			return $this->write_failed( __( 'The run could not be saved.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return $this->runs->find_with_detail( $id );
@@ -392,7 +392,7 @@ final class RunsController extends Controller {
 		$id = (int) $request->get_param( 'id' );
 
 		if ( null === $this->runs->find( $id ) ) {
-			return $this->not_found( __( 'That run no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That run no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		if ( ! $this->runs->is_open( $id ) ) {
@@ -426,7 +426,7 @@ final class RunsController extends Controller {
 		$case_id = (int) $request->get_param( 'case_id' );
 
 		if ( null === $this->runs->find( $id ) ) {
-			return $this->not_found( __( 'That run no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That run no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		if ( ! $this->runs->is_open( $id ) ) {
@@ -436,7 +436,7 @@ final class RunsController extends Controller {
 		$result = $this->results->find_by_run_case( $id, $case_id );
 
 		if ( null === $result ) {
-			return $this->not_found( __( 'That case is not part of this run.', 'qa-runner' ) );
+			return $this->not_found( __( 'That case is not part of this run.', 'mandragora-qa-test-manager' ) );
 		}
 
 		// Comments hang off the result and issues off the case, so neither is cleared by
@@ -459,7 +459,7 @@ final class RunsController extends Controller {
 		$id = (int) $request->get_param( 'id' );
 
 		if ( null === $this->runs->find( $id ) ) {
-			return $this->not_found( __( 'That run no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That run no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		if ( ! $this->runs->is_open( $id ) ) {
@@ -469,7 +469,7 @@ final class RunsController extends Controller {
 		$user_ids = $this->valid_testers( Sanitize::id_list( $request->get_param( 'assignee_ids' ) ) );
 
 		if ( empty( $user_ids ) ) {
-			return $this->bad_request( __( 'Choose at least one person who can run tests.', 'qa-runner' ) );
+			return $this->bad_request( __( 'Choose at least one person who can run tests.', 'mandragora-qa-test-manager' ) );
 		}
 
 		$this->runs->add_assignees( $id, $user_ids );
@@ -491,7 +491,7 @@ final class RunsController extends Controller {
 		$id = (int) $request->get_param( 'id' );
 
 		if ( null === $this->runs->find( $id ) ) {
-			return $this->not_found( __( 'That run no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That run no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		if ( ! $this->runs->is_open( $id ) ) {
@@ -516,14 +516,14 @@ final class RunsController extends Controller {
 		$source = $this->runs->find( $id );
 
 		if ( null === $source ) {
-			return $this->not_found( __( 'That run no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That run no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		$name = (string) $request->get_param( 'name' );
 
 		if ( '' === trim( $name ) ) {
 			/* translators: %s: name of the run being cloned. */
-			$name = sprintf( __( '%s (retest)', 'qa-runner' ), $source['name'] );
+			$name = sprintf( __( '%s (retest)', 'mandragora-qa-test-manager' ), $source['name'] );
 		}
 
 		$environment = (string) $request->get_param( 'environment' );
@@ -540,7 +540,7 @@ final class RunsController extends Controller {
 		);
 
 		if ( 0 === $new_id ) {
-			return $this->write_failed( __( 'The run could not be cloned.', 'qa-runner' ) );
+			return $this->write_failed( __( 'The run could not be cloned.', 'mandragora-qa-test-manager' ) );
 		}
 
 		// Inactive cases are dropped from the clone: they cannot join a new run.
@@ -563,7 +563,7 @@ final class RunsController extends Controller {
 		$run = $this->runs->find_with_detail( $id );
 
 		if ( null === $run ) {
-			return $this->not_found( __( 'That run no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That run no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		return array(
@@ -582,7 +582,7 @@ final class RunsController extends Controller {
 		$id = (int) $request->get_param( 'id' );
 
 		if ( null === $this->runs->find( $id ) ) {
-			return $this->not_found( __( 'That run no longer exists.', 'qa-runner' ) );
+			return $this->not_found( __( 'That run no longer exists.', 'mandragora-qa-test-manager' ) );
 		}
 
 		// An empty map has to serialise as {} rather than [], so the client can index it.
@@ -599,7 +599,7 @@ final class RunsController extends Controller {
 		return array_values(
 			array_filter(
 				$user_ids,
-				static fn( int $user_id ): bool => user_can( $user_id, 'qa_run_tests' )
+				static fn( int $user_id ): bool => user_can( $user_id, 'mqatm_run_tests' )
 			)
 		);
 	}

@@ -1,4 +1,4 @@
-=== QA Runner ===
+=== Mandragora QA Test Manager ===
 Contributors: alordiel
 Tags: qa, testing, test cases, quality assurance, test management
 Requires at least: 6.4
@@ -12,11 +12,11 @@ Manual QA test runs inside wp-admin: suites, test cases, runs, pass/fail results
 
 == Description ==
 
-QA Runner gives a small team a place inside wp-admin to plan and record manual testing.
+Mandragora QA Test Manager gives a small team a place inside wp-admin to plan and record manual testing.
 
 Write your test cases once, group them into suites, then start a **run** whenever you need to test a release or an environment. Testers work through the run case by case and mark each one **pass**, **fail**, **blocked** or **skipped**. Failures get a comment thread and an issue that stays attached to the case, so the next person to test it sees what is still broken.
 
-Everything is entered by people. QA Runner does not run automated tests, execute code or take screenshots.
+Everything is entered by people. Mandragora QA Test Manager does not run automated tests, execute code or take screenshots.
 
 = Features =
 
@@ -41,19 +41,19 @@ A QA role is added alongside the user's existing WordPress role. Removing someon
 
 = Privacy =
 
-QA Runner does not contact any external service and does not track usage. All data stays in your WordPress database. Emails are sent through your site's own `wp_mail()`, and only to users of your site. User avatars are shown through WordPress's standard avatar function.
+Mandragora QA Test Manager does not contact any external service and does not track usage. All data stays in your WordPress database. Emails are sent through your site's own `wp_mail()`, and only to users of your site. User avatars are shown through WordPress's standard avatar function.
 
 = Source code =
 
 The admin screen is a Vue application. The plugin ships the compiled bundle in `build/` together with its uncompiled source in `src/`, `package.json` and `vite.config.js`.
 
-The full development repository is public at [github.com/alordiel/wp-qa-runner](https://github.com/alordiel/wp-qa-runner).
+The full development repository is public at [github.com/alordiel/mandragora-qa-test-manager](https://github.com/alordiel/mandragora-qa-test-manager).
 
 To rebuild the bundle from source:
 
 1. Install Node.js 20 or later.
 2. Run `npm install` in the plugin directory.
-3. Run `npm run build`. This writes `build/qa-admin-page.js` and `build/qa-admin-page.css`.
+3. Run `npm run build`. This writes `build/mqatm-admin-page.js` and `build/mqatm-admin-page.css`.
 
 = Third-party libraries =
 
@@ -69,28 +69,28 @@ The compiled bundle includes these open-source libraries, all under GPL-compatib
 
 == Installation ==
 
-1. Upload the `qa-runner` folder to `/wp-content/plugins/`, or install the plugin from the **Plugins → Add New** screen.
+1. Upload the `mandragora-qa-test-manager` folder to `/wp-content/plugins/`, or install the plugin from the **Plugins → Add New** screen.
 2. Activate the plugin through the **Plugins** screen.
-3. Open **QA Runner** in the admin menu.
-4. As a site administrator, go to **QA Runner → Settings** and add the people who will test, choosing QA Tester or QA Admin for each.
+3. Open **Mandragora QA Test Manager** in the admin menu.
+4. As a site administrator, go to **Mandragora QA Test Manager → Settings** and add the people who will test, choosing QA Tester or QA Admin for each.
 
 == Frequently Asked Questions ==
 
-= Does QA Runner run automated tests? =
+= Does Mandragora QA Test Manager run automated tests? =
 
 No. It records manual testing done by people.
 
-= Who can see the QA Runner screens? =
+= Who can see the Mandragora QA Test Manager screens? =
 
-Only users with the `qa_view_qa` capability. The plugin adds two roles that have it, QA Tester and QA Admin, and site administrators always have full access.
+Only users with the `mqatm_view` capability. The plugin adds two roles that have it, QA Tester and QA Admin, and site administrators always have full access.
 
 = What happens to my data when I delete the plugin? =
 
 Deleting the plugin always removes its roles, capabilities and settings. Your suites, cases, runs, results, comments and issues are kept, unless you turn on **Delete all QA data when the plugin is uninstalled** in Settings first.
 
-= Can I translate QA Runner? =
+= Can I translate Mandragora QA Test Manager? =
 
-Yes. Every string, including the admin screen, uses the `qa-runner` text domain. Translations are managed on [translate.wordpress.org](https://translate.wordpress.org/), and `languages/qa-runner.pot` is included as a template.
+Yes. Every string, including the admin screen, uses the `mandragora-qa-test-manager` text domain. Translations are managed on [translate.wordpress.org](https://translate.wordpress.org/), and `languages/mandragora-qa-test-manager.pot` is included as a template.
 
 = Which emails does the plugin send? =
 

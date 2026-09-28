@@ -2,12 +2,12 @@
 /**
  * Plugin settings, stored as individual options.
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner\Support;
+namespace MandragoraQAManager\Support;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -16,8 +16,8 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Settings {
 
-	public const OPTION_PAUSED              = 'qa_runner_notifications_paused';
-	public const OPTION_DELETE_ON_UNINSTALL = 'qa_runner_delete_data_on_uninstall';
+	public const OPTION_PAUSED              = 'mqatm_notifications_paused';
+	public const OPTION_DELETE_ON_UNINSTALL = 'mqatm_delete_data_on_uninstall';
 
 	/**
 	 * Every option the plugin creates, with its default.

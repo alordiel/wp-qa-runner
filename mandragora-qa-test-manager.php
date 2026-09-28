@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name:       QA Runner
- * Plugin URI:        https://github.com/alordiel/wp-qa-runner
+ * Plugin Name:       Mandragora QA Test Manager
+ * Plugin URI:        https://github.com/alordiel/mandragora-qa-test-manager
  * Description:       Manual QA test runs for a small internal team: suites, cases, runs, results, comments and issues.
  * Version:           1.0.0
  * Requires at least: 6.4
@@ -10,27 +10,27 @@
  * Author URI:        https://profiles.wordpress.org/alordiel/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       qa-runner
+ * Text Domain:       mandragora-qa-test-manager
  * Domain Path:       /languages
  *
- * @package QARunner
+ * @package MandragoraQAManager
  */
 
 declare( strict_types=1 );
 
-namespace QARunner;
+namespace MandragoraQAManager;
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'QA_RUNNER_VERSION', '1.0.0' );
-define( 'QA_RUNNER_DB_VERSION', 3 );
-define( 'QA_RUNNER_FILE', __FILE__ );
-define( 'QA_RUNNER_PATH', plugin_dir_path( __FILE__ ) );
-define( 'QA_RUNNER_URL', plugin_dir_url( __FILE__ ) );
-define( 'QA_RUNNER_SLUG', 'qa-runner' );
+define( 'MQATM_VERSION', '1.0.0' );
+define( 'MQATM_DB_VERSION', 3 );
+define( 'MQATM_FILE', __FILE__ );
+define( 'MQATM_PATH', plugin_dir_path( __FILE__ ) );
+define( 'MQATM_URL', plugin_dir_url( __FILE__ ) );
+define( 'MQATM_SLUG', 'mandragora-qa-test-manager' );
 
 /**
- * PSR-4 autoloader for the QARunner namespace.
+ * PSR-4 autoloader for the MandragoraQAManager namespace.
  *
  * The plugin has no runtime Composer dependencies, so it ships without a vendor directory
  * and needs no install step.
@@ -46,7 +46,7 @@ function autoload( string $class_name ): void {
 	}
 
 	$relative = substr( $class_name, strlen( $prefix ) );
-	$path     = QA_RUNNER_PATH . 'includes/' . str_replace( '\\', '/', $relative ) . '.php';
+	$path     = MQATM_PATH . 'includes/' . str_replace( '\\', '/', $relative ) . '.php';
 
 	if ( is_readable( $path ) ) {
 		require_once $path;

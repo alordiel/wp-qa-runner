@@ -104,10 +104,10 @@ const removalWarning = computed(() => {
     'This will delete everything this run recorded against it: the status, every comment and any issue raised on it here. The case itself is not deleted, but its history in this run is erased.',
     'This will delete everything this run recorded against them: the status, every comment and any issue raised on them here. The cases themselves are not deleted, but their history in this run is erased.',
     removed.value.length,
-    'qa-runner'
+    'mandragora-qa-test-manager'
   );
 
-  return `${escapeHtml(wp.i18n.__('Removing:', 'qa-runner'))}<ul>${names}</ul>${escapeHtml(warning)}`;
+  return `${escapeHtml(wp.i18n.__('Removing:', 'mandragora-qa-test-manager'))}<ul>${names}</ul>${escapeHtml(warning)}`;
 });
 
 /**
@@ -136,7 +136,7 @@ function recorded(result) {
   if (result.comment_count > 0) {
     parts.push(
       wp.i18n.sprintf(
-        wp.i18n._n('%d comment', '%d comments', result.comment_count, 'qa-runner'),
+        wp.i18n._n('%d comment', '%d comments', result.comment_count, 'mandragora-qa-test-manager'),
         result.comment_count
       )
     );
@@ -145,7 +145,7 @@ function recorded(result) {
   if (result.open_issue_count > 0) {
     parts.push(
       wp.i18n.sprintf(
-        wp.i18n._n('%d open issue', '%d open issues', result.open_issue_count, 'qa-runner'),
+        wp.i18n._n('%d open issue', '%d open issues', result.open_issue_count, 'mandragora-qa-test-manager'),
         result.open_issue_count
       )
     );
@@ -219,11 +219,11 @@ watch(
 <template>
   <dialog ref="dialog" class="qa-dialog qa-dialog--wide" @close="cancel" @cancel="cancel">
     <div class="qa-dialog__head">
-      <h3 class="qa-dialog__title">{{ __('Cases in this run', 'qa-runner') }}</h3>
+      <h3 class="qa-dialog__title">{{ __('Cases in this run', 'mandragora-qa-test-manager') }}</h3>
       <button
         type="button"
         class="qa-dialog__close"
-        :aria-label="__('Close', 'qa-runner')"
+        :aria-label="__('Close', 'mandragora-qa-test-manager')"
         @click="cancel"
       >
         ×
@@ -233,14 +233,14 @@ watch(
     <div ref="body" class="qa-dialog__body qa-stack">
       <div class="qa-stack qa-stack--tight">
         <span class="qa-field__label">{{
-          sprintf(__('On the run (%d)', 'qa-runner'), results.length)
+          sprintf(__('On the run (%d)', 'mandragora-qa-test-manager'), results.length)
         }}</span>
         <p class="qa-field__hint">
-          {{ __('Untick a case to take it off this run.', 'qa-runner') }}
+          {{ __('Untick a case to take it off this run.', 'mandragora-qa-test-manager') }}
         </p>
 
         <p v-if="!results.length" class="qa-muted">
-          {{ __('This run has no cases yet.', 'qa-runner') }}
+          {{ __('This run has no cases yet.', 'mandragora-qa-test-manager') }}
         </p>
 
         <ul v-else class="qa-dialog__list">
@@ -267,23 +267,23 @@ watch(
       </div>
 
       <div class="qa-stack qa-stack--tight">
-        <span class="qa-field__label">{{ __('Add from the library', 'qa-runner') }}</span>
+        <span class="qa-field__label">{{ __('Add from the library', 'mandragora-qa-test-manager') }}</span>
 
         <div class="qa-row">
           <label class="qa-sr-only" for="run-cases-search">{{
-            __('Search cases', 'qa-runner')
+            __('Search cases', 'mandragora-qa-test-manager')
           }}</label>
           <input
             id="run-cases-search"
             v-model="search"
             class="qa-input"
             type="search"
-            :placeholder="__('Search by title', 'qa-runner')"
+            :placeholder="__('Search by title', 'mandragora-qa-test-manager')"
             :disabled="saving"
             style="flex: 1; min-width: 140px"
           />
 
-          <label class="qa-sr-only" for="run-cases-suite">{{ __('Suite', 'qa-runner') }}</label>
+          <label class="qa-sr-only" for="run-cases-suite">{{ __('Suite', 'mandragora-qa-test-manager') }}</label>
           <select
             id="run-cases-suite"
             v-model="suiteFilter"
@@ -291,19 +291,19 @@ watch(
             :disabled="saving"
             style="width: auto"
           >
-            <option value="">{{ __('All suites', 'qa-runner') }}</option>
+            <option value="">{{ __('All suites', 'mandragora-qa-test-manager') }}</option>
             <option v-for="suite in suites" :key="suite.id" :value="String(suite.id)">
               {{ suite.name }}
             </option>
           </select>
         </div>
 
-        <p v-if="loading" class="qa-muted">{{ __('Loading the case library…', 'qa-runner') }}</p>
+        <p v-if="loading" class="qa-muted">{{ __('Loading the case library…', 'mandragora-qa-test-manager') }}</p>
         <p v-else-if="!hasFilter" class="qa-field__hint">
-          {{ __('Search or pick a suite to see the cases you can add.', 'qa-runner') }}
+          {{ __('Search or pick a suite to see the cases you can add.', 'mandragora-qa-test-manager') }}
         </p>
         <p v-else-if="!candidates.length" class="qa-muted">
-          {{ __('No cases match, or they are all on this run already.', 'qa-runner') }}
+          {{ __('No cases match, or they are all on this run already.', 'mandragora-qa-test-manager') }}
         </p>
 
         <ul v-else class="qa-dialog__list">
@@ -331,7 +331,7 @@ watch(
                   'Yes, remove %d case and delete what this run recorded against it.',
                   'Yes, remove %d cases and delete what this run recorded against them.',
                   removed.length,
-                  'qa-runner'
+                  'mandragora-qa-test-manager'
                 ),
                 removed.length
               )
@@ -343,10 +343,10 @@ watch(
 
     <div class="qa-dialog__foot">
       <button type="button" class="qa-button qa-button--quiet" :disabled="saving" @click="cancel">
-        {{ __('Cancel', 'qa-runner') }}
+        {{ __('Cancel', 'mandragora-qa-test-manager') }}
       </button>
       <button type="button" class="qa-button qa-button--primary" :disabled="!canSave" @click="save">
-        {{ saving ? __('Saving…', 'qa-runner') : __('Save', 'qa-runner') }}
+        {{ saving ? __('Saving…', 'mandragora-qa-test-manager') : __('Save', 'mandragora-qa-test-manager') }}
       </button>
     </div>
   </dialog>
