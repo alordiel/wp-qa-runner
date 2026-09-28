@@ -462,6 +462,10 @@ final class RunsController extends Controller {
 			return $this->not_found( __( 'That run no longer exists.', 'qa-runner' ) );
 		}
 
+		if ( ! $this->runs->is_open( $id ) ) {
+			return $this->run_closed();
+		}
+
 		$user_ids = $this->valid_testers( Sanitize::id_list( $request->get_param( 'assignee_ids' ) ) );
 
 		if ( empty( $user_ids ) ) {
@@ -488,6 +492,10 @@ final class RunsController extends Controller {
 
 		if ( null === $this->runs->find( $id ) ) {
 			return $this->not_found( __( 'That run no longer exists.', 'qa-runner' ) );
+		}
+
+		if ( ! $this->runs->is_open( $id ) ) {
+			return $this->run_closed();
 		}
 
 		$this->runs->remove_assignee( $id, (int) $request->get_param( 'user_id' ) );
