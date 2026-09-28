@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-26T16:34:28+00:00\n"
+"POT-Creation-Date: 2026-09-28T14:57:26+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: mandragora-qa-test-manager\n"
@@ -19,7 +19,7 @@ msgstr ""
 #: includes/Admin/Menu.php:35
 #: includes/Admin/Menu.php:36
 #: build/mqatm-admin-page.js:2
-msgid "mandragora-qa-test-manager"
+msgid "Mandragora QA Test Manager"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -263,10 +263,10 @@ msgstr ""
 #: includes/Rest/RunsController.php:395
 #: includes/Rest/RunsController.php:429
 #: includes/Rest/RunsController.php:462
-#: includes/Rest/RunsController.php:490
-#: includes/Rest/RunsController.php:511
-#: includes/Rest/RunsController.php:558
-#: includes/Rest/RunsController.php:577
+#: includes/Rest/RunsController.php:494
+#: includes/Rest/RunsController.php:519
+#: includes/Rest/RunsController.php:566
+#: includes/Rest/RunsController.php:585
 msgid "That run no longer exists."
 msgstr ""
 
@@ -291,17 +291,17 @@ msgstr ""
 msgid "That case is not part of this run."
 msgstr ""
 
-#: includes/Rest/RunsController.php:468
+#: includes/Rest/RunsController.php:472
 msgid "Choose at least one person who can run tests."
 msgstr ""
 
 #. translators: %s: name of the run being cloned.
-#: includes/Rest/RunsController.php:518
+#: includes/Rest/RunsController.php:526
 #, php-format
 msgid "%s (retest)"
 msgstr ""
 
-#: includes/Rest/RunsController.php:535
+#: includes/Rest/RunsController.php:543
 #: build/mqatm-admin-page.js:47
 msgid "The run could not be cloned."
 msgstr ""
@@ -442,6 +442,8 @@ msgid "Open the case"
 msgstr ""
 
 #: build/mqatm-admin-page.js:2
+#: src/api/client.js:147
+#: src/stores/ui.js:42
 msgid "Something went wrong. Please try again."
 msgstr ""
 
@@ -454,6 +456,7 @@ msgid "Dismiss notification"
 msgstr ""
 
 #: build/mqatm-admin-page.js:2
+#: src/api/client.js:127
 msgid "Could not reach the server. Check your connection and try again."
 msgstr ""
 
@@ -488,61 +491,75 @@ msgid "Reload now"
 msgstr ""
 
 #: build/mqatm-admin-page.js:47
+#: src/utils/status.js:10
 msgid "Pass"
 msgstr ""
 
 #: build/mqatm-admin-page.js:47
+#: src/utils/status.js:11
 msgid "Fail"
 msgstr ""
 
 #: build/mqatm-admin-page.js:47
+#: src/utils/status.js:12
 msgid "Blocked"
 msgstr ""
 
 #: build/mqatm-admin-page.js:47
+#: src/utils/status.js:13
 msgid "Skipped"
 msgstr ""
 
 #: build/mqatm-admin-page.js:47
+#: src/utils/status.js:16
 msgctxt "reset a result to untested"
 msgid "Clear"
 msgstr ""
 
 #: build/mqatm-admin-page.js:47
+#: src/utils/status.js:42
 msgid "Untested"
 msgstr ""
 
 #: build/mqatm-admin-page.js:47
+#: src/utils/status.js:46
 msgid "Critical"
 msgstr ""
 
 #: build/mqatm-admin-page.js:47
+#: src/utils/status.js:47
 msgid "Normal"
 msgstr ""
 
 #: build/mqatm-admin-page.js:47
+#: src/utils/status.js:48
 msgid "Low"
 msgstr ""
 
 #: build/mqatm-admin-page.js:47
+#: src/utils/status.js:52
 msgctxt "run status"
 msgid "Open"
 msgstr ""
 
 #: build/mqatm-admin-page.js:47
+#: src/utils/status.js:53
 msgid "Completed"
 msgstr ""
 
 #: build/mqatm-admin-page.js:47
+#: src/utils/status.js:54
 msgid "Abandoned"
 msgstr ""
 
 #: build/mqatm-admin-page.js:47
+#: src/utils/status.js:58
 msgctxt "issue status"
 msgid "Open"
 msgstr ""
 
 #: build/mqatm-admin-page.js:47
+#: src/utils/status.js:59
 msgid "Resolved"
 msgstr ""
 
@@ -628,6 +645,7 @@ msgid "%s priority"
 msgstr ""
 
 #: build/mqatm-admin-page.js:47
+#: src/utils/format.js:37
 msgid "just now"
 msgstr ""
 
